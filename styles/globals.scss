@@ -1,0 +1,114 @@
+/* make the customizations */
+$theme-colors: (
+  "info": tomato,
+  "danger": teal
+);
+  
+/* import bootstrap to set changes */
+@import "../node_modules/bootstrap/scss/bootstrap";
+@import "@code-hike/mdx/dist/index.css";
+// @import url(http://fonts.googleapis.com/css?family=Roboto+Slab|Open+Sans:400italic,700italic,400,700);
+$light-bg: #fdf6e3;
+$light-fg: #586e75;
+$dark-bg: #002b36;
+$dark-fg: #93a1a1;
+
+$blue: #268bd2;
+$cyan: #2aa198;
+
+$radius: 0.5rem;
+
+.dark-mode {
+  background-color: $dark-bg;
+  color: $dark-fg;
+  border-color: $dark-fg;
+
+  & .img-color-box {
+    background-color: $dark-fg;
+  }
+
+  & .postcard:hover {
+    color: $cyan;
+    & .img-color-box {
+      background-color: $cyan;
+    }
+  }
+}
+
+.light-mode {
+  background-color: $light-bg;
+  color: $light-fg;
+  border-color: $light-fg;
+
+  & .img-color-box {
+    background-color: $light-fg;
+  }
+
+  & .postcard:hover {
+    color: $blue;
+    & .img-color-box {
+      background-color: $blue;
+    }
+  }
+}
+
+.img-color-box {
+  width: 150px;
+  height: 150px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+// .container-fluid {}
+
+.mask {
+  -webkit-mask-size: 100%;
+  mask-size: 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat
+}
+
+.postcard {
+  display: flex;
+  flex-direction: row;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: $radius;
+  // transition: 250ms ease all;
+  
+  margin-bottom: 2rem;
+
+  & * {
+    transition: 250ms ease all;
+  }
+
+  & > * {
+    margin: 1rem;
+    margin-right: 0rem;
+  }
+
+  &__img {
+    display: flex;
+    border: inherit;
+    border-radius: inherit;
+    width: 150px;
+    height: 150px;
+    // & img {
+    //   height: 150px;
+    // }
+  }
+
+  // &__content {}
+
+  &:hover {
+    // background-color: gray;
+    // filter: drop-shadow(100px 0px black);
+    // -webkit-filter: drop-shadow(60px 0px black);
+  }
+}

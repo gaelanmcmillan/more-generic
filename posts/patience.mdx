@@ -1,0 +1,69 @@
+---
+title: 'Patience Sort'
+author: 'Gaelan McMillan'
+headline: "What do sorting cards, packing envelopes, and nesting intervals all have in common?"
+date: '2022-10-27'
+thumbnail: '/images/posts/PatiencePicture.png'
+---
+
+<div style={{ 
+  borderWidth: "8px", 
+  borderStyle: "solid", 
+  borderRadius: "1rem",
+  width: "400px", 
+  height: "400px" 
+}}>
+  <div className="mask" style={{
+      WebkitMaskImage: 'url("/images/posts/PatiencePicture.png")',
+      maskImage: 'url("/images/posts/PatiencePicture.png")',
+  }}>
+    <div className="img-color-box" style={{ width: "400px", height: "400px"}}/>
+  </div>
+</div>
+
+### Summary
+0. Introduce a difficult problem.
+1. Create an generic implementation of [patience sort](https://en.wikipedia.org/wiki/Patience_sorting).
+2. Use our code to solve three variations of the *longest chain in a partially ordered set* problem.
+
+### Motivation
+Early last year while solving problems on Kattis, I came across a deceptively tricky [problem](https://open.kattis.com/problems/poklon).
+If one were to judge the quality of a problem by the metric of "difficulty to understand" versus "difficulty to solve", this problem would be among the best I've seen.
+The problem, named simply *Poklon* (Croation for "gift"), comes from the *Croatian Open Competition in Informatics 2007/2008, contest #4*.
+The tricky part of Poklon is observing that it can be reduced to a simpler problem, the longest increasing subsequence problem.
+Since solving this problem, finding programming problems that belong to the same family of problems is one of my favourite things.
+### Introduction
+I love a good puzzle. When I started programming, it was natural for me to gravitate toward programming puzzles.
+I find solving competitive programming problems to be a fun way to apply the theoretical knowledge
+one learns in a classical undergraduate Computer Science program. My favourite is puzzling over a problem only to discover that it falls into a class of familiar problems. With this comes the chance that one can reduce the problem to its most abstract form, and devise a generic solution to fit any specialization of the problem.
+
+C++ is my preferred language for these sorts of problems. This is due in large part to its fantastic standard library algorithms. Early in my C++ journey, my friend Ahmad recommended a talk by Conor Hoekstra called "Algorithm Intuition".
+
+```cpp main.cpp
+int main() {
+    return 0;
+}
+```
+
+```cpp
+int add (int x, int y) {
+    return x + y;
+}
+```
+
+'Question: What do the optimal strategies for Floyd's game, packing envelopes, and nesting intervals all have in common?'
+
+### Problem Links
++ [Poklon](https://open.kattis.com/problems/poklon)
++ [Russian Doll Envelopes](https://leetcode.com/problems/russian-doll-envelopes/)
++ [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
+
+# Patience
+
+## Sections:
++ Intro
++ Longest Increasing Subsequence
++ Monotone Ordered Subsequence
+
+Answer They're all reducible to finding the maximum length chain in a partially ordered set!
+
