@@ -18,10 +18,8 @@ export default withMDX({
   reactStrictMode: true,
   swcMinify: true,
   pageExtensions: ['md', 'mdx', 'tsx', 'ts', 'jsx', 'js'],
-  // images: {
-  //   loader: "akamai",
-  //   path: "",
-  // }
+  basePath: "/more-generic",
+  assetPrefix: "/more-generic"
 })
 
 // module.exports = nextConfig
