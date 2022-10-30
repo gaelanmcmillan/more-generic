@@ -20,7 +20,7 @@ export default withMDX({
   pageExtensions: ['md', 'mdx', 'tsx', 'ts', 'jsx', 'js'],
   images: {
     loader: "akamai",
-    path: "/more-generic",
+    path: "",
   },
   basePath: "/more-generic",
   assetPrefix: "/more-generic"
