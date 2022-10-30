@@ -9,8 +9,6 @@ export default function PostCard({ post }) {
           {/* <img src={post.frontmatter.thumbnail} /> */}
           <PngMask
             mask={"url("+post.frontmatter.thumbnail+")"}
-            size="100%"
-            repeat="no-repeat"
           >
           {/* <div className="mask"> */}
             <div className="img-color-box"/>

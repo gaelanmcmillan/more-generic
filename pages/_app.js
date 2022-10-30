@@ -1,7 +1,7 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+
 import '../styles/globals.scss'
-import "@code-hike/mdx/dist/index.css"
 
 import Container from 'react-bootstrap/Container';
 

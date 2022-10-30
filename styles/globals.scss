@@ -1,12 +1,10 @@
 /* make the customizations */
-$theme-colors: (
-  "info": tomato,
-  "danger": teal
-);
   
 /* import bootstrap to set changes */
 @import "../node_modules/bootstrap/scss/bootstrap";
 @import "@code-hike/mdx/dist/index.css";
+@import "../styles/maskedimage.css";
+
 // @import url(http://fonts.googleapis.com/css?family=Roboto+Slab|Open+Sans:400italic,700italic,400,700);
 $light-bg: #fdf6e3;
 $light-fg: #586e75;
@@ -18,6 +16,11 @@ $cyan: #2aa198;
 
 $radius: 0.5rem;
 
+body {
+  --ch-scrollycoding-sticker-width: 50vw;
+  --ch-scrollycoding-code-min-height: 62vh;
+}
+
 .dark-mode {
   background-color: $dark-bg;
   color: $dark-fg;
@@ -25,6 +28,11 @@ $radius: 0.5rem;
 
   & .img-color-box {
     background-color: $dark-fg;
+  }
+
+  & a {
+    color: $dark-fg;
+    text-decoration: dotted;
   }
 
   & .postcard:hover {
@@ -43,6 +51,15 @@ $radius: 0.5rem;
   & .img-color-box {
     background-color: $light-fg;
   }
+  
+  & .masked-image-color-box {
+    background-color: $light-fg;
+  }
+
+  & a {
+    color: $light-fg;
+    text-decoration-style: dotted;
+  }
 
   & .postcard:hover {
     color: $blue;
@@ -51,6 +68,7 @@ $radius: 0.5rem;
     }
   }
 }
+
 
 .img-color-box {
   width: 150px;
@@ -99,9 +117,6 @@ $radius: 0.5rem;
     border-radius: inherit;
     width: 150px;
     height: 150px;
-    // & img {
-    //   height: 150px;
-    // }
   }
 
   // &__content {}

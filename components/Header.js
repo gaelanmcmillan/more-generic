@@ -16,7 +16,7 @@ export default function Header() {
               <h3 className="clickable">About</h3>
             </Link>
             <Link href="/blog">
-              <h3 className="clickable">So Generic</h3>
+              <h3 className="clickable">More Generic</h3>
             </Link>
           </nav>
         </Col>

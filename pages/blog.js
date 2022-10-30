@@ -38,8 +38,6 @@ export default function Blog ({ posts }) {
 export async function getStaticProps() {
   const files = fs.readdirSync(path.join("posts"));
 
-  console.log("Files:", files);
-
   const posts = files
     .map((filename) => {
       let slug = filename.replace(".mdx", "");

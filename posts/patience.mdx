@@ -1,5 +1,5 @@
 ---
-title: 'Patience Sort'
+title: 'Patience'
 author: 'Gaelan McMillan'
 headline: "What do sorting cards, packing envelopes, and nesting intervals all have in common?"
 date: '2022-10-27'
@@ -21,17 +21,214 @@ thumbnail: '/images/posts/PatiencePicture.png'
   </div>
 </div>
 
-### Summary
+# Intervals and Sequences
+In this post we will take a look at a tricky problem, solve it, and then generalize our solution to solve all problems of the same class.
+
+{/* ### Summary
 0. Introduce a difficult problem.
 1. Create an generic implementation of [patience sort](https://en.wikipedia.org/wiki/Patience_sorting).
-2. Use our code to solve three variations of the *longest chain in a partially ordered set* problem.
+2. Use our code to solve three variations of the *longest chain in a partially ordered set* problem. */}
+
+## 0. The Problem
+In early 2021, while working through the [Kattis archives](), I came across a tricky problem.
+The problem, named simply *Poklon* (Croatian for *gift*), tells a brief, nonsensical story about a boy named Mirko who just received a set of intervals for his Birthday. An interval is a pair of numbers *\{start, end\}* with *start \<= end*.
+
+One of the things Mirko likes to do with his intervals is "nest" them. An interval *b* can nest inside another interval *a* if *b*'s start point is greater than or equal to that of *a*, and *b*'s end point is less than or equal to that of *a*. If these conditions are met, we say *a* contains *b*, or *b* is contained by *a*.
+
+The problem then sets the following task: given a set of *N* intervals, find any maximal length sequence of nested intervals, and list each interval.
+
+### Nesting Intervals
+Alright, nesting intervals! Our work is cut out for us. We should quickly consider the naive case: comparing every sequence of intervals to every other sequence. This would be *O(n!)*—far too slow for any considerable set of intervals. If brute force is off the table, perhaps we can be more clever. Let's sort the intervals from largest to smallest and list them from top to bottom!
+
+```
+|---------|                     ...|-----------|      
+....|-----|                     |---------|
+...|-----------|        -->     .......|------|
+.......|--|                     ....|-----|
+.......|------|                 ....|---|
+....|---|                       .......|--|
+............|-|                 ............|-|
+```
+
+Ah, and therein lies *Poklon*'s first gotcha. Just because one interval is larger than another doesn't mean the two intervals can nest. Let's take a closer look at the nesting relationship between intervals.
+
+Given three intervals *a*, *b*, and *c*,
+1. if *a* contains *b* and *b* contains *c*, then *a* contains *b*. Containment is ***transitive***.
+2. if *a* contains *b*, the only case in which *b* contains *a* is if *a* \= *b*. Containment is ***antisymmetic***.
+
+Containment is a transitive, antisymmetic relationship? Then containment describes a [partial ordering]() of the intervals! Specifically a *weak* partial ordering, but we'll worry about that later.
+
+The fact that containment is a partial order relation explains why sorting our intervals by size didn't get us anywhere. Let's just forget about intervals for a second and draw our set as a [Hasse diagram]().
+
+What we see is that any sequence of a nested intervals describes a *chain* in our partial order. The most deeply nested sequence of intervals in our set is therefore a *maximal length chain* in the partial order.
+This observation lets us rephrase our question more abstractly: <br/>
+Given a partial order on a set, find a chain of maximal length. <br/>
+<br/>
+This is a great first step in solving any programming problem. Take the description of the problem and produce a precise mathematical model. Problems on partial orders are reducible to problems on paths in an acyclic digraph.
+Another way we could phrase this problem is, given a directed graph (with edges described by the containment relation), find a maximal length path. One problem with this strategy is it's unclear which vertex we should start from. We know it should be a minimal vertex (in the case of a DAG, a minimal vertex would be any with an indegree of zero). At first glance, this solution would be *O(n^2)* just to link the graph, so perhaps we should table it for now.
+<br/>
+
+With our partial order in mind, let's see if there's some progress we can make toward finding our maximal chain.
+The root of our problem is that intervals are a pair of numbers. A sequence of nested intervals satisfies two conditions:
+1. The start points are in non-decreasing order.
+2. The end points are in non-increasing order.
+
+Solving these two problems simultaneously is hard. If we can guarantee one of the two conditions is always true, tackling the other might be a bit easier. And we can solve either one of these problems fairly inexpensively. By sorting!
+
+```
+|---------|                     |---------|
+....|-----|                     ...|-----------|      
+...|-----------|       -->      ....|-----|
+.......|--|                     ....|---|
+.......|------|                 .......|------|
+....|---|                       .......|--|
+............|-|                 ............|-|
+```
+
+Here we have sorted the intervals in increasing order by their start point, breaking ties by ordering their end points in decreasingly. With this order, our first condition is satisfied, so we can forget about the start points for now.
+
+```
+|------l--|                    
+...|---l-------|               _      
+....|--l--|                    |     _   _
+....|--l|           -->      _ | _   | _ |     -->   2 4 2 0 3 2 3  --> 2(4)2 0(3)2(3) --> 4 3 3
+.......l------|              | | |   | | |
+.......l--|                  | | | _ | | |
+.......l....|-|             ---------------
+```
+
+If we make a vertical slice through our diagram before the lowest endpoint in the set, and rotate this half-diagram by 90 degrees, we see something that may be familiar. A bar chart, with the height of each bar determined by the relative magnitude of the endpoints. Tracing our longest nested sequence of intervals through the isolated endpoint sequence, a pattern is clear. It is the **longest decreasing subsequence**.
+<br />
+Hurrah—after a sort for the low cost of *O(nlogn)*, we've managed to reduce our problem yet again to something more manageable. A *Kattis Hard* for the price of a [*LeetCode Medium*]()! Since we're already comfortable with talking about orderings, finding a decreasing subsequence is the same task as finding an increasing subsequence, just with a different [total order relation](). *decreasing subsequence looking at itself in the mirror*
+<br />
+So... how do you find the longest increasing subsequence, again?
+
+## 1. Patience
+
+Ready for another game? Finding the longest increasing subsequence in a totally ordered set has an interesting connection to a *solitaire* card game. The game is played as follows:
+You are given a deck of *N* cards, with each card numbered from 1 to *N*. The deck is shuffled and placed face down. The game is played by drawing cards from the top of the deck and placing them face up in piles. A card can be placed on top of any card with a higher face value. The goal of the game is to turn each card in the deck while making as few piles as possible.
+
+
+
+1,2,3,4,5
+(0,1), (1,2), (2,3), (3,4), (4,5)
+
+Order: a < b if (ai < bi and ai > bi)
+
+As an unordered set, elements are now only comparable if their indices increase
+
+<CH.Scrollycoding>
+
+## This says something else!
+
+Some description text here!
+
+```cpp patience.h
+
+template<class InputIterator, class Comparator, class BiPred>
+auto patience_sort (InputIterator begin, InputIterator end, Comparator pre, BiPred predicate)
+{
+    using ItemType = typename std::iterator_traits<InputIterator>::value_type;
+
+    if constexpr(not std::is_same_v<Comparator, std::nullptr_t>)
+        std::sort(begin, end, pre);
+
+    struct node
+    {
+        ItemType item;
+        node* next;
+        node() = default;
+        node(ItemType t, node* p) : item(t), next(p) {}
+    };
+
+    auto node_predicate = [&predicate] (node* a, node* b)
+    {
+        return predicate(a->item, b->item);
+    };
+
+    const auto size = std::distance(begin, end);
+    node* nodes = new node[size];
+
+    std::vector<node*> piles;
+
+    for (; begin != end; ++begin)
+    {
+        node* wrapped = new (nodes++) node(*begin, nullptr);
+        if (piles.empty())
+        {
+            piles.push_back(wrapped);
+            continue;
+        }
+
+        auto lb = std::lower_bound(piles.begin(), piles.end(), wrapped, node_predicate);
+
+        if (lb == piles.begin()) // new first pile
+        {
+            *lb = wrapped;
+        }
+        else if (lb == piles.end())
+        {
+            wrapped->next = piles.back();
+            piles.push_back(wrapped);
+        }
+        else
+        {
+            wrapped->next = *(lb-1);
+            *lb = wrapped;
+        }
+    }
+
+    std::vector<ItemType> seq;
+    node* cur = piles.back();
+
+    while (cur != nullptr)
+    {
+        seq.push_back(cur->item);
+        cur = cur->next;
+    }
+
+    std::reverse(seq.begin(), seq.end());
+    return seq;
+}
+
+template <class II>
+auto patience_sort(II begin, II end)
+{
+    using T = typename std::iterator_traits<II>::value_type;
+    return patience_sort(begin, end, nullptr, std::less<T>());
+}
+```
+---
+## And something else here.
+
+```cpp main.cpp
+
+int main()
+{
+} 
+```
+---
+## Finally, some more text.
+
+```cpp main.cpp
+
+int main()
+{
+}
+```
+
+</CH.Scrollycoding>
+
+
 
 ### Motivation
 Early last year while solving problems on Kattis, I came across a deceptively tricky [problem](https://open.kattis.com/problems/poklon).
 If one were to judge the quality of a problem by the metric of "difficulty to understand" versus "difficulty to solve", this problem would be among the best I've seen.
-The problem, named simply *Poklon* (Croation for "gift"), comes from the *Croatian Open Competition in Informatics 2007/2008, contest #4*.
+The problem, named simply *Poklon* (Croation for "gift"), comes from the *Croatian Open Competition in Informatics 2007/2008, contest #4*, and poses the following question:
+>Given a set of intervals, what is the longest sequence of nested intervals.
 The tricky part of Poklon is observing that it can be reduced to a simpler problem, the longest increasing subsequence problem.
 Since solving this problem, finding programming problems that belong to the same family of problems is one of my favourite things.
+
 ### Introduction
 I love a good puzzle. When I started programming, it was natural for me to gravitate toward programming puzzles.
 I find solving competitive programming problems to be a fun way to apply the theoretical knowledge
@@ -67,3 +264,43 @@ int add (int x, int y) {
 
 Answer They're all reducible to finding the maximum length chain in a partially ordered set!
 
+<CH.Scrollycoding>
+
+## This says something else!
+
+Some description text here!
+```cpp main.cpp
+
+int main()
+{
+  return 0;
+}
+```
+---
+## And something else here.
+
+```cpp main.cpp
+
+int main()
+{
+  int x = 10;
+  return 0;
+} 
+```
+---
+## Finally, some more text.
+
+```cpp main.cpp
+
+int main()
+{
+  int x = 10;
+
+  Zucchini squirts 🤟 zguirts 
+  Bison sburts 
+
+  return 0;
+}
+```
+
+</CH.Scrollycoding>
