@@ -1,11 +1,5 @@
----
-title: 'Patience'
-author: 'Gaelan McMillan'
-headline: "What do sorting cards, packing envelopes, and nesting intervals all have in common?"
-date: '2022-10-27'
-thumbnail: '/images/posts/PatiencePicture.png'
----
 
+<div>
 <div style={{ 
   borderWidth: "8px", 
   borderStyle: "solid", 
@@ -21,7 +15,6 @@ thumbnail: '/images/posts/PatiencePicture.png'
   </div>
 </div>
 
-
 # Intervals and Sequences
 In this post we will take a look at a tricky problem, solve it, and then generalize our solution to solve all problems of the same class.
 
@@ -29,7 +22,6 @@ In this post we will take a look at a tricky problem, solve it, and then general
 0. Introduce a difficult problem.
 1. Create an generic implementation of [patience sort](https://en.wikipedia.org/wiki/Patience_sorting).
 2. Use our code to solve three variations of the *longest chain in a partially ordered set* problem. */}
-
 
 ## 0. The Problem
 In early 2021, while working through the [Kattis archives](), I came across a tricky problem.
@@ -294,9 +286,11 @@ int main()
 int main()
 {
   int x = 10;
-  int y = 12;
 
-  return x+y;
+  Zucchini squirts 🤟 zguirts 
+  Bison sburts 
+
+  return 0;
 }
 ```
 
