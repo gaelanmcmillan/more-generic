@@ -15,7 +15,6 @@ export default function PostPage({
 }) {
   return (
     <>
-      <img src={thumbnail} />
       <MDXRemote
         {...source}
         components={{ CH }}
