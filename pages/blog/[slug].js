@@ -1,8 +1,12 @@
-import { serialize } from "next-mdx-remote/serialize"
-import { MDXRemote } from "next-mdx-remote"
-import { remarkCodeHike } from "@code-hike/mdx"
+import { serialize } from "next-mdx-remote/serialize";
+import { MDXRemote } from "next-mdx-remote";
+import { remarkCodeHike } from "@code-hike/mdx";
+import remarkMath from 'remark-math';
+import rehypeKatex from "rehype-katex";
 import { CH } from "@code-hike/mdx/components";
-import theme from "shiki/themes/solarized-dark.json"
+import theme from "shiki/themes/solarized-dark.json";
+
+import { Row, Col } from "react-bootstrap";
 
 import fs from "fs"
 import path from "path";
@@ -15,10 +19,16 @@ export default function PostPage({
 }) {
   return (
     <>
-      <MDXRemote
-        {...source}
-        components={{ CH }}
-      />
+    <Row>
+      <Col lg={3} md={2} sm={1} xs={0} />
+      <Col lg={6} md={8} sm={10} xs={12} >
+        <MDXRemote
+          {...source}
+          components={{ CH }}
+          />
+      </Col>
+      <Col lg={3} md={2} sm={1} xs={0} />
+    </Row>
     </>
   );
 }
@@ -45,7 +55,11 @@ export async function getStaticProps({ params: { slug } }) {
   let source = await serialize(content, {
     mdxOptions: {
       remarkPlugins: [
-        [remarkCodeHike, { autoImport: false, theme }]
+        [remarkCodeHike, { autoImport: false, theme }],
+        remarkMath
+      ],
+      rehypePlugins: [
+        rehypeKatex
       ],
       useDynamicImport: true,
     }

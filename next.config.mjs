@@ -3,13 +3,18 @@
 import nextMDX from '@next/mdx'
 import theme from "shiki/themes/solarized-dark.json" assert { type: "json" };
 import { remarkCodeHike } from '@code-hike/mdx';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 const withMDX = nextMDX({
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: [
       [remarkCodeHike, {theme}],
-    ]
+    ],
+    rehypePlugins: [
+      [rehypeKatex]
+    ],
   }
 })
 
