@@ -6,7 +6,6 @@ export default function PostCard({ post }) {
     <Link href={'/blog/' + post.slug}>
       <div className="postcard clickable">
         <div className="postcard__img">
-          {/* <img src={post.frontmatter.thumbnail} /> */}
           <PngMask
             mask={"url("+post.frontmatter.thumbnail+")"}
           >
