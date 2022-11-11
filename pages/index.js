@@ -1,10 +1,9 @@
-import { Row, Col } from "react-bootstrap";
+import BowlingAlley from "../components/BowlingAlley";
 
-const tagline = "Striving to be more generic."
 export default function Home({ posts }) {
   return (
-    <>
+    <BowlingAlley>
       <h2>Welcome</h2>
-    </>
+    </BowlingAlley>
   );
 }

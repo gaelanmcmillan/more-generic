@@ -1,13 +1,10 @@
 import MaskedImage from "../components/MaskedImage";
+import BowlingAlley from "../components/BowlingAlley";
 
 export default function AboutPage() {
   return (
-    <>
-      <MaskedImage
-        imageUrl={"url(" + "/images/posts/QueriesPicture.png" + ")"}
-        width="300px"
-        height="300px"
-      />
-    </>
+    <BowlingAlley>
+      <h2>About Me</h2>
+    </BowlingAlley>
   );
 }

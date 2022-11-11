@@ -8,6 +8,10 @@ import theme from "shiki/themes/solarized-dark.json";
 
 import { Row, Col } from "react-bootstrap";
 
+import ToolTip from "../../components/ToolTip";
+import MaskedImage from "../../components/MaskedImage";
+import BlogPostCard from "../../components/BlogPostCard";
+import BowlingAlley from "../../components/BowlingAlley";
 import fs from "fs"
 import path from "path";
 import matter from "gray-matter";
@@ -18,20 +22,20 @@ export default function PostPage({
   source,
 }) {
   return (
-    <>
-    <Row>
-      <Col lg={2} md={0} sm={0} xs={0} />
-      <Col lg={4} md={6} sm={10} xs={12} >
+    <BowlingAlley>
+      <MaskedImage
+          src={thumbnail}
+          width="400px"
+          height="400px"
+          foreground="var(--colorbox-foreground)"
+          background="transparent"
+      />
         <MDXRemote
           {...source}
-          components={{ CH }}
+          components={{ CH, ToolTip, MaskedImage }}
           />
-      </Col>
-      <Col lg={6} md={6} sm={0} xs={0}>
         <div style={{display:"flex",backgroundColor:"black"}}/>
-      </Col>
-    </Row>
-    </>
+    </BowlingAlley>
   );
 }
 

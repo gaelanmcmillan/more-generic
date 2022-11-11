@@ -1,12 +1,23 @@
+/* import bootstrap to set changes */
+@import "../node_modules/bootstrap/scss/bootstrap";
+@import "@code-hike/mdx/dist/index.css";
+
+$light-bg: #fdf6e3;
+$light-fg: #586e75;
+$dark-bg: #002b36;
+$dark-fg: #93a1a1;
+
+$blue: #268bd2;
+$cyan: #2aa198;
+
+$radius: 0.5rem;
+
 html, body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif";
   background-color: #fdf6e3;
 }
-
-$linkBlue: "#268bd2";
 
 .nav-row {
   background-color: #4c4a44;
@@ -15,14 +26,16 @@ $linkBlue: "#268bd2";
 }
 
 .foot-row {
-  width: 100vw;
   position: absolute;
+  padding: 1rem;
   bottom: 0;
+  margin-bottom: 0rem;
+  width: 100vw;
 }
 
 .container-fluid {
   background-color: #fdf6e3;
-  min-height: 100vh;
+  min-height: calc(100vh - 40px);
 }
 
 a {
@@ -59,4 +72,8 @@ a {
 
 .tooltip-bg-color {
   background-color: #fdf6e3 /* #faf7f0; */
+}
+
+.classic-border {
+  border: 5px solid $light-fg;
 }
