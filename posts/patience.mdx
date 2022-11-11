@@ -1,7 +1,7 @@
 ---
 title: 'Patience'
 author: 'Gaelan McMillan'
-headline: "What do sorting cards, packing envelopes, and nesting intervals all have in common?"
+excerpt: "What do sorting cards, packing envelopes, and nesting intervals all have in common?"
 date: '2022-10-27'
 thumbnail: 'images/posts/PatiencePicture.png'
 ---
@@ -22,7 +22,7 @@ thumbnail: 'images/posts/PatiencePicture.png'
   </div>
 </div>
 
-
+<div style={{textAlign:"justify"}}>
 # Intervals and Sequences
 In this post we will take a look at a tricky problem, solve it, and then generalize our solution to solve all problems of the same class.
 
@@ -31,12 +31,18 @@ In this post we will take a look at a tricky problem, solve it, and then general
 1. Create an generic implementation of [patience sort](https://en.wikipedia.org/wiki/Patience_sorting).
 2. Use our code to solve three variations of the *longest chain in a partially ordered set* problem. */}
 
+0. What is patience sort
+1. Implementation on integers
+2. What problems can patience sort solve
+    1. Broadly, longest totally ordered subsequence
+3. What problems can patience sort NOT solve
+4. 
 
 ## 0. The Problem
 In early 2021, while working through the [Kattis archives](), I came across a tricky problem.
-The problem, named simply *Poklon* (Croatian for *gift*), tells a brief, nonsensical story about a boy named Mirko who just received a set of intervals for his Birthday. An interval is a pair of numbers *\{start, end\}* with *start \<= end*.
+The problem, named simply *Poklon* (Croatian for *gift*), tells a brief, nonsensical story about a boy named Mirko who just received a set of intervals for his Birthday. An interval is a pair of numbers $$\{start, end\}$$ with $$start \le end$$.
 
-One of the things Mirko likes to do with his intervals is "nest" them. An interval $$b$$ can nest inside another interval $$a$$ if $$b$$'s start point is greater than or equal to that of $$a$$, and $$b$$'s end point is less than or equal to that of $$a$$. If these conditions are met, we say $$a$$ contains $$b$$, or $$b$$ nests in $$a$$.
+One of the things Mirko likes to do with his intervals is "nest" them. An interval $$b$$ can nest inside another interval $$a$$ if $$start_b$$ is greater than or equal $$start_a$$ and $$end_b$$ is less than or equal to $$end_a$$. If these conditions are met, we say $$a$$ contains $$b$$, or $$b$$ nests in $$a$$.
 
 The problem then sets the following task: given a set of $$N$$ intervals, find any maximal length sequence of nested intervals, and list each interval.
 
@@ -254,6 +260,7 @@ int add (int x, int y) {
 + [Poklon](https://open.kattis.com/problems/poklon)
 + [Russian Doll Envelopes](https://leetcode.com/problems/russian-doll-envelopes/)
 + [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
++ [NDS - Increasing Numbers](https://www.spoj.com/problems/NDS/)
 
 # Patience
 
@@ -302,3 +309,4 @@ int main()
 ```
 
 </CH.Scrollycoding>
+</div>

@@ -3,7 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 
 import Head from "next/head";
-import PostCard from "../components/PostCard";
+import BlogPostCard from "../components/BlogPostCard";
 
 import { Row, Col } from "react-bootstrap";
 
@@ -19,17 +19,20 @@ export default function Blog ({ posts }) {
       </Head>
 
       <Row>
-        <Col>
-          <p className={""}>{tagline}</p>
-        </Col>
-      </Row>
-
-      <Row>
-        <Col xs={12} sm={12} md={8} lg={6}>
+        <Col lg={2} md={1} sm={0} xs={0} />
+        <Col lg={8} md={10} sm={12} xs={12}>
           {posts.map((post, index) => (
-            <PostCard key={index} post={post} />
-          ))}
+            <BlogPostCard key={index}
+              slug={post.slug}
+              title={post.frontmatter.title}
+              excerpt={post.frontmatter.excerpt}
+              date={post.frontmatter.date}
+              author={post.frontmatter.author}
+              thumbnail={post.frontmatter.thumbnail}
+             />
+            ))}
         </Col>
+        <Col lg={2} md={1} sm={0} xs={0} />
       </Row>
     </>
   );

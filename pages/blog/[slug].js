@@ -20,14 +20,16 @@ export default function PostPage({
   return (
     <>
     <Row>
-      <Col lg={3} md={2} sm={1} xs={0} />
-      <Col lg={6} md={8} sm={10} xs={12} >
+      <Col lg={2} md={0} sm={0} xs={0} />
+      <Col lg={4} md={6} sm={10} xs={12} >
         <MDXRemote
           {...source}
           components={{ CH }}
           />
       </Col>
-      <Col lg={3} md={2} sm={1} xs={0} />
+      <Col lg={6} md={6} sm={0} xs={0}>
+        <div style={{display:"flex",backgroundColor:"black"}}/>
+      </Col>
     </Row>
     </>
   );

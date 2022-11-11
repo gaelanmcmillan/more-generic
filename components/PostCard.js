@@ -9,9 +9,7 @@ export default function PostCard({ post }) {
           <PngMask
             mask={"url("+post.frontmatter.thumbnail+")"}
           >
-          {/* <div className="mask"> */}
             <div className="img-color-box"/>
-          {/* </div> */}
           </PngMask>
         </div>
         <div className="postcard__contents">
