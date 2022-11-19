@@ -2,14 +2,13 @@ import styled from "styled-components";
 import MaskedImage from "./MaskedImage";
 
 const hoverTime = 0.8;
-const hoverBlue = "#268bd2";
 
 const HoverThumbnail = styled.div`
   transition: ${hoverTime}s ease all;
   width: 100%;
   height: 100%;
   opacity: 0%;
-  background-color: ${hoverBlue};
+  background-color: var(--link-blue);
   z-index: 2;
   position: absolute;
   display: inline-block;
@@ -41,8 +40,8 @@ const Wrapper = styled.div`
     }
 
     * {
-      color: ${hoverBlue};
-      border-color: ${hoverBlue};
+      color: var(--link-blue);
+      border-color: var(--link-blue);
     }
   }
 `

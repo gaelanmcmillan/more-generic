@@ -9,8 +9,6 @@ const TextWrapper = styled.div`
   width: fit-content;     
   height: auto;
 
-  
-
   text-decoration: dotted underline; // This could be parametrized.
   
   // Fade in the tooltip hint.

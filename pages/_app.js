@@ -1,6 +1,6 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-
+import Transition from '../components/Transition';
 import '../styles/globals.scss'
 
 import Container from 'react-bootstrap/Container';
@@ -16,10 +16,15 @@ function MyApp({ Component, pageProps }) {
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;900&family=Open+Sans:wght@300&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;900&family=Open+Sans:wght@300&family=Source+Sans+Pro&&display=swap" rel="stylesheet" />
+
     <Container fluid className='light-mode'>
       <Header />
-      <Component {...pageProps} />
+      <Transition>
+        <div id="content">
+          <Component {...pageProps} />
+        </div>
+      </Transition>
       <Footer />
     </Container>
   </>);

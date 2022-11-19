@@ -7,9 +7,11 @@ export default function Footer () {
     return (
       <BowlingAlley className="nav-row foot-row soft-shadow">
         <footer>
-          <Link href="https://github.com/gaelanmcmillan">
-            <NavTitle><h4>by Gaelan McMillan</h4></NavTitle>
-          </Link>
+          <div style={{display: "flex"}}>
+            <div style={{margin: "auto", fontFamily: "Inconsolata"}}>
+              <p>© 2022 Gaelan McMillan</p>
+            </div>
+          </div>
         </footer>
       </BowlingAlley>
 

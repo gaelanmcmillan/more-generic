@@ -1,9 +1,8 @@
 import BowlingAlley from "../components/BowlingAlley";
 
-export default function Home({ posts }) {
+export default function Home() {
   return (
-    <BowlingAlley>
-      <h2>Welcome</h2>
+    <BowlingAlley lg={10} md={10} sm={10} xs={10}>
     </BowlingAlley>
   );
 }

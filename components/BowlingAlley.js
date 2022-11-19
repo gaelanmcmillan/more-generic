@@ -1,14 +1,19 @@
 import styled from "styled-components";
 import { Row, Col } from "react-bootstrap";
 
-const BowlingAlley = ({className, children}) => {
+const BowlingAlley = ({lg, md, sm, xs, className, children}) => {
+  const lgW = lg ? lg : 6;
+  const mdW = md ? md : 8;
+  const smW = sm ? sm : 10;
+  const xsW = xs ? xs : 12;
+  const gutterWidth = w => (12 - w) / 2; 
   return (
     <Row className={className}>
-      <Col lg={3} md={2} sm={1} xs={0} /> {/* the gutters */}
-      <Col lg={6} md={8} sm={10} xs={12}> {/* the lane */}
+      <Col lg={gutterWidth(lgW)} md={gutterWidth(mdW)} sm={gutterWidth(smW)} xs={gutterWidth(xsW)} /> {/* the gutters */}
+      <Col lg={lgW} md={mdW} sm={smW} xs={xsW}> {/* the lane */}
         {children}
       </Col>
-      <Col lg={3} md={2} sm={1} xs={0} /> {/* the gutters */}
+      <Col lg={gutterWidth(lgW)} md={gutterWidth(mdW)} sm={gutterWidth(smW)} xs={gutterWidth(xsW)} /> {/* the gutters */}
     </Row>
   )
 }

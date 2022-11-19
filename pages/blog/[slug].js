@@ -6,11 +6,8 @@ import rehypeKatex from "rehype-katex";
 import { CH } from "@code-hike/mdx/components";
 import theme from "shiki/themes/solarized-dark.json";
 
-import { Row, Col } from "react-bootstrap";
-
 import ToolTip from "../../components/ToolTip";
 import MaskedImage from "../../components/MaskedImage";
-import BlogPostCard from "../../components/BlogPostCard";
 import BowlingAlley from "../../components/BowlingAlley";
 import fs from "fs"
 import path from "path";
@@ -23,18 +20,31 @@ export default function PostPage({
 }) {
   return (
     <BowlingAlley>
-      <MaskedImage
-          src={thumbnail}
-          width="400px"
-          height="400px"
-          foreground="var(--colorbox-foreground)"
-          background="transparent"
+      <div className="soft-shadow soft-radius-outer"
+      style={{
+        padding: "1rem",
+        display: "flex",
+        margin: "1rem auto",
+        width: "fit-content"}}>
+      <div 
+      className="soft-radius soft-border"
+      style={{
+        display: "flex",
+        margin: "auto auto",
+        width: "fit-content"}}>
+        <MaskedImage
+            src={thumbnail}
+            width="400px"
+            height="400px"
+            foreground="var(--colorbox-foreground)"
+            background="transparent"
+            />
+      </div>
+      </div>
+      <MDXRemote
+        {...source}
+        components={{ CH, ToolTip, MaskedImage }}
       />
-        <MDXRemote
-          {...source}
-          components={{ CH, ToolTip, MaskedImage }}
-          />
-        <div style={{display:"flex",backgroundColor:"black"}}/>
     </BowlingAlley>
   );
 }

@@ -27,8 +27,6 @@ export default withMDX({
     loader: "akamai",
     path: "",
   },
-  basePath: "",
-  assetPrefix: ""
 })
 
 // module.exports = nextConfig
