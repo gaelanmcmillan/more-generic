@@ -1,11 +1,11 @@
 import BowlingAlley from "../components/BowlingAlley";
 import styled from "styled-components";
 import Link from "next/link";
+
 const ProfilePicture = styled.div`
   float: left;
   width: 33%;
   max-width: 90vw;
-  height: auto;
   overflow: hidden;
   margin-right: 1rem;
   > img {
