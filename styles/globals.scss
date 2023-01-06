@@ -4,7 +4,8 @@
 
 $light-bg: #fdf6e3;
 $light-fg: #586e75;
-$light-shadow: #aacdda;
+$light-shadow-pale: #71b4ca;
+$light-shadow-rich: #aacdda;
 $dark-bg: #002b36;
 $dark-fg: #93a1a1;
 $dark-brown: #ece2c7;
@@ -40,26 +41,23 @@ html, body {
   transition: 500ms ease all;
 }
 
-$textshadow: $light-shadow;
+$unpressed-textshadow: $light-shadow-pale;
+$pressed-textshadow: $light-shadow-rich;
 
-@mixin extrusion($factor: 0.0125ch) {
-  text-shadow:
-    $factor*1 $factor*1 $textshadow,
-    $factor*2 $factor*2 $textshadow,
-    $factor*3 $factor*3 $textshadow,
-    $factor*4 $factor*4 $textshadow,
-    $factor*5 $factor*5 $textshadow,
-    $factor*6 $factor*6 $textshadow,
-    $factor*7 $factor*7 $textshadow,
-    $factor*8 $factor*8 $textshadow,
-    $factor*9 $factor*9 $textshadow,
-    $factor*10 $factor*10 $textshadow,
-    $factor*11 $factor*11 $textshadow,
-    $factor*12 $factor*12 $textshadow,
-    $factor*13 $factor*13 $textshadow,
-    $factor*14 $factor*14 $textshadow,
-    $factor*15 $factor*15 $textshadow,
-    $factor*16 $factor*16 $textshadow;
+@mixin extrusion($factor: 0.0125ch, $num-iterations, $textshadow, $illuminated) {
+  $shadow-values: ();
+  @for $i from 1 through $num-iterations {
+    $shadow-values: append($shadow-values,
+      $factor * $i $factor * $i $textshadow, comma
+    );
+  };
+  @if $illuminated {
+    $shadow-values: append($shadow-values,
+      0px 0px 20px $textshadow, comma
+    );
+  }
+
+  text-shadow: $shadow-values;
 }
 
 $header-animation-time: 1s;
@@ -67,9 +65,27 @@ $header-animation-time: 1s;
 #greater-nav {
   position: relative;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
   transition: flex-direction $header-animation-time;
   transition-delay: $header-animation-time;
+
+  & div {
+    width: fit-content;
+  }
+
+  & .site-title {
+  }
+
+  & .rest-of-pages {
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+
+    & h1, h2 {
+      margin-left: 2rem;
+    }
+  }
 }
 
 #nav-logo {
@@ -128,15 +144,39 @@ $header-animation-time: 1s;
   }
 }
 
-.extruded {
+.user-select-none {
   user-select: none;
+}
+
+.extruded {
+  $extrusion-amt: 0.0125ch;
+  $extrusion-iterations: 16;
+
+  $push-amt: 0.3;
+  $hover-displacement: $extrusion-amt * $extrusion-iterations * $push-amt;
+  $hover-extrusion-amt: $extrusion-amt * (1.0 - $push-amt);
+
   transition: text-shadow 500ms ease, transform 500ms ease;
   transform: translate(0.0ch, 0.0ch);
-  @include extrusion(0.0125ch);
+  @include extrusion($extrusion-amt, $extrusion-iterations, $pressed-textshadow, false);
+
   &:hover {
-    transform: translate(0.035ch, 0.035ch);
-    @include extrusion(0.008ch);
+    transform: translate($hover-displacement, $hover-displacement);
+    @include extrusion($hover-extrusion-amt, $extrusion-iterations, $pressed-textshadow, false);
   }
+}
+
+.semi-extruded {
+  $extrusion-amt: 0.0125ch;
+  $extrusion-iterations: 16;
+
+  $push-amt: 0.5;
+  $final-extrusion-amt: $extrusion-amt * (1.0 - $push-amt);
+  $translate-amt: $extrusion-amt * $extrusion-iterations * $push-amt;
+
+  transition: text-shadow 500ms ease, transform 500ms ease;
+  transform: translate($translate-amt, $translate-amt);
+  @include extrusion($final-extrusion-amt, $extrusion-iterations, $pressed-textshadow, true);
 }
 
 #content {
@@ -154,24 +194,6 @@ $header-animation-time: 1s;
   // opacity: 1;
   pointer-events: all;
 }
-
-// .home-bg {
-//   position: fixed;
-//   top: 0;
-//   background-color: $dark-brown;
-//   width: 100vw;
-//   height: 100vh;
-
-//   & #home-nav {
-//     opacity: 1;
-//     pointer-events: all;
-//   }
-
-//   & #non-home-nav {
-//     opacity: 0;
-//     pointer-events: none;
-//   }
-// }
 
 .nav-row {
   background-color: $dark-brown;
