@@ -14,14 +14,14 @@ import path from "path";
 import matter from "gray-matter";
 import { AnimationLayout } from "../../components/Transition";
 
-const PostPage = ({
+const SolutionPage = ({
   slug,
-  frontmatter: { title, date, thumbnail },
+  frontmatter: { title, url, author, tags, languages, date },
   source,
 }) => {
   return (
     <AnimationLayout>
-      <BowlingAlley>
+      <BowlingAlley lg={10} md={10} sm={12} xs={12}>
         <div
           className="soft-shadow soft-radius-outer"
           style={{
@@ -30,34 +30,17 @@ const PostPage = ({
             margin: "1rem auto",
             width: "fit-content",
           }}
-        >
-          <div
-            className="soft-radius soft-border"
-            style={{
-              display: "flex",
-              margin: "auto auto",
-              width: "fit-content",
-            }}
-          >
-            <MaskedImage
-              src={thumbnail}
-              width="400px"
-              height="400px"
-              foreground="var(--colorbox-foreground)"
-              background="transparent"
-            />
-          </div>
-        </div>
+        ></div>
         <MDXRemote {...source} components={{ CH, ToolTip, MaskedImage }} />
       </BowlingAlley>
     </AnimationLayout>
   );
 };
 
-export default PostPage;
+export default SolutionPage;
 
 export async function getStaticPaths() {
-  let files = fs.readdirSync(path.join("posts"));
+  let files = fs.readdirSync(path.join("solutions"));
   let paths = files.map((filename) => ({
     params: {
       slug: filename.replace(".mdx", ""),
@@ -71,7 +54,10 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { slug } }) {
-  let rawMarkdown = fs.readFileSync(path.join("posts", slug + ".mdx"), "utf-8");
+  let rawMarkdown = fs.readFileSync(
+    path.join("solutions", slug + ".mdx"),
+    "utf-8"
+  );
 
   let { data: frontmatter, content } = matter(rawMarkdown);
 

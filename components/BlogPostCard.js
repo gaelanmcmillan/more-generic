@@ -96,9 +96,10 @@ const DateAndAuthor = styled.span`
   align-self: start;
 `
 
-const BlogPostCard = ({slug, title, excerpt, thumbnail, date, author}) => {
+
+const BlogPostCard = ({slug, title, excerpt, thumbnail, date, author, prefix='/blog/'}) => {
   return (
-    <a style={{color: "unset", textDecoration: "none"}} href={'/blog/' + slug}>
+    <a style={{color: "unset", textDecoration: "none"}} href={prefix + slug}>
       <Wrapper className="soft-shadow soft-radius" width={"100%"}>
         <ThumbnailWrapper percentageOfWrapperWidth={"20"}>
           <Thumbnail
@@ -130,3 +131,4 @@ const BlogPostCard = ({slug, title, excerpt, thumbnail, date, author}) => {
 
 export default BlogPostCard;
 
+export {hoverTime, HoverThumbnail, Wrapper, Thumbnail, ThumbnailWrapper, InfoWrapper, InfoContent, Title, Excerpt, DateAndAuthor}

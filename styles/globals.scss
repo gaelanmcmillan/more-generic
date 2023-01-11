@@ -4,7 +4,8 @@
 
 $light-bg: #fdf6e3;
 $light-fg: #586e75;
-$light-shadow-pale: #71b4ca;
+$light-fg-pressed: #85a6ae;
+$light-shadow-pale: #c2ced2;
 $light-shadow-rich: #aacdda;
 $dark-bg: #002b36;
 $dark-fg: #93a1a1;
@@ -36,112 +37,25 @@ html, body {
   }
 }
 
-
-.size-transition {
-  transition: 500ms ease all;
-}
-
 $unpressed-textshadow: $light-shadow-pale;
 $pressed-textshadow: $light-shadow-rich;
 
 @mixin extrusion($factor: 0.0125ch, $num-iterations, $textshadow, $illuminated) {
   $shadow-values: ();
+
   @for $i from 1 through $num-iterations {
     $shadow-values: append($shadow-values,
       $factor * $i $factor * $i $textshadow, comma
     );
   };
-  @if $illuminated {
-    $shadow-values: append($shadow-values,
-      0px 0px 20px $textshadow, comma
-    );
-  }
+
+  // @if $illuminated {
+  //   $shadow-values: append($shadow-values,
+  //     0px 0px 20px $textshadow, comma
+  //   );
+  // }
 
   text-shadow: $shadow-values;
-}
-
-$header-animation-time: 1s;
-
-#greater-nav {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  transition: flex-direction $header-animation-time;
-  transition-delay: $header-animation-time;
-
-  & div {
-    width: fit-content;
-  }
-
-  & .site-title {
-  }
-
-  & .rest-of-pages {
-    display: flex;
-    flex-direction: row;
-    width: fit-content;
-
-    & h1, h2 {
-      margin-left: 2rem;
-    }
-  }
-}
-
-#nav-logo {
-  position: relative;
-  width: fit-content;
-  white-space: pre;
-
-  transition: margin-left 1s, transform 1s;
-  transform: translate(-50%, 0);
-  
-  > * .extruded {
-    transition: 1s all;
-  }
-}
-
-.big-logo {
-  margin-left: 35%;
-  > * .extruded  {
-    font-size: 10vw;
-  }
-}
-
-.small-logo {
-  margin-left: 50%;
-  > * .extruded  {
-    font-size: 3.5rem;
-  }
-}
-
-.displaced {
-  margin-left: 55%;
-  > * .extruded {
-    font-size: 6vw;
-  }
-}
-.nondisplaced {
-  margin-left: 50%;
-}
-
-#nav-buttons {
-  width: fit-content;
-  height: auto;
-  transform: translate(-50%, 0);
-
-  > * .extruded {
-    transition: 1s ease all;
-  }
-
-  transition: 1s ease all;
-
-  display: flex; // for the child labels
-  flex-direction: row; // making labels sit beside eachother
-
-  > a + a {
-    margin-left: 4rem;
-  }
 }
 
 .user-select-none {
@@ -152,13 +66,13 @@ $header-animation-time: 1s;
   $extrusion-amt: 0.0125ch;
   $extrusion-iterations: 16;
 
-  $push-amt: 0.3;
+  $push-amt: 0.2;
   $hover-displacement: $extrusion-amt * $extrusion-iterations * $push-amt;
   $hover-extrusion-amt: $extrusion-amt * (1.0 - $push-amt);
 
   transition: text-shadow 500ms ease, transform 500ms ease;
   transform: translate(0.0ch, 0.0ch);
-  @include extrusion($extrusion-amt, $extrusion-iterations, $pressed-textshadow, false);
+  @include extrusion($extrusion-amt, $extrusion-iterations, $unpressed-textshadow, false);
 
   &:hover {
     transform: translate($hover-displacement, $hover-displacement);
@@ -175,6 +89,8 @@ $header-animation-time: 1s;
   $translate-amt: $extrusion-amt * $extrusion-iterations * $push-amt;
 
   transition: text-shadow 500ms ease, transform 500ms ease;
+
+  // color: $light-fg-pressed;
   transform: translate($translate-amt, $translate-amt);
   @include extrusion($final-extrusion-amt, $extrusion-iterations, $pressed-textshadow, true);
 }
@@ -183,27 +99,10 @@ $header-animation-time: 1s;
   min-height: calc(100vh - 100px);
 }
 
-#home-nav {
-  transition: 1s ease all;
-  opacity: 0;
-  pointer-events: none;
-}
-
-#non-home-nav {
-  transition: 1s ease all;
-  // opacity: 1;
-  pointer-events: all;
-}
-
 .nav-row {
   background-color: $dark-brown;
   margin-bottom: 1rem;
   height: fit-content;
-}
-
-.nav-text {
-  font-family: "Inconsolata";
-  font-weight: bold;
 }
 
 .foot-row {
@@ -307,11 +206,6 @@ $header-animation-time: 1s;
   flex-flow: row wrap;
   justify-content: space-between;
   gap: 1.5rem;
-
-  // > div + div {
-  //   margin-left: 2rem;
-  //   margin-right: 2rem;
-  // }
 }
 
 .soft-dark-shadow {

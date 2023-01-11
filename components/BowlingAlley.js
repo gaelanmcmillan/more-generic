@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { Row, Col } from "react-bootstrap";
 
 const BowlingAlley = ({lg, md, sm, xs, className, children}) => {

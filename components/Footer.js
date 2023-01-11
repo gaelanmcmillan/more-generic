@@ -1,7 +1,4 @@
-import { Row, Col } from "react-bootstrap"
-import Link from "next/link";
 import BowlingAlley from "./BowlingAlley";
-import NavTitle from "./NavStyles";
 
 export default function Footer () {
     return (
@@ -14,6 +11,5 @@ export default function Footer () {
           </div>
         </footer>
       </BowlingAlley>
-
     );
 }

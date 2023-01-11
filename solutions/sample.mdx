@@ -1,0 +1,106 @@
+---
+title: 'Time to Cross a Bridge (2532)'
+url: 'https://leetcode.com/problems/time-to-cross-a-bridge/'
+author: 'LeetCode'
+tags: ["Simulation", "Priority Queue"] 
+languages: ["cpp"]
+date: '2023-01-10'
+---
+
+# Intuition
+
+# Approach
+
+# Complexity
+$a$
+# Code
+```cpp
+
+class Solution {
+ public:
+  static int findCrossingTime(int n, int k, vector<vector<int>> &time) {
+    const int LEFT_TO_RIGHT = 0, PICK_OLD = 1, RIGHT_TO_LEFT = 2, PUT_NEW = 3;
+    vector<int> efficiency(k);
+    vector<int> time_free(k, INT_MAX);
+
+    for (int i = 0; i < k; ++i) {
+      efficiency[i] = time[i][LEFT_TO_RIGHT] + time[i][RIGHT_TO_LEFT];
+    }
+
+    auto least_efficient = [&efficiency](int a, int b) {
+      if (efficiency[a]==efficiency[b]) { return a < b; }
+      return efficiency[a] < efficiency[b];
+    };
+
+    auto first_free = [&time_free](int a, int b) {
+      return time_free[a] > time_free[b];
+    };
+
+    priority_queue<int, vector<int>, decltype(least_efficient)> left(least_efficient), right(least_efficient);
+    priority_queue<int, vector<int>, decltype(first_free)> done_on_left(first_free), done_on_right(first_free);
+
+    for (int i = 0; i < k; ++i)
+      left.push(i);
+
+    int boxes_left = n;
+    int bridge_busy_until = 0;
+    int last_crossed = 0;
+    int current_time = 0;
+
+    while (boxes_left > 0 || not right.empty() || not done_on_right.empty()) {
+
+      // prefer crossing right to left
+      if (not right.empty()) {
+        int worker = right.top();
+        right.pop();
+
+        bridge_busy_until = current_time + time[worker][RIGHT_TO_LEFT];
+        last_crossed = bridge_busy_until;
+
+        // this worker will be ready to rejoin the left queue
+        time_free[worker] = last_crossed + time[worker][PUT_NEW];
+        done_on_left.push(worker);
+
+        current_time = bridge_busy_until;
+      } else if (not left.empty() && boxes_left > 0) {
+
+        int worker = left.top();
+        left.pop();
+
+        // this worker "claims" a box
+        boxes_left -= 1;
+
+        bridge_busy_until = current_time + time[worker][LEFT_TO_RIGHT];
+
+        // this worker will be ready to rejoin the right queue
+        time_free[worker] = bridge_busy_until + time[worker][PICK_OLD];
+        done_on_right.push(worker);
+
+        current_time = bridge_busy_until;
+      } else {
+        current_time = min(
+                               done_on_right.empty() ? INT_MAX : time_free[done_on_right.top()],
+                               done_on_left.empty() ? INT_MAX : time_free[done_on_left.top()]
+                           );
+      }
+
+      // let any workers who are done rejoin the respective queues
+      while (not done_on_right.empty() && time_free[done_on_right.top()] <= current_time) {
+        int worker = done_on_right.top();
+        done_on_right.pop();
+
+        right.push(worker);
+      }
+
+      while (not done_on_left.empty() && time_free[done_on_left.top()] <= current_time) {
+        int worker = done_on_left.top();
+        done_on_left.pop();
+
+        left.push(worker);
+      }
+    }
+
+    return last_crossed;
+  }
+};
+```

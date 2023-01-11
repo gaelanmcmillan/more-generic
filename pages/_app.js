@@ -1,11 +1,11 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import Transition from '../components/Transition';
+import {TopLevelAnimationWrapper} from '../components/Transition';
 import '../styles/globals.scss'
 
 import Container from 'react-bootstrap/Container';
 
-function MyApp({ Component, pageProps }) {
+const MyApp = ({ Component, pageProps }) => {
   return (
   <>
     <link
@@ -20,11 +20,11 @@ function MyApp({ Component, pageProps }) {
 
     <Container fluid className='light-mode'>
       <Header />
-      <Transition>
+      <TopLevelAnimationWrapper>
         <div id="content">
           <Component {...pageProps} />
         </div>
-      </Transition>
+      </TopLevelAnimationWrapper>
       <Footer />
     </Container>
   </>);

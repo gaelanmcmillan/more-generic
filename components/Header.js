@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
 import BowlingAlley from "./BowlingAlley";
+import { navbar,  } from "../styles/Header.module.scss";
 
 const pages = [
   {href: "/blog", title: "Blog"},
@@ -24,17 +25,16 @@ const NavButton = ({title, route, asPath}) => {
 
 const Header = () => {
   const { asPath } = useRouter();
-  const isHome = asPath === '/';
 
   return (
     <header>
       <BowlingAlley 
         className={`size-transition nav-row soft-shadow`}>
-          <nav id="greater-nav">
-            <div className="site-title">
+          <nav className={navbar}>
+            <div>
               <NavButton title="More Generic" route="/" asPath={asPath}/>
             </div>
-            <div className="rest-of-pages">
+            <div>
               {pages.map(({href, title}, i) => {
                 return (
                   <NavButton key={i} title={title} route={href} asPath={asPath}/>

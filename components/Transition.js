@@ -8,14 +8,16 @@ const variants = {
   enter: {
     opacity: 0,
     transition: {
-      duration: transitionTime
+      duration: transitionTime,
+      when: "beforeChildren",
     }
   },
 
   exit: {
     opacity: 0,
     transition: {
-      duration: transitionTime
+      duration: transitionTime,
+      when: "afterChildren",
     }
   },
 
@@ -25,19 +27,23 @@ const variants = {
     transition: {
       duration: transitionTime,
       delay: transitionDelay,
+      when: "beforeChildren",
     }
   }
 }
 
-const Transition = ({children}) => {
+/**
+ * Use this component as the wrapper for a React component
+ * to have a smooth transition when the element is removed and added
+ * to the React tree.
+ * 
+ * @param {children} The child elements to add animation to.
+ */
+const AnimationLayout = ({children}) => {
   const { asPath } = useRouter();
   return (
-      <AnimatePresence
-        initial={false}
-        mode="wait"
-      >
         <motion.div
-          key={asPath}
+          key="modal"
           variants={variants}
           animate="normal"
           initial="enter"
@@ -45,8 +51,20 @@ const Transition = ({children}) => {
         >
           {children}
         </motion.div>
+  )
+}
+
+/**
+ * Use this as a wrapper in _app.js to allow components to animate
+ */
+const TopLevelAnimationWrapper = ({children}) => {
+  return (
+      <AnimatePresence
+        mode="wait"
+      >
+        {children}
       </AnimatePresence>
   );
 }
 
-export default Transition;
+export {TopLevelAnimationWrapper, AnimationLayout};
