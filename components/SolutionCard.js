@@ -54,19 +54,19 @@ const SolutionsCard = ({slug, title, url, tags, languages, date, prefix='/soluti
               }}>
               <a style={{color: "unset", textDecoration: "none"}} href={prefix + slug}>
                 <Title>{title}</Title>
+                <HorizontalSplit>
+                  <HorizontalSplit>
+                    {tags.map((word, i) => {
+                      return <TagBubble key={i} tag={word} />
+                    })}
+                  </HorizontalSplit>
+                  <HorizontalSplit>
+                    {languages.map((lang, i) => {
+                      return <TagBubble key={i} tag={lang} />
+                    })}
+                  </HorizontalSplit>
+                </HorizontalSplit>
               </a>
-              <HorizontalSplit>
-                <HorizontalSplit>
-                  {tags.map((word, i) => {
-                    return <TagBubble key={i} tag={word} />
-                })}
-                </HorizontalSplit>
-                <HorizontalSplit>
-                  {languages.map((lang, i) => {
-                    return <TagBubble key={i} tag={lang} />
-                  })}
-                </HorizontalSplit>
-              </HorizontalSplit>
             </InfoContent>
             <InfoContent style={{
               width: "25%", 
