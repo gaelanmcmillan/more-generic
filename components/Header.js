@@ -6,10 +6,15 @@ import { navbar,  } from "../styles/Header.module.scss";
 const pages = [
   {href: "/blog", title: "Blog"},
   {href: "/solutions", title: "Solutions"},
+  {href: "/projects", title: "Projects"}
 ]
 
 const NavButton = ({title, route, asPath}) => {
-  const extrusionClass = asPath == route ? "semi-extruded" : "extruded";
+  const extrusionClass = (() => {
+    if (route=="/") return asPath == "/" ? "semi-extruded" : "extruded"; 
+    else return asPath.search(route) != -1 ? "semi-extruded" : "extruded";
+  })();
+
   const classes = ["user-select-none", extrusionClass];
   const classString = classes.join(" ");
   return (
@@ -22,6 +27,12 @@ const NavButton = ({title, route, asPath}) => {
     </div>
   );
 }
+
+const RouteDisplay = (props) => {
+  return (
+    <></>
+  );
+};
 
 const Header = () => {
   const { asPath } = useRouter();

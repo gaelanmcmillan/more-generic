@@ -88,9 +88,9 @@ $pressed-textshadow: $light-shadow-rich;
   $final-extrusion-amt: $extrusion-amt * (1.0 - $push-amt);
   $translate-amt: $extrusion-amt * $extrusion-iterations * $push-amt;
 
-  transition: text-shadow 500ms ease, transform 500ms ease;
+  transition: color 500ms ease, text-shadow 500ms ease, transform 500ms ease;
 
-  // color: $light-fg-pressed;
+  color: $light-fg-pressed;
   transform: translate($translate-amt, $translate-amt);
   @include extrusion($final-extrusion-amt, $extrusion-iterations, $pressed-textshadow, true);
 }

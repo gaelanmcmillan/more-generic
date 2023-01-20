@@ -16,6 +16,7 @@ const HoverThumbnail = styled.div`
 
 const Wrapper = styled.div`
   font-family: Inconsolata;
+  position: relative;
 
   > h1, h2, h3 {
     font-weight: bold;
@@ -27,6 +28,7 @@ const Wrapper = styled.div`
   
   width: ${props => props.width || "100%"};
   height: auto;
+  // border: 1px solid orange;
 
   transition: ${hoverTime}s ease all;
   * {
@@ -69,13 +71,16 @@ const Thumbnail = styled.div`
 const InfoWrapper = styled.div`
   padding-left: 1rem;
   white-space: normal;
-  width: ${props => props.width};
+  width: inherit;
+  max-width: inherit;
   height: inherit;
   vertical-align: top;
 
   display: flex;
   align-items: center;
   float: left;
+
+  // border: 1px solid green;
 `
 
 const InfoContent = styled.div`
@@ -83,12 +88,15 @@ const InfoContent = styled.div`
   display: flex;
   height: 90%;
   width: 95%;
-`
+  max-width: inherit;
 
-const Title = styled.div`
+  // border: 1px solid red;
 `
 
 const Excerpt = styled.div`
+  display: flex;
+  // overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 const DateAndAuthor = styled.span`
@@ -115,11 +123,12 @@ const BlogPostCard = ({slug, title, excerpt, thumbnail, date, author, prefix='/b
             >
               <HoverThumbnail></HoverThumbnail>
             </MaskedImage>
+
           </Thumbnail>
         </ThumbnailWrapper>
-        <InfoWrapper width={"100%"}>
+        <InfoWrapper width={"inherit"}>
           <InfoContent>
-            <Title><h2>{title}</h2></Title>
+            <h2>{title}</h2>
             <Excerpt>{excerpt}</Excerpt>
             <DateAndAuthor>{author}{' • '}{date}</DateAndAuthor>
           </InfoContent>
@@ -131,4 +140,4 @@ const BlogPostCard = ({slug, title, excerpt, thumbnail, date, author, prefix='/b
 
 export default BlogPostCard;
 
-export {hoverTime, HoverThumbnail, Wrapper, Thumbnail, ThumbnailWrapper, InfoWrapper, InfoContent, Title, Excerpt, DateAndAuthor}
+export {hoverTime, HoverThumbnail, Wrapper, Thumbnail, ThumbnailWrapper, InfoWrapper, InfoContent, Excerpt, DateAndAuthor}

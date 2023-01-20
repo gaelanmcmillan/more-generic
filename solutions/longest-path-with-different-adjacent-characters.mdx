@@ -1,0 +1,124 @@
+---
+title: 'Longest Path With Different Adjacent Characters'
+url: 'https://leetcode.com/problems/longest-path-with-different-adjacent-characters/'
+author: 'LeetCode'
+tags: ["Tree", "Graph", "DFS"] 
+languages: ["cpp"]
+date: '2023-01-12'
+---
+Really rolls of the tongue, doesn't it?
+
+This problem describes a tree containing $n$ nodes, wherein each node has a key ranging from $[0, n-1)$ and a label, represented as a single lowercase character.
+We are tasked with completing the function `int longestPath(vector<int>& parent, string s)`, which takes
+a vector `parent` and a string `s`, where `parent[i]` is the key of the `i`th node's parent, and and `s[i]` is the `i`th node's label.
+`int longestPath(...)` returns the length of the longest path in the tree such that no two adjacent nodes have the same label.
+
+Finding the longest path in a tree is its own subgenre of graph problem.
+As a tree is a *directed, acyclic graphs* (DAG), we don't have to consider cycles when finding our longest path.
+We can leverage this fact to employ a simple *depth first search* (DFS) strategy, wherein we recursively calculate
+the longest path from each subtree root in the tree. The longest path in the tree can be viewed as two (possibly 0-length) branches
+of some subtree. (I think this may be worth illustrating).
+
+First, we can use the data stored in `parent` to build an adjacency list representing the DAG as an *adjacency list* `adj`,
+wherein adj[i] stores the keys of the nodes adjacent to the `i`th node.
+
+```cpp
+const int n = parent.size();
+
+std::vector<std::vector<int>> adj (n);
+
+for (int i = 1; i < n; ++i) {
+    adj[i].push_back(parent[i]);
+    adj[parent[i]].push_back(i);
+}
+```
+
+We can handle the DFS with a recursive helper function. This function will determine the longest path from a given node.
+```cpp
+int longest = 0;
+vector<bool> seen (n, false);
+
+const function<int(int)> longestPathFrom = [&] (int node) {
+  seen[node] = true;
+
+  // we either treat this node as the root and take the best of its two children,
+  // or take this node as a child and take its best path
+  int rank_1 = 0, rank_2 = 0;
+
+  for (int neighbour : adj[node]) {
+    // as we're searching from the root downward,
+    // we skip nodes who have already been searched from
+    if (seen[neighbour]) continue;
+
+    int len = longestPathFrom(neighbour);
+
+    // if this neighbour shares the label of the node we're searching from,
+    // we cannot consider its path length when calculating the longest path.
+    if (s[neighbour] == s[node]) continue;
+
+    // now we simply keep track of the two longest paths and continue
+    if (len > rank_1) {
+        rank_2 = rank_1;
+        rank_1 = len;
+    } else if (len > rank_2) {
+        rank_2 = len;
+    }
+  }
+
+  // the length of the longest path will be the sum
+  // of two branches of some subtree of our tree
+  longest = max(longest, 1 + rank_1 + rank_2);
+
+  // pass the longest branch from this tree back up to the caller
+  return 1 + rank_1;
+};
+```
+
+Now that our recursive function is defined, we simply DFS from the root node and return our result.
+
+```cpp
+class Solution {
+public:
+  int longestPath(vector<int>& parent, string s) {
+    const int n = parent.size();
+    vector<vector<int>> adj (n);
+    for (int i = 1; i < n; ++i) {
+        adj[i].push_back(parent[i]);
+        adj[parent[i]].push_back(i);
+    }
+    // vector<int> len (n);
+    int longest = 0;
+    vector<bool> seen (n, false);
+
+    const function<int(int)> longestPathFrom = [&] (int node) {
+      seen[node] = true;
+
+      // we either treat this node as the root and take the best of its two children,
+      // or take this node as a child and take its best path
+      int rank_1 = 0, rank_2 = 0;
+
+      for (int neighbour : adj[node]) {
+        // as we're searching from the root downward,
+        // we skip nodes who have already been searched from
+        if (seen[neighbour]) continue;
+
+        int len = longestPathFrom(neighbour);
+
+        // if this neighbour shares the label of the node we're searching from,
+        // we cannot consider its path length when calculating the longest path.
+        if (s[neighbour] == s[node]) continue;
+
+        // now we simply keep track of the two longest paths and continue
+        if (len > rank_1) {
+            rank_2 = rank_1;
+            rank_1 = len;
+        } else if (len > rank_2) {
+            rank_2 = len;
+        }
+      }
+
+    longestPathFrom(0);
+    return longest;
+  }
+};
+```

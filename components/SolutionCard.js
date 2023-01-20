@@ -33,15 +33,7 @@ const Title = styled.span`
   font-size: 18px;
 `
 
-const tagMap = new Map();
-tagMap.set("Dynamic Programming", "#AAAABB");
-tagMap.set("Greedy", "#DD8888");
-tagMap.set("Longest Increasing Subsequence", "#70AB70");
-tagMap.set("Simulation", "#CDBD99");
-tagMap.set("Priority Queue", "#AA88BA");
 
-tagMap.set("cpp", "#99ABDD");
-tagMap.set("py", "#DCAB88");
 
 const extractSiteName = (url) => {
   const tokens = url.split(/\/+/);
@@ -66,12 +58,12 @@ const SolutionsCard = ({slug, title, url, tags, languages, date, prefix='/soluti
               <HorizontalSplit>
                 <HorizontalSplit>
                   {tags.map((word, i) => {
-                    return <TagBubble key={i} tag={word} color={tagMap.get(word)} />
+                    return <TagBubble key={i} tag={word} />
                 })}
                 </HorizontalSplit>
                 <HorizontalSplit>
                   {languages.map((lang, i) => {
-                    return <TagBubble key={i} tag={lang} color={tagMap.get(lang)} />
+                    return <TagBubble key={i} tag={lang} />
                   })}
                 </HorizontalSplit>
               </HorizontalSplit>
