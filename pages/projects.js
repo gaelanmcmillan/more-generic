@@ -11,6 +11,7 @@ import * as card from "../components/BlogPostCard";
 import MaskedImage from "../components/MaskedImage";
 
 const ProjectPreviewPane = styled.div`
+  font-family: 'Inconsolata';
   visibility: ${props => props.isVisible? 'visible' : 'hidden'};
   position: fixed;
   margin: 0 auto;
@@ -18,9 +19,13 @@ const ProjectPreviewPane = styled.div`
   left: ${props => `${props.left}px`};
   transform: translate(-50%, -50%);
 
-  width: 80%;
-  height: 80%;
 
+  width: 40%;
+  max-height: 80%;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   z-index: 10;
 
   padding: 1rem;
@@ -38,7 +43,18 @@ const FlexCol = styled.div`
   // border: 1px solid red;
 `;
 
-const ProjectCard = ({title, author, excerpt, date, link, thumbnail, tags, languages, body, windowWidth, windowHeight}) => {
+const ProjectCard = ({
+  title, 
+  author, 
+  excerpt, 
+  date, 
+  demoimg, 
+  demolink, 
+  gitlink, 
+  thumbnail, 
+  tags, 
+  languages, 
+  body}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [windowDimensions, setWindowDimensions, getWindowDimensions] = hooks.useWindowDimensions();
 
@@ -83,8 +99,20 @@ const ProjectCard = ({title, author, excerpt, date, link, thumbnail, tags, langu
         left={windowDimensions.width / 2}
         top={windowDimensions.height / 2}
         isVisible={isOpen}>
-        <h1>{title}</h1>
-        <p>{body}</p>
+          {/* <div style={{display: "flex", textAlign: "center"}}> */}
+          <div style={{textAlign: "center"}}>
+            <h1>{title}</h1>
+            <p>Topics: {tags.map((tag,i) => <TagBubble key={i} tag={tag}/>)}</p>
+            <p>Langauges: {languages.map((lang,i) => <TagBubble key={i} tag={lang}/>)}</p>
+            {demolink !== undefined ? <a href={demolink}><h3>Demo ⧉</h3></a> : <></>}
+            {demoimg !== undefined ? <img src={demoimg} style={{
+              width: "80%",
+              borderRadius: "1rem",
+              marginBottom: "1rem",
+              }} alt="A visual sample of the project."></img> : <></>}
+            <p>{body}</p>
+            {gitlink !== undefined ? <a href={gitlink}><h3>GitHub ⧉</h3></a> : <></>}
+          </div>
       </ProjectPreviewPane>
 
     </hooks.DivWithOutsideClickCallback>
@@ -105,7 +133,10 @@ const Projects = ({ projects }) => {
           tags={project.frontmatter.tags}
           languages={project.frontmatter.languages}
           body={project.frontmatter.body}
-          link={project.frontmatter.link}
+          demoimg={project.frontmatter.demoimg}
+          demolink={project.frontmatter.demolink}
+          gitlink={project.frontmatter.gitlink}
+          
           />
         ))}
       </BowlingAlley>
