@@ -4,9 +4,9 @@ import BowlingAlley from "./BowlingAlley";
 import { navbar,  } from "../styles/Header.module.scss";
 
 const pages = [
-  {href: "/blog", title: "Blog"},
+  // {href: "/blog", title: "Blog"},
+  {href: "/projects", title: "Projects"},
   {href: "/solutions", title: "Solutions"},
-  {href: "/projects", title: "Projects"}
 ]
 
 const NavButton = ({title, route, asPath}) => {

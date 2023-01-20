@@ -11,6 +11,7 @@ A static blog built with Next.js, React and MDX. Styled with React-Bootstrap and
   - [ ] Switch tabs to see code in different languages
 
 ### Projects
+- [ ] Fix spill-over on project cards (and blog post/solution cards...)
 - [x] Add `/projects` route
 - [x] Repurpose blog card to represent a blog post
 - [x] Get project header information from markdown
@@ -18,7 +19,6 @@ A static blog built with Next.js, React and MDX. Styled with React-Bootstrap and
   - [ ] Boggle solver
   - [ ] Graph music generator
   - [ ] Rust audiovisualizer (embed video)
-  - [ ] 
 - [ ] Expand header card to show more information and provide a link to github
 
 #### Additional Ideas
@@ -28,6 +28,7 @@ A static blog built with Next.js, React and MDX. Styled with React-Bootstrap and
 - [ ] Favicon
 - [ ] Redirect `/about` to index, just for backward compatibility (can be done on google domains, I imagine)
 - [ ] Replace the current site with the new version on GitHub pages
+- [ ] Refactor CSS and remove unnecessary dependencies
 
 
 ### Blog
@@ -40,4 +41,5 @@ A static blog built with Next.js, React and MDX. Styled with React-Bootstrap and
     - [ ] LeetCode and other sites
 - [ ] Add tags to blog posts
 - [ ] Add scrollable headers to blog posts
+
 

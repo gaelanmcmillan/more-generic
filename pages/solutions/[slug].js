@@ -22,15 +22,7 @@ const SolutionPage = ({
   return (
     <AnimationLayout>
       <BowlingAlley lg={10} md={10} sm={12} xs={12}>
-        <div
-          className="soft-shadow soft-radius-outer"
-          style={{
-            padding: "1rem",
-            display: "flex",
-            margin: "1rem auto",
-            width: "fit-content",
-          }}
-        ></div>
+        <h1><a href={url}>{title} ⧉</a></h1>
         <MDXRemote {...source} components={{ CH, ToolTip, MaskedImage }} />
       </BowlingAlley>
     </AnimationLayout>
@@ -64,7 +56,11 @@ export async function getStaticProps({ params: { slug } }) {
   let source = await serialize(content, {
     mdxOptions: {
       remarkPlugins: [
-        [remarkCodeHike, { autoImport: false, theme }],
+        [remarkCodeHike, { 
+          autoImport: false, 
+          theme,
+          lineNumbers: true,
+         }],
         remarkMath,
       ],
       rehypePlugins: [rehypeKatex],

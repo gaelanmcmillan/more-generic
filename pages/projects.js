@@ -24,23 +24,17 @@ const ProjectPreviewPane = styled.div`
   z-index: 10;
 
   padding: 1rem;
-  background: white;
-  border: 3px solid black;
 `
 
 const FlexRow = styled.div`
   display: flex;
   flex-direction: row;
-  max-width: inherit;
-  width: inherit;
   // border: 1px solid black;
 `;
 
 const FlexCol = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: inherit;
-  width: inherit;
   // border: 1px solid red;
 `;
 
@@ -50,7 +44,9 @@ const ProjectCard = ({title, author, excerpt, date, link, thumbnail, tags, langu
 
   return (
     <hooks.DivWithOutsideClickCallback callback={() => { setIsOpen(false); } } >
-      <card.Wrapper className="soft-shadow soft-radius" onClick={() => { setIsOpen(true); setWindowDimensions(getWindowDimensions())} }>
+      <card.Wrapper
+        className="soft-shadow soft-radius" 
+        onClick={() => { setIsOpen(true); setWindowDimensions(getWindowDimensions())} }>
         <card.ThumbnailWrapper percentageOfWrapperWidth={"20"}>
           <card.Thumbnail
             width="90%"
@@ -82,7 +78,11 @@ const ProjectCard = ({title, author, excerpt, date, link, thumbnail, tags, langu
         </card.InfoWrapper>
       </card.Wrapper>
 
-      <ProjectPreviewPane left={windowDimensions.width / 2} top={windowDimensions.height / 2} isVisible={isOpen}>
+      <ProjectPreviewPane 
+        className="soft-radius soft-shadow tooltip-bg-color"
+        left={windowDimensions.width / 2}
+        top={windowDimensions.height / 2}
+        isVisible={isOpen}>
         <h1>{title}</h1>
         <p>{body}</p>
       </ProjectPreviewPane>
@@ -91,9 +91,7 @@ const ProjectCard = ({title, author, excerpt, date, link, thumbnail, tags, langu
   );
 }
 
-
 const Projects = ({ projects }) => {
-  
   return (
     <AnimationLayout>
       <BowlingAlley>
@@ -131,7 +129,7 @@ export async function getStaticProps() {
         slug,
         frontmatter,
       };
-    }).sort((a, b) => (a.frontmatter.date > b.frontmatter.date ? 1 : -1));
+    }).sort((a, b) => (a.frontmatter.date < b.frontmatter.date ? 1 : -1));
 
   for (let project of projects) {
     for (let tag of project.frontmatter.tags) {

@@ -3,6 +3,7 @@
 @import "@code-hike/mdx/dist/index.css";
 
 $light-bg: #fdf6e3;
+$lighter-bg:#fdfaef;
 $light-fg: #586e75;
 $light-fg-pressed: #85a6ae;
 $light-shadow-pale: #c2ced2;
@@ -17,7 +18,7 @@ $cyan: #2aa198;
 $radius: 0.5rem;
 
 :root {
-  --link-blue: #aacdda;
+  --link-blue: #85a6ae; // light-fg-pressed!
 }
 
 html, body {
@@ -224,12 +225,16 @@ $pressed-textshadow: $light-shadow-rich;
   border: 1rem solid $light-fg;
 }
 
+.nav-bg-color {
+  background-color: $dark-brown;
+}
+
 .main-bg-color {
   background-color: $light-bg;
 }
 
 .tooltip-bg-color {
-  background-color: $light-bg;
+  background-color: $lighter-bg;
 }
 
 .classic-border {

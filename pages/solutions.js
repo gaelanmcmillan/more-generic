@@ -5,10 +5,19 @@ import SolutionsCard from "../components/SolutionCard";
 import BowlingAlley from "../components/BowlingAlley";
 import { AnimationLayout } from "../components/Transition";
 
+
+
 const SolutionsPage = ({ posts }) => {
   return (
     <AnimationLayout>
       <BowlingAlley>
+        <div style={{
+          marginBottom: "1rem",
+          width: "100%",
+          textAlign: "center",
+          }}>
+          <i>The posts below are just code at the moment. Editorials are a work in progress!</i>
+        </div>
         {posts.map((sol, index) => (
           <SolutionsCard key={index}
             slug={sol.slug}
@@ -40,7 +49,7 @@ export async function getStaticProps() {
         frontmatter,
       };
     })
-    .sort((a, b) => (a.frontmatter.date > b.frontmatter.date ? 1 : -1));
+    .sort((a, b) => (a.frontmatter.date < b.frontmatter.date ? 1 : -1));
 
   return {
     props: {

@@ -3,99 +3,36 @@ title: 'Time to Cross a Bridge (2532)'
 url: 'https://leetcode.com/problems/time-to-cross-a-bridge/'
 author: 'LeetCode'
 tags: ["Simulation", "Priority Queue"] 
-languages: ["cpp"]
+languages: ["C++"]
 date: '2023-01-10'
 ---
 
-This problem, which featured as the *Hard* in [Weekly 327](https://leetcode.com/contest/weekly-contest-327/),
+This problem, which featured as the *Hard* in [LeetCode Weekly 327](https://leetcode.com/contest/weekly-contest-327/),
 describes a situation in which some number of workers need to transfer boxes from one warehouse across a bridge to another.
 We are required to implement a function that returns the time it takes to transfer all boxes from the old warehouse across the bridge
 to the new warehouse.
 
-The crux of the problem is this:
+This is a classic simulation exercise. The crux of the problem is this:
   1. Read the rules
   2. Read the rules again, carefully
   3. Efficiently simulate the situation
 
-Each worker takes a predetermined amount of time to perform a given action. The times for each worker
-are given to us as a 2D vector `time`, where
-+ `time[i][0]` time to cross left to right
-+ `time[i][1]` time to pick up an old box
-+ `time[i][2]` time to cross right to left
-+ `time[i][3]` time to put down the box
-
-Let's declare some integer constants to make it a little more clear what we're accessing when we read from `time`.
-```cpp
-const int LEFT_TO_RIGHT = 0, // time[i][LEFT_TO_RIGHT] -> the time worker i takes to cross the bridge from left to right...
-          PICK_UP_BOX   = 1,
-          RIGHT_TO_LEFT = 2,
-          PUT_DOWN_BOX  = 3; 
-```
-*Time To Cross A Bridge* is ultimately a simulation problem. Given the predetermined times for each worker, simulate transferring
-the boxes across the bridge and return **the time at which the last box crossed the bridge**. The simulation has some specific rules.
-  1. Only one worker can cross the bridge at a time.
-  2. Works can pick up and put down boxes simultaneously.
-  3. If workers are waiting on either side of the bridge, *workers on the right side cross first*.
-  4. If multiple workers are waiting to cross, *least efficient* worker goes first*.
-
-The *efficiency* of a given worker is defined as the total amount of time it takes for them to cross the bridge in both directions.
-```cpp
-vector<int> efficiency (numWorkers);
-
-for (int i = 0; i < numWorkers; ++i)
-{
-  effiency[i] = time[i][LEFT_TO_RIGHT]
-              + time[i][RIGHT_TO_LEFT];
-}
-```
-
-So, in order to find the time at which the final crossing occurs, we will need to efficiently simulate the situation.
-Because only one worker can cross at a time, usage of the bridge is clearly the bottleneck in our simulation.
-The general steps of the simulation are as follows:
-1. At the beginning of our simulation, all workers are waiting on the left side of the river.
-2. Whenever the bridge is free, we select a worker to cross using rules *3* and *4* above.
-3. When workers arrive on the right side of the bridge, they pick up a box and then wait to cross right to left.
-4. When workers arrive on the left side of the bridge, they put down their box 
-
-Given workers `a` and `b`, `a` is less efficient than `b` if `a` takes longer to cross the bridge in both directions.
-If `a` and `b` take the same amount of time, we prefer the worker with the higher index.
-```cpp
-const auto least_efficient = [&efficiency] (int a, int b)
-{
-  if (efficiency[a]==efficiency[b]) { return a < b; }
-  return efficiency[a] < efficiency[b];
-};
-```
-
-You may notice the inequality operators seem backward in `least_efficient`. This is because we want to use this comparator
-in a `std::priority_queue`. If you're familiar with min and max heaps, you know the min heap relies on the greater than operator
-and vice versa. As higher `efficiency` is worse, our `least_efficient` queue is really a max heap, meaning our comparator needs to favour
-lower `efficiency` values.
-
-To simulate the workers waiting to cross on either side of the bridge, we can use two priority queues.
+Turns out a priority queue is pretty great way to simulate a strictly-prioritized queue!
 
 ```cpp
-// A notoriously long type declaration from the standard library. Beats writing one from scratch!
-priority_queue<int, vector<int>, decltype(least_efficient)> left(least_efficient), right(least_efficient);
-```
-
-As we know, workers take varying amount of times to pick up and put down boxes. As soon as a worker finishes picking up or putting down a box,
-they will rejoin the left or right queue and wait to cross the bridge. The order in which they 
-
-# Complexity
-$a$
-# Code
-```cpp
-
 class Solution {
  public:
   static int findCrossingTime(int n, int k, vector<vector<int>> &time) {
-    const int LEFT_TO_RIGHT = 0, PICK_OLD = 1, RIGHT_TO_LEFT = 2, PUT_NEW = 3;
+    const auto left_to_right = [&time] (int worker) { return time[worker][0]; };
+    const auto pick_up_box   = [&time] (int worker) { return time[worker][1]; };
+    const auto right_to_left = [&time] (int worker) { return time[worker][2]; };
+    const auto put_down_box  = [&time] (int worker) { return time[worker][3]; };
+
     vector<int> efficiency(k);
     vector<int> time_free(k, INT_MAX);
 
     for (int i = 0; i < k; ++i) {
-      efficiency[i] = time[i][LEFT_TO_RIGHT] + time[i][RIGHT_TO_LEFT];
+      efficiency[i] = left_to_right(i) + right_to_left(i);
     }
 
     auto least_efficient = [&efficiency](int a, int b) {
@@ -114,8 +51,6 @@ class Solution {
       left.push(i);
 
     int boxes_left = n;
-    int bridge_busy_until = 0;
-    int last_crossed = 0;
     int current_time = 0;
 
     while (boxes_left > 0 || not right.empty() || not done_on_right.empty()) {
@@ -125,14 +60,12 @@ class Solution {
         int worker = right.top();
         right.pop();
 
-        bridge_busy_until = current_time + time[worker][RIGHT_TO_LEFT];
-        last_crossed = bridge_busy_until;
+        current_time += right_to_left(worker);
 
         // this worker will be ready to rejoin the left queue
-        time_free[worker] = last_crossed + time[worker][PUT_NEW];
+        time_free[worker] = current_time + put_down_box(worker);
         done_on_left.push(worker);
 
-        current_time = bridge_busy_until;
       } else if (not left.empty() && boxes_left > 0) {
 
         int worker = left.top();
@@ -141,13 +74,12 @@ class Solution {
         // this worker "claims" a box
         boxes_left -= 1;
 
-        bridge_busy_until = current_time + time[worker][LEFT_TO_RIGHT];
+        current_time += left_to_right(worker);
 
         // this worker will be ready to rejoin the right queue
-        time_free[worker] = bridge_busy_until + time[worker][PICK_OLD];
+        time_free[worker] = current_time + pick_up_box(worker);
         done_on_right.push(worker);
 
-        current_time = bridge_busy_until;
       } else {
         current_time = min(
                                done_on_right.empty() ? INT_MAX : time_free[done_on_right.top()],
@@ -171,7 +103,7 @@ class Solution {
       }
     }
 
-    return last_crossed;
+    return current_time;
   }
 };
 ```

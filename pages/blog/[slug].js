@@ -9,9 +9,11 @@ import theme from "shiki/themes/solarized-dark.json";
 import ToolTip from "../../components/ToolTip";
 import MaskedImage from "../../components/MaskedImage";
 import BowlingAlley from "../../components/BowlingAlley";
+
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+
 import { AnimationLayout } from "../../components/Transition";
 
 const PostPage = ({
@@ -54,7 +56,6 @@ const PostPage = ({
   );
 };
 
-export default PostPage;
 
 export async function getStaticPaths() {
   let files = fs.readdirSync(path.join("posts"));
@@ -70,11 +71,8 @@ export async function getStaticPaths() {
   };
 }
 
-export async function getStaticProps({ params: { slug } }) {
-  let rawMarkdown = fs.readFileSync(path.join("posts", slug + ".mdx"), "utf-8");
-
+export async function processMarkdownIntoFrontmatterAndSource(rawMarkdown) {
   let { data: frontmatter, content } = matter(rawMarkdown);
-
   let source = await serialize(content, {
     mdxOptions: {
       remarkPlugins: [
@@ -86,6 +84,12 @@ export async function getStaticProps({ params: { slug } }) {
     },
   });
 
+  return [frontmatter, source];
+}
+
+export async function getStaticProps({ params: { slug } }) {
+  let rawMarkdown = fs.readFileSync(path.join("posts", slug + ".mdx"), "utf-8");
+  let [ frontmatter, source ] = await processMarkdownIntoFrontmatterAndSource(rawMarkdown);
   return {
     props: {
       slug,
@@ -94,3 +98,5 @@ export async function getStaticProps({ params: { slug } }) {
     },
   };
 }
+
+export default PostPage;

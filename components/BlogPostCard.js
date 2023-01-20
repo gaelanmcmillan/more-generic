@@ -23,13 +23,20 @@ const Wrapper = styled.div`
   }
 
   display: flex;
+  flex-direction: row;
   margin-bottom: 2rem;
-  white-space: pre;
+  // white-space: pre;
+
+  // overflow: hidden;
   
-  width: ${props => props.width || "100%"};
+  // width: ${props => props.width || "100%"};
   height: auto;
   // border: 1px solid orange;
 
+
+
+
+  // Hover properties
   transition: ${hoverTime}s ease all;
   * {
     transition: ${hoverTime}s ease all;
@@ -55,48 +62,54 @@ const ThumbnailWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  float: left;
+  // float: left;
 `
   
 const Thumbnail = styled.div`
   border-radius: 0.5rem;
   border-width: 4px;
   border-style: solid;
-  overflow: hidden;
+  // overflow: hidden;
 
   width: ${props => props.width};
   height: ${props => props.height};
 `
   
 const InfoWrapper = styled.div`
-  padding-left: 1rem;
-  white-space: normal;
-  width: inherit;
-  max-width: inherit;
-  height: inherit;
-  vertical-align: top;
-
+  position: relative;
+  padding-left: 0.5rem;
+  
   display: flex;
+  // keep items vertically centered
   align-items: center;
-  float: left;
+
+  // max-width: inherit;
+  // height: inherit;
+  // vertical-align: top;
+
+  // white-space: normal;
+  // width: inherit;
+  // float: left;
 
   // border: 1px solid green;
 `
 
 const InfoContent = styled.div`
-  flex-direction: column;
   display: flex;
+  flex-direction: column;
+
   height: 90%;
   width: 95%;
-  max-width: inherit;
+  // max-width: inherit;
 
   // border: 1px solid red;
 `
 
 const Excerpt = styled.div`
   display: flex;
+
   // overflow: hidden;
-  text-overflow: ellipsis;
+  // text-overflow: ellipsis;
 `
 
 const DateAndAuthor = styled.span`
