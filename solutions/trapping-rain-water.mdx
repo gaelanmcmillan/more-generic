@@ -1,13 +1,14 @@
 ---
-title: 'Trapping Rain Water (42)'
-url: 'https://leetcode.com/problems/trapping-rain-water/'
-author: 'LeetCode'
-tags: ["Prefix Sum"] 
+title: "Trapping Rain Water (42)"
+url: "https://leetcode.com/problems/trapping-rain-water/"
+author: "LeetCode"
+tags: ["Prefix Sum"]
 languages: ["C++", "Python3"]
-date: '2022-08-10'
+date: "2022-08-10"
 ---
+
 <CH.Code>
-```cpp
+```cpp rainwater.cpp
 class Solution {
 public:
     int trap(vector<int>& height) {
@@ -16,28 +17,31 @@ public:
 
         vector<int> right (n);
         vector<int> left (n);
-        
+
         auto make_max = [](int a, int b) {
             return max(a,b);
         };
-        
+
         int water = 0;
-        
+
         partial_sum(height.begin(), height.end(), right.begin(), make_max);
         partial_sum(height.rbegin(), height.rend(), left.rbegin(), make_max);
-        
+
         for (int i = 0; i < n; ++i) {
             water += max(0, min(right[i], left[i]) - height[i]);
         }
-        
+
         return water;
     }
-};
-```
 
-```py
+};
+
+````
+
+```py rainwaiter.py
 # For fun :)
 class Solution:
     trap = lambda self, H: sum(map(lambda t: min(t[0], t[1]) - t[2], zip(accumulate(H, max), reversed(list(accumulate(reversed(H), max))),H)))
-```
+````
+
 </CH.Code>
