@@ -4,22 +4,22 @@ import matter from "gray-matter";
 import BowlingAlley from "../components/BowlingAlley";
 import { AnimationLayout } from "../components/Transition";
 import { useState } from "react";
-import * as hooks from '../components/hooks';
+import * as hooks from "../components/hooks";
 import styled from "styled-components";
-import TagBubble, {registerNewColour} from "../components/TagBubble";
+import TagBubble, { registerNewColour } from "../components/TagBubble";
 import * as card from "../components/BlogPostCard";
 import MaskedImage from "../components/MaskedImage";
 
 const ProjectPreviewPane = styled.div`
-  font-family: 'Inconsolata';
-  visibility: ${props => props.isVisible? 'visible' : 'hidden'};
+  font-family: "Inconsolata";
+  visibility: ${(props) => (props.isVisible ? "visible" : "hidden")};
   position: fixed;
   margin: 0 auto;
-  top: ${props => `${props.top}px`};
-  left: ${props => `${props.left}px`};
+  top: ${(props) => `${props.top}px`};
+  left: ${(props) => `${props.left}px`};
   transform: translate(-50%, -50%);
-
-
+  min-width: 400px;
+  max-width: 100vw;
   width: 40%;
   max-height: 80%;
   overflow-y: scroll;
@@ -29,7 +29,7 @@ const ProjectPreviewPane = styled.div`
   z-index: 10;
 
   padding: 1rem;
-`
+`;
 
 const FlexRow = styled.div`
   display: flex;
@@ -44,30 +44,37 @@ const FlexCol = styled.div`
 `;
 
 const ProjectCard = ({
-  title, 
-  author, 
-  excerpt, 
-  date, 
-  demoimg, 
-  demolink, 
-  gitlink, 
-  thumbnail, 
-  tags, 
-  languages, 
-  body}) => {
+  title,
+  author,
+  excerpt,
+  date,
+  demoimg,
+  demolink,
+  gitlink,
+  thumbnail,
+  tags,
+  languages,
+  body,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [windowDimensions, setWindowDimensions, getWindowDimensions] = hooks.useWindowDimensions();
+  const [windowDimensions, setWindowDimensions, getWindowDimensions] =
+    hooks.useWindowDimensions();
 
   return (
-    <hooks.DivWithOutsideClickCallback callback={() => { setIsOpen(false); } } >
+    <hooks.DivWithOutsideClickCallback
+      callback={() => {
+        setIsOpen(false);
+      }}
+    >
       <card.Wrapper
-        className="soft-shadow soft-radius" 
-        onClick={() => { setIsOpen(true); setWindowDimensions(getWindowDimensions())} }>
+        className="soft-shadow soft-radius"
+        onClick={() => {
+          setIsOpen(true);
+          setWindowDimensions(getWindowDimensions());
+        }}
+      >
         <card.ThumbnailWrapper percentageOfWrapperWidth={"20"}>
-          <card.Thumbnail
-            width="90%"
-            height="90%"
-          >
+          <card.Thumbnail width="90%" height="90%">
             <MaskedImage
               width="100%"
               height="100%"
@@ -82,67 +89,105 @@ const ProjectCard = ({
         <card.InfoWrapper>
           <card.InfoContent>
             <h2>{title}</h2>
-            <card.Excerpt>{excerpt}</card.Excerpt>
-            <FlexCol style={{marginTop: "auto"}}>
-            <FlexRow>
-              {tags.map((tag,i) => <TagBubble key={i} tag={tag}/>)}
-              {languages.map((lang,i) => <TagBubble key={i} tag={lang}/>)}
-            </FlexRow>
-            <card.DateAndAuthor>{author}{' • '}{date}</card.DateAndAuthor>
+            <div style={{ paddingBottom: "1rem" }}>{excerpt}</div>
+            <FlexCol style={{ marginTop: "auto" }}>
+              <div>
+                {tags.map((tag, i) => (
+                  <TagBubble key={i} tag={tag} />
+                ))}
+                {languages.map((lang, i) => (
+                  <TagBubble key={i} tag={lang} />
+                ))}
+              </div>
+              <div>
+                {author}
+                {" • "}
+                {date}
+              </div>
             </FlexCol>
           </card.InfoContent>
         </card.InfoWrapper>
       </card.Wrapper>
 
-      <ProjectPreviewPane 
+      <ProjectPreviewPane
         className="soft-radius soft-shadow tooltip-bg-color"
         left={windowDimensions.width / 2}
         top={windowDimensions.height / 2}
-        isVisible={isOpen}>
-          {/* <div style={{display: "flex", textAlign: "center"}}> */}
-          <div style={{textAlign: "center"}}>
-            <h1>{title}</h1>
-            <p>Topics: {tags.map((tag,i) => <TagBubble key={i} tag={tag}/>)}</p>
-            <p>Langauges: {languages.map((lang,i) => <TagBubble key={i} tag={lang}/>)}</p>
-            {demolink !== undefined ? <a href={demolink}><h3>Demo ⧉</h3></a> : <></>}
-            {demoimg !== undefined ? <img src={demoimg} style={{
-              width: "80%",
-              borderRadius: "1rem",
-              marginBottom: "1rem",
-              }} alt="A visual sample of the project."></img> : <></>}
-            <p>{body}</p>
-            {gitlink !== undefined ? <a href={gitlink}><h3>GitHub ⧉</h3></a> : <></>}
-          </div>
+        isVisible={isOpen}
+      >
+        {/* <div style={{display: "flex", textAlign: "center"}}> */}
+        <div style={{ textAlign: "center" }}>
+          <h1>{title}</h1>
+          <p>
+            Topics:{" "}
+            {tags.map((tag, i) => (
+              <TagBubble key={i} tag={tag} />
+            ))}
+          </p>
+          <p>
+            Langauges:{" "}
+            {languages.map((lang, i) => (
+              <TagBubble key={i} tag={lang} />
+            ))}
+          </p>
+          {demolink !== undefined ? (
+            <a href={demolink}>
+              <h3>Demo ⧉</h3>
+            </a>
+          ) : (
+            <></>
+          )}
+          {demoimg !== undefined ? (
+            <img
+              src={demoimg}
+              style={{
+                width: "80%",
+                borderRadius: "1rem",
+                marginBottom: "1rem",
+              }}
+              alt="A visual sample of the project."
+            ></img>
+          ) : (
+            <></>
+          )}
+          <p>{body}</p>
+          {gitlink !== undefined ? (
+            <a href={gitlink}>
+              <h3>GitHub ⧉</h3>
+            </a>
+          ) : (
+            <></>
+          )}
+        </div>
       </ProjectPreviewPane>
-
     </hooks.DivWithOutsideClickCallback>
   );
-}
+};
 
 const Projects = ({ projects }) => {
   return (
     <AnimationLayout>
       <BowlingAlley>
         {projects.map((project, index) => (
-          <ProjectCard key={index}
-          title={project.frontmatter.title}
-          excerpt={project.frontmatter.excerpt}
-          date={project.frontmatter.date}
-          author={project.frontmatter.author}
-          thumbnail={project.frontmatter.thumbnail}
-          tags={project.frontmatter.tags}
-          languages={project.frontmatter.languages}
-          body={project.frontmatter.body}
-          demoimg={project.frontmatter.demoimg}
-          demolink={project.frontmatter.demolink}
-          gitlink={project.frontmatter.gitlink}
-          
+          <ProjectCard
+            key={index}
+            title={project.frontmatter.title}
+            excerpt={project.frontmatter.excerpt}
+            date={project.frontmatter.date}
+            author={project.frontmatter.author}
+            thumbnail={project.frontmatter.thumbnail}
+            tags={project.frontmatter.tags}
+            languages={project.frontmatter.languages}
+            body={project.frontmatter.body}
+            demoimg={project.frontmatter.demoimg}
+            demolink={project.frontmatter.demolink}
+            gitlink={project.frontmatter.gitlink}
           />
         ))}
       </BowlingAlley>
     </AnimationLayout>
   );
-}
+};
 
 export default Projects;
 
@@ -160,7 +205,8 @@ export async function getStaticProps() {
         slug,
         frontmatter,
       };
-    }).sort((a, b) => (a.frontmatter.date < b.frontmatter.date ? 1 : -1));
+    })
+    .sort((a, b) => (a.frontmatter.date < b.frontmatter.date ? 1 : -1));
 
   for (let project of projects) {
     for (let tag of project.frontmatter.tags) {
