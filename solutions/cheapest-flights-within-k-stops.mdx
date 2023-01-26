@@ -10,7 +10,7 @@ tags:
     "Weighted Graph",
     "Limited Length Path",
   ]
-languages: ["cpp"]
+languages: ["C++"]
 date: "2023-01-25"
 ---
 
@@ -19,6 +19,7 @@ Going in reverse seems to be necessary so as to not exhaust a possible sub k-len
 when greedily taking the cheapest path.
 
 A simple BFS is strictly better than Djikstra's for this problem, being as there is a hard cap on the length of the path.
+
 <CH.Code>
 
 ```cpp flights.cpp

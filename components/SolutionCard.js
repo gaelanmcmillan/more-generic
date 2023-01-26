@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import TagBubble from "./TagBubble";
+import Link from "next/link";
 /**
  * _____________________________________
  * | Title             | <icon> [->]   |
@@ -32,6 +33,7 @@ const HorizontalSplit = styled.div`
 
 const Title = styled.span`
   font-size: 18px;
+  width: 100%;
 `;
 
 const InfoContent = styled.div`
@@ -59,11 +61,8 @@ const SolutionsCard = ({
   return (
     <Wrapper className="soft-shadow" width={"100%"}>
       <InfoWrapper width={"100%"}>
-        <InfoContent style={{}}>
-          <a
-            style={{ color: "unset", textDecoration: "none" }}
-            href={prefix + slug}
-          >
+        <Link href={prefix + slug}>
+          <InfoContent style={{ cursor: "pointer" }}>
             <Title>{title}</Title>
             <div>
               {tags.map((word, i) => {
@@ -73,8 +72,8 @@ const SolutionsCard = ({
                 return <TagBubble key={i} tag={lang} />;
               })}
             </div>
-          </a>
-        </InfoContent>
+          </InfoContent>
+        </Link>
         <div
           style={{
             float: "right",
