@@ -1,0 +1,57 @@
+---
+title: "1779A: Hall of Fame"
+url: "https://codeforces.com/contest/1779/problem/A"
+author: "CodeForces"
+tags: ["Greedy"]
+languages: ["cpp"]
+date: "2023-01-25"
+---
+
+Where `s[0, n]` is the array of lamps:
+If there exists some index pair `i`, `j` such that
+
+- `i < j`
+- `s[i]` is facing right
+- `s[j]` is facing left
+  ... then the entire array will be illuminated.
+
+Since the direction each lamp faces is a binary choice (left or right), there will exist some "boundary"
+where the lamp on the left is not facing the same direction as the lamp on the right, so we
+can just iterate over 2-sized windows of the array and print the first good/swappable pair we see.
+
+<CH.Code>
+
+```cpp
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main () {
+	int t;
+	cin >> t;
+	while (t--) {
+		int n;
+		cin >> n;
+		string s;
+		cin >> s;
+		bool good = false;
+		for (int i = 0; i < n-1; ++i) {
+			if (s[i]=='L' && s[i+1]=='R') {
+				good = true;
+				cout << i+1 << '\n';
+				break;
+			} else if (s[i]=='R' && s[i+1]=='L') {
+				good = true;
+				cout << 0 << '\n';
+				break;
+			}
+		}
+		if (!good) cout << -1 << '\n';
+	}
+
+	return 0;
+}
+```
+
+</CH.Code>
