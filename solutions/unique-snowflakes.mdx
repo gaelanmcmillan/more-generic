@@ -1,0 +1,50 @@
+---
+title: 'Unique Snowflakes'
+url: 'https://open.kattis.com/problems/snowflakes'
+author: 'Kattis, Ondřej Lhoták and Richard Peng'
+tags: ['Data Structure', 'Set', 'Queue', 'Monotonic Queue'] 
+languages: ['C++']
+date: '2023-01-26'
+---
+The name of the game is keeping track of how many unique integers we've seen so far. This can be done with a set. The only remaining step is to discard any integers we saw before the first sighting of a repeated integer. To do this, we use a queue. Push new integers onto the back of the queue and add them to our set. If an integer is repeated, pop items from our queue until we find the first sighting of said integer, removing said items from our set as well. Do this for each test case and report on the maximum number of unique, consecutive integers we saw.
+
+Time complexity is O(nlogn) because of the std::set. If we used a hash set, the complexity could be as low as O(n), provided the input data isn't devised to exploit std::hash.
+<CH.Code>
+
+```cpp 
+#include <iostream>
+#include <queue>
+#include <set>
+using namespace std;
+int main () {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n;
+        cin >> n;
+        set<int> seen;
+        queue<int> q;
+        int packageSize = 1;
+        while (n--) {
+            int x;
+            cin >> x;
+
+            if (seen.find(x) != seen.end()) {
+                while (q.front() != x) {
+					seen.erase(q.front());
+					q.pop();
+				}
+                q.pop(); // remove x
+            } else {
+                seen.insert(x);
+            }
+
+            q.push(x);
+            packageSize = max(packageSize, (int) q.size());
+        }
+        cout << packageSize << '\n';
+    }
+}
+```
+
+</CH.Code>

@@ -56,6 +56,7 @@ const SolutionsCard = ({
   languages,
   date,
   prefix = "/solutions/",
+  addTagCallback,
 }) => {
   const siteName = extractSiteName(url);
   return (
@@ -66,10 +67,22 @@ const SolutionsCard = ({
             <Title>{title}</Title>
             <div>
               {tags.map((word, i) => {
-                return <TagBubble key={i} tag={word} />;
+                return (
+                  <TagBubble
+                    key={i}
+                    tag={word}
+                    onClick={addTagCallback(word)}
+                  />
+                );
               })}
               {languages.map((lang, i) => {
-                return <TagBubble key={i} tag={lang} />;
+                return (
+                  <TagBubble
+                    key={i}
+                    tag={lang}
+                    onClick={addTagCallback(lang)}
+                  />
+                );
               })}
             </div>
           </InfoContent>

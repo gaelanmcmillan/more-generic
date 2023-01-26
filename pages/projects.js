@@ -6,7 +6,11 @@ import { AnimationLayout } from "../components/Transition";
 import { useState } from "react";
 import * as hooks from "../components/hooks";
 import styled from "styled-components";
-import TagBubble, { registerNewColour } from "../components/TagBubble";
+import TagBubble, {
+  useTagList,
+  TagListView,
+  firstHasAllOfSecond,
+} from "../components/TagBubble";
 import * as card from "../components/BlogPostCard";
 import MaskedImage from "../components/MaskedImage";
 
@@ -55,6 +59,8 @@ const ProjectCard = ({
   tags,
   languages,
   body,
+  addTagCallback,
+  removeTagCallback,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [windowDimensions, setWindowDimensions, getWindowDimensions] =
@@ -93,10 +99,14 @@ const ProjectCard = ({
             <FlexCol style={{ marginTop: "auto" }}>
               <div>
                 {tags.map((tag, i) => (
-                  <TagBubble key={i} tag={tag} />
+                  <TagBubble key={i} tag={tag} onClick={addTagCallback(tag)} />
                 ))}
                 {languages.map((lang, i) => (
-                  <TagBubble key={i} tag={lang} />
+                  <TagBubble
+                    key={i}
+                    tag={lang}
+                    onClick={addTagCallback(lang)}
+                  />
                 ))}
               </div>
               <div>
@@ -118,18 +128,18 @@ const ProjectCard = ({
         {/* <div style={{display: "flex", textAlign: "center"}}> */}
         <div style={{ textAlign: "center" }}>
           <h1>{title}</h1>
-          <p>
+          <div style={{ marginBottom: "0.5rem" }}>
             Topics:{" "}
             {tags.map((tag, i) => (
               <TagBubble key={i} tag={tag} />
             ))}
-          </p>
-          <p>
+          </div>
+          <div style={{ marginBottom: "0.5rem" }}>
             Langauges:{" "}
             {languages.map((lang, i) => (
-              <TagBubble key={i} tag={lang} />
+              <TagBubble key={i} tag={lang} onClick={undefined} />
             ))}
-          </p>
+          </div>
           {demolink !== undefined ? (
             <a href={demolink}>
               <h3>Demo ⧉</h3>
@@ -165,25 +175,43 @@ const ProjectCard = ({
 };
 
 const Projects = ({ projects }) => {
+  const [tagList, clearTagList, addToTagList, removeTagFromList] = useTagList();
+
   return (
     <AnimationLayout>
       <BowlingAlley>
-        {projects.map((project, index) => (
-          <ProjectCard
-            key={index}
-            title={project.frontmatter.title}
-            excerpt={project.frontmatter.excerpt}
-            date={project.frontmatter.date}
-            author={project.frontmatter.author}
-            thumbnail={project.frontmatter.thumbnail}
-            tags={project.frontmatter.tags}
-            languages={project.frontmatter.languages}
-            body={project.frontmatter.body}
-            demoimg={project.frontmatter.demoimg}
-            demolink={project.frontmatter.demolink}
-            gitlink={project.frontmatter.gitlink}
-          />
-        ))}
+        <TagListView
+          tagList={tagList}
+          clearListCallback={clearTagList}
+          removeTagCallback={removeTagFromList}
+        />
+        {projects
+          .filter(
+            (project) =>
+              tagList.length === 0 ||
+              firstHasAllOfSecond(
+                project.frontmatter.tags.concat(project.frontmatter.languages),
+                tagList
+              )
+          )
+          .map((project, index) => (
+            <ProjectCard
+              key={index}
+              title={project.frontmatter.title}
+              excerpt={project.frontmatter.excerpt}
+              date={project.frontmatter.date}
+              author={project.frontmatter.author}
+              thumbnail={project.frontmatter.thumbnail}
+              tags={project.frontmatter.tags}
+              languages={project.frontmatter.languages}
+              body={project.frontmatter.body}
+              demoimg={project.frontmatter.demoimg}
+              demolink={project.frontmatter.demolink}
+              gitlink={project.frontmatter.gitlink}
+              addTagCallback={addToTagList}
+              removeTagCallback={removeTagFromList}
+            />
+          ))}
       </BowlingAlley>
     </AnimationLayout>
   );
@@ -207,13 +235,6 @@ export async function getStaticProps() {
       };
     })
     .sort((a, b) => (a.frontmatter.date < b.frontmatter.date ? 1 : -1));
-
-  for (let project of projects) {
-    for (let tag of project.frontmatter.tags) {
-      // populate tag dictionary with random colors
-      registerNewColour(tag);
-    }
-  }
 
   return {
     props: {
