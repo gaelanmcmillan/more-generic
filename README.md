@@ -1,3 +1,3 @@
 # moregeneric.ca
 
-A static blog built with Next.js, React and MDX. Styled with React-Bootstrap and Sass.
+A place to write about my projects and problem solutions!
