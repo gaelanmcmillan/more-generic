@@ -1,0 +1,42 @@
+---
+title: '1790A: Polycarp and the Day of Pi'
+url: 'https://codeforces.com/contest/1790/problem/A'
+author: 'CodeForces'
+tags: ['Implementation', 'String'] 
+languages: ['C++']
+difficulty: easy
+date: '2023-01-27'
+---
+Simple implementation problem. Find the number of digits from the front of `s` that match digits from pi.
+<CH.Code>
+
+```cpp 
+#include <iostream>
+#include <string>
+
+constexpr std::string_view kDigitsOfPi = "314159265358979323846264338327";
+
+void solve() {
+  std::string s;
+  std::cin >> s;
+  for (int i = 0; i < kDigitsOfPi.length(); ++i) {
+    if (s[i]!=kDigitsOfPi[i]) {
+      std::cout << i << '\n';
+      return;
+    }
+  }
+  std::cout << "30\n";
+}
+
+int main() {
+  int t;
+  std::cin >> t;
+  for (int tc = 1; tc <= t; ++tc) {
+    solve();
+  }
+  return 0;
+}
+
+```
+
+</CH.Code>

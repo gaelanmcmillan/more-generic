@@ -1,0 +1,106 @@
+---
+title: '1790C: Premutation'
+url: 'https://codeforces.com/contest/1790/problem/C'
+author: 'CodeForces'
+tags: ['Deduction', 'Brute Force', 'Permutation'] 
+languages: ['C++']
+difficulty: medium
+date: '2023-01-27'
+---
+This is a simple bruteforce deduction problem. We need to deduce a permutation of elements `[1, n]` for some integer `n` from a set of clues. The clues are `n` snapshots of the permutation where, each with a different element of the
+permutation missing. These snapshots of the permutation give us two possible values for each position in the permutation. Being as each element in the permutation is only missing in one of the `n` snapshots, we can use the frequencies
+with which a value appears at a given position to reconstruct the permutation.
+
+Our deduction starts by noting that we can immediately conclude the correct starting and ending elements from the permutation. In both cases, we will see the correct starting and ending elements `n-1` times in the snapshots.
+So, we settle that the correct first element is the value that appeared most in that position in the snapshots. That means the other value that appeared in that position **must** appear wherever else it appeared in the snapshots.
+This will set off a chain of conclusions that will leave us to simply fill in the last element, which we know already.
+<CH.Code>
+
+```cpp 
+#include <iostream>
+#include <vector>
+#include <map>
+#include <set>
+#include <functional>
+
+void solve() {
+  int n;
+  std::cin >> n;
+  std::vector<std::map<int,int>> possibilities (n);
+  std::map<int, std::set<int>> holding;
+
+  for (int i = 0; i < n; ++i) {
+    for (int pos = 0; pos < n-1; ++pos) {
+      int x;
+      std::cin >> x;
+      holding[x].insert(pos);
+      possibilities[pos][x]++;
+    }
+  }
+
+  std::vector<bool> seen (n, false);
+  std::vector<int> perm (n, -1);
+
+  std::function<void(int,int)> settle_by_deduction = [&] (int pos, int val) {
+    perm[pos] = val;
+
+    int other_val = [&] {
+      for (auto [candidate, _] : possibilities[pos]) {
+        if (candidate != val) return candidate;
+      }
+      return -1;
+    }();
+
+    if (other_val == -1) return;
+
+    int other_pos = [&] {
+      for (int other : holding[other_val]) {
+        if (other != pos) return other;
+      }
+      return -1;
+    }();
+
+    if (other_pos == -1) return;
+
+    seen[pos] = true;
+
+    if (!seen[other_pos])
+      settle_by_deduction(other_pos, other_val);
+  };
+
+  auto most_freq_at = [&] (int idx) {
+    int best = -1;
+    int val;
+
+    for (auto [candidate, cnt] : possibilities[idx]) {
+      if (cnt > best) {
+        best = cnt;
+        val = candidate;
+      }
+    }
+
+    return val;
+  };
+
+  settle_by_deduction(0, most_freq_at(0));
+  settle_by_deduction(n-1, most_freq_at(n-2));
+
+  for (int x : perm) {
+    std::cout << x << ' ';
+  }
+  std::cout << '\n';
+}
+
+
+int main() {
+  int t;
+  std::cin >> t;
+  for (int tc = 1; tc <= t; ++tc) {
+    solve();
+  }
+  return 0;
+}
+
+```
+
+</CH.Code>

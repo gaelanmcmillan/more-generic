@@ -1,0 +1,60 @@
+---
+title: '1790D: Matryoshkas'
+url: 'https://codeforces.com/contest/1790/problem/D'
+author: 'CodeForces'
+tags: ['Data Structure', 'Map', 'Sorting', 'Greedy'] 
+languages: ['C++']
+difficulty: medium
+date: '2023-01-27'
+---
+The task here is to find the minimum number of valid sets into which we can partition an array of integers. A valid set is a set of consecutive integers, e.g. {1,2,3} or {4,5,6}.
+We can accomplish this in O(nlogn) time by first sorting the integers, and then using a map to collapse (or nest, to fit the "nesting doll" narrative of the problem) each integer onto
+a previous occurence of that integers predecessor.
+<CH.Code>
+
+```cpp 
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <map>
+
+void solve() {
+  int n;
+  std::cin >> n;
+  std::vector<int> a (n);
+  for (auto& x : a) std::cin >> x;
+  std::sort(a.begin(), a.end());
+
+  // we nest whenever possible
+  std::map<int,int> dolls;
+  for (auto d : a) {
+    // if we can nest, we do
+    auto smaller = dolls.find(d-1);
+    if (smaller != dolls.end() && smaller->second != 0) {
+      smaller->second--;
+    }
+
+    dolls[d]++;
+  }
+
+  int sets = 0;
+  for (auto [_, cnt] : dolls) {
+    sets += cnt;
+  }
+
+  std::cout << sets << '\n';
+}
+
+
+int main() {
+  int t;
+  std::cin >> t;
+  for (int tc = 1; tc <= t; ++tc) {
+    solve();
+  }
+  return 0;
+}
+
+```
+
+</CH.Code>

@@ -2,7 +2,7 @@
 title: "Trapping Rain Water (42)"
 url: "https://leetcode.com/problems/trapping-rain-water/"
 author: "LeetCode"
-tags: ["Prefix Sum"]
+tags: ["Prefix Sum", "Classic"]
 languages: ["C++", "Python3"]
 difficulty: "hard"
 date: "2022-08-10"
@@ -13,13 +13,13 @@ date: "2022-08-10"
 class Solution {
 public:
     int trap(vector<int>& height) {
-        int n = height.size();
+        const int n = height.size();
         if (n <= 2) return 0;
 
         vector<int> right (n);
         vector<int> left (n);
 
-        auto make_max = [](int a, int b) {
+        const auto make_max = [](int a, int b) {
             return max(a,b);
         };
 

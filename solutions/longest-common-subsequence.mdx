@@ -1,0 +1,40 @@
+---
+title: 'Longest Common Subsequence'
+url: 'https://leetcode.com/problems/longest-common-subsequence'
+author: 'LeetCode'
+tags: ['String', 'Dynamic Programming', 'Classic'] 
+languages: ['C++']
+difficulty: medium
+date: '2023-01-26'
+---
+A classic dynamic programming problem. The idea here is to keep an m*n table `lcs` where `lcs[r+1][c+1]` holds the length of the longest common subsequence between `text1[:c]` and `text2[:r]`. This is an improvement over bruteforce, because when the `c`th character of `text1` is the same as the `r`th character of `text2`, we can simply extend whatever longest common subsequence existed up to `text1[:c]` and `text2[:r]`, rather than recalculating these values.
+<CH.Code>
+
+```cpp 
+class Solution {
+private:
+    array<array<int, 1001>, 1001> lcs;
+public:
+    int longestCommonSubsequence(string text1, string text2) {
+        const int n = text1.length();
+        const int m = text2.length();
+
+        // the lcs between anything and an empty string is 0
+        for (int r = 0; r < m; ++r) lcs[r][0] = 0;
+        for (int c = 0; c < n; ++c) lcs[0][c] = 0;
+
+        for (int r = 0; r < m; ++r) {
+            for (int c = 0; c < n; ++c) {
+                if (text1[c] == text2[r]) {
+                    lcs[r+1][c+1] = lcs[r][c]+1;
+                } else {
+                    lcs[r+1][c+1] = max(lcs[r+1][c], lcs[r][c+1]);
+                }
+            }
+        }
+        return lcs[m][n];
+    }
+};
+```
+
+</CH.Code>
