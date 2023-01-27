@@ -8,6 +8,12 @@ import Link from "next/link";
  * '''''''''''''''''''''''''''''''''''''
  */
 
+const diffColor = {
+  easy: "#99BB99",
+  medium: "#e8cb80",
+  hard: "#bf7365",
+};
+
 const Wrapper = styled.div`
   font-family: "Inconsolata";
 
@@ -23,6 +29,7 @@ const InfoWrapper = styled.div`
   display: flex;
   flex-direction: row;
   padding: 0.5rem;
+  padding-left: 0.75rem;
 `;
 
 const HorizontalSplit = styled.div`
@@ -55,13 +62,20 @@ const SolutionsCard = ({
   tags,
   languages,
   date,
+  difficulty,
   prefix = "/solutions/",
   addTagCallback,
 }) => {
   const siteName = extractSiteName(url);
   return (
     <Wrapper className="soft-shadow" width={"100%"}>
-      <InfoWrapper width={"100%"}>
+      <InfoWrapper
+        width={"100%"}
+        style={{
+          borderLeft: `5px solid ${diffColor[difficulty]}`,
+          borderRadius: "0.5rem",
+        }}
+      >
         <Link href={prefix + slug}>
           <InfoContent style={{ cursor: "pointer" }}>
             <Title>{title}</Title>

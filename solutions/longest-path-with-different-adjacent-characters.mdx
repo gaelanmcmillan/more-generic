@@ -1,11 +1,13 @@
 ---
-title: 'Longest Path With Different Adjacent Characters'
-url: 'https://leetcode.com/problems/longest-path-with-different-adjacent-characters/'
-author: 'LeetCode'
-tags: ["Tree", "Graph", "DFS"] 
+title: "Longest Path With Different Adjacent Characters"
+url: "https://leetcode.com/problems/longest-path-with-different-adjacent-characters/"
+author: "LeetCode"
+tags: ["Tree", "Graph", "DFS"]
 languages: ["C++"]
-date: '2023-01-12'
+difficulty: "hard"
+date: "2023-01-12"
 ---
+
 Really rolls of the tongue, doesn't it? An editorial is in the works, but here's the code:
 
 ```cpp
@@ -18,7 +20,7 @@ public:
                     siblingOf (n, -1),
                     lengthFrom (n, -1);
 
-        // keep a flat, singly linked connection through the graph        
+        // keep a flat, singly linked connection through the graph
         for (int i = 1; i < n; ++i) {
             if (s[i] != s[parent[i]]) {
                 siblingOf[i] = childOf[parent[i]];

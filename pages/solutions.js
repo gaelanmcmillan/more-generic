@@ -53,6 +53,7 @@ const SolutionsPage = ({ posts }) => {
               date={sol.frontmatter.date}
               author={sol.frontmatter.author}
               addTagCallback={addTagToList}
+              difficulty={sol.frontmatter.difficulty}
             />
           ))}
       </BowlingAlley>

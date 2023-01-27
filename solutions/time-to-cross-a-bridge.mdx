@@ -1,21 +1,23 @@
 ---
-title: 'Time to Cross a Bridge (2532)'
-url: 'https://leetcode.com/problems/time-to-cross-a-bridge/'
-author: 'LeetCode'
-tags: ["Simulation", "Priority Queue"] 
+title: "Time to Cross a Bridge (2532)"
+url: "https://leetcode.com/problems/time-to-cross-a-bridge/"
+author: "LeetCode"
+tags: ["Simulation", "Priority Queue"]
 languages: ["C++"]
-date: '2023-01-10'
+difficulty: "hard"
+date: "2023-01-10"
 ---
 
-This problem, which featured as the *Hard* in [LeetCode Weekly 327](https://leetcode.com/contest/weekly-contest-327/),
+This problem, which featured as the _Hard_ in [LeetCode Weekly 327](https://leetcode.com/contest/weekly-contest-327/),
 describes a situation in which some number of workers need to transfer boxes from one warehouse across a bridge to another.
 We are required to implement a function that returns the time it takes to transfer all boxes from the old warehouse across the bridge
 to the new warehouse.
 
 This is a classic simulation exercise. The crux of the problem is this:
-  1. Read the rules
-  2. Read the rules again, carefully
-  3. Efficiently simulate the situation
+
+1. Read the rules
+2. Read the rules again, carefully
+3. Efficiently simulate the situation
 
 Turns out a priority queue is pretty great way to simulate a strictly-prioritized queue!
 

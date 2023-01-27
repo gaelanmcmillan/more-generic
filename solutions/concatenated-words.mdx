@@ -1,0 +1,77 @@
+---
+title: "Concatenated Words"
+url: "https://leetcode.com/problems/concatenated-words"
+author: "LeetCode"
+tags: ["Data Structure", "Trie", "DFS"]
+languages: ["C++"]
+difficulty: "hard"
+date: "2023-01-26"
+---
+
+We want to find out which words from `words` can be formed by concatenating existing words from `words`. One way to do this is to first build a trie from `words`, then
+perform a recursive DFS on the trie to see if a given word can be formed by tracing the trie to a completed word, starting again from the root, and tracing down to the end of another word.
+
+Complexity is O(n\*m), where n is the number of words and m is the length of a given word.
+The trie approach is not necessarily very cache-friendly. We also spend a considerable amount of time allocating trie nodes even though the bounds of the problem are known up front.
+Might be neat to figure out how to statically allocate a trie.
+
+<CH.Code>
+
+```cpp
+struct Trie {
+    array<Trie*, 26> next {};
+    bool terminus = false;
+
+    void add_word(const string& word) {
+        Trie* curr = this;
+        for (char letter : word) {
+            if (curr->next[letter - 'a'] == nullptr) {
+                curr->next[letter - 'a'] = new Trie();
+            }
+            curr = curr->next[letter - 'a'];
+        }
+        curr->terminus = true;
+    }
+
+    bool has_concatenated(const string& word) {
+        const int n = word.length();
+        function<bool(int,Trie*,bool)> rec = [&] (int start, Trie* curr, bool hasBranched) {
+            for (int i = start; i < n; ++i) {
+                if (curr->next[word[i] - 'a'] == nullptr) {
+                    return false;
+                }
+                curr = curr->next[word[i] - 'a'];
+                if (curr->terminus && i < n) {
+                    // only valid if we branch at least once
+                    if (i+1 == n && hasBranched) return true;
+                    bool branch = rec(i+1, this, true);
+                    if (branch) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        };
+
+        return rec(0, this, false);
+    }
+};
+
+class Solution {
+public:
+    vector<string> findAllConcatenatedWordsInADict(vector<string>& words) {
+        Trie root {};
+        for (const auto& word : words) {
+            root.add_word(word);
+        }
+        vector<string> concatenated;
+        for (const auto& word : words) {
+            if (root.has_concatenated(word))
+                concatenated.push_back(word);
+        }
+        return concatenated;
+    }
+};
+```
+
+</CH.Code>

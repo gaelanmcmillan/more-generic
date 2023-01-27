@@ -1,11 +1,13 @@
 ---
-title: 'Poklon'
-url: 'https://open.kattis.com/problems/poklon'
-author: 'Problems from Croatian Open Competition in Informatics 2007/2008, contest #4'
-tags: ["Greedy", "Longest Increasing Subsequence"] 
+title: "Poklon"
+url: "https://open.kattis.com/problems/poklon"
+author: "Problems from Croatian Open Competition in Informatics 2007/2008, contest #4"
+tags: ["Greedy", "Longest Increasing Subsequence"]
 languages: ["C++", "Python3"]
-date: '2022-09-10'
+difficulty: "hard"
+date: "2022-09-10"
 ---
+
 <CH.Code style={{height: "80vh"}}>
 ```cpp poklon.cpp
 //
@@ -15,51 +17,60 @@ date: '2022-09-10'
 #ifndef MORE_GENERIC_PATIENCE_H
 #define MORE_GENERIC_PATIENCE_H
 
-/* * * * * * *\
- * Objective:
- *      Sort a std::container of elements to find the longest chain,
- *      given a comparator describing some partial order.
- *
- * Return value could be a few things. Some problems only need to know the number of elements
- * in the longest chain. (The Longest Monotone Subsequence problem)
- *
- * Some variations ask for the subsequence itself. In this case, having patience return a lazy-convertible struct
- * (essentially a wrapper around the subsequence tail) could be ideal.
- *
- * Let's explore how we want the API to behave.
- * In the case of "Poklon":
- *
- * ```
- *      struct interval { int low, high; };
- *      std::vector<interval> intervals {...};
- *      sort(intervals.begin(), intervals.end(), preprocess);
- *      auto LIS = patience(intervals.begin(), intervals.end(), comparator);
- *      for (auto& element : LIS)
- *      {
- *           std::cout << element.low << ' ' << element.high << '\n';
- *      }
- * ```
- *
- * In the case of "Russian Doll Envelopes"
- *
- * ```
- *      sort(envelopes.begin(), envelopes.end(), preprocess);
- *      auto LIS = patience(envelopes.begin(), envelopes.end(), comparator);
- *      return LIS.size();
- * ```
- *
- * Currently passing longest-monotone-subsequence tests.
- * Non-monotone tests are more subtle.
- * */
-#include <vector>
-#include <algorithm>
-#include <numeric>
-#include <iostream>
+/\* \* \* \* \* \* \*\
+
+- Objective:
+-      Sort a std::container of elements to find the longest chain,
+-      given a comparator describing some partial order.
+-
+- Return value could be a few things. Some problems only need to know the number of elements
+- in the longest chain. (The Longest Monotone Subsequence problem)
+-
+- Some variations ask for the subsequence itself. In this case, having patience return a lazy-convertible struct
+- (essentially a wrapper around the subsequence tail) could be ideal.
+-
+- Let's explore how we want the API to behave.
+- In the case of "Poklon":
+-
+- ```
+
+  ```
+-      struct interval { int low, high; };
+-      std::vector<interval> intervals {...};
+-      sort(intervals.begin(), intervals.end(), preprocess);
+-      auto LIS = patience(intervals.begin(), intervals.end(), comparator);
+-      for (auto& element : LIS)
+-      {
+-           std::cout << element.low << ' ' << element.high << '\n';
+-      }
+- ```
+
+  ```
+-
+- In the case of "Russian Doll Envelopes"
+-
+- ```
+
+  ```
+-      sort(envelopes.begin(), envelopes.end(), preprocess);
+-      auto LIS = patience(envelopes.begin(), envelopes.end(), comparator);
+-      return LIS.size();
+- ```
+
+  ```
+-
+- Currently passing longest-monotone-subsequence tests.
+- Non-monotone tests are more subtle.
+- \*/
+  #include <vector>
+  #include <algorithm>
+  #include <numeric>
+  #include <iostream>
 
 template<class InputIterator, class Comparator, class BiPred>
-auto __patience (InputIterator begin, InputIterator end, Comparator pre, BiPred pred)
+auto \_\_patience (InputIterator begin, InputIterator end, Comparator pre, BiPred pred)
 {
-    using T = typename std::iterator_traits<InputIterator>::value_type;
+using T = typename std::iterator_traits<InputIterator>::value_type;
 
     if constexpr(not std::is_same_v<Comparator, std::nullptr_t>)
         std::sort(begin, end, pre);
@@ -121,49 +132,50 @@ auto __patience (InputIterator begin, InputIterator end, Comparator pre, BiPred 
 
     std::reverse(seq.begin(), seq.end());
     return seq;
+
 }
 
 template <class II>
 auto patience(II begin, II end)
 {
-    using T = typename std::iterator_traits<II>::value_type;
-    return __patience(begin, end, nullptr, std::less<T>());
+using T = typename std::iterator_traits<II>::value_type;
+return \_\_patience(begin, end, nullptr, std::less<T>());
 }
 
 template <class II, class Comparator, class BiPred>
 auto patience(II begin, II end, Comparator pre, BiPred pred)
 {
-    return __patience(begin, end, pre, pred);
+return \_\_patience(begin, end, pre, pred);
 }
 
-/*
- * Maybe returning a convertible struct would be a nice API.
- *
- * auto p = make_patience(vec.begin(), vec.end())
- *              .with_preprocess() // argument can be a comparator — std::less<> by default
- *              .non_monotone()
- * */
-#endif //MORE_GENERIC_PATIENCE_H
+/\*
 
+- Maybe returning a convertible struct would be a nice API.
+-
+- auto p = make_patience(vec.begin(), vec.end())
+-              .with_preprocess() // argument can be a comparator — std::less<> by default
+-              .non_monotone()
+- \*/
+  #endif //MORE_GENERIC_PATIENCE_H
 
 using namespace std;
 
-int main() 
+int main()
 {
-    struct interval 
-    {
-        int low;
-        int high;
-    };
-    
+struct interval
+{
+int low;
+int high;
+};
+
     int n;
     cin >> n;
     vector<interval> intervals (n);
-    for (interval& i : intervals) 
+    for (interval& i : intervals)
     {
         cin >> i.low >> i.high;
     }
-    
+
     auto preprocess = [](const interval& a, const interval& b) {
         if (a.low == b.low)
             return a.high > b.high;
@@ -184,10 +196,12 @@ int main()
     cout << LIS.size() << '\n';
     for (auto e : LIS)
         std::cout << e.low << ' ' << e.high << '\n';
-        
+
     return 0;
+
 }
-```
+
+````
 
 
 ```py poklon.py
@@ -228,9 +242,9 @@ def get_lower_bound(arr, sequence_tails, reference):
 
 def longest_decreasing_subsequence(arr, n):
     """A subsequence of sequence S is decreasing if S[i] > S[j] and i < j"""
-     
+
     sequence_tails = [0]
- 
+
     for i in range(1, n):
         if (arr[i].high > arr[sequence_tails[0]].high):
             # new largest value
@@ -239,14 +253,14 @@ def longest_decreasing_subsequence(arr, n):
             # be inserted into the list, possibly superceding the length
             # of the previous longest sequence
             sequence_tails[0] = i
-         
+
         elif (arr[i].high <= arr[sequence_tails[-1]].high):
             # current element is smaller than the smallest
             # sequence tail, meaning it should
             # extend the current longest sequence
             arr[i].next = sequence_tails[-1]
             sequence_tails.append(i)
-         
+
         else:
             # the current element is smaller
             # than the largest element seen so far,
@@ -260,10 +274,10 @@ def longest_decreasing_subsequence(arr, n):
             # it comes just before the next element it is greater than
 
             pos = get_lower_bound(arr, sequence_tails, arr[i])
-  
+
             arr[i].next = sequence_tails[pos-1]
             sequence_tails[pos] = i
-    
+
     i = sequence_tails[-1]
     out = []
     while (i is not None):
@@ -288,5 +302,6 @@ if __name__ == "__main__":
     print(len(longest))
     for interval in longest:
         print(str(interval))
-```
+````
+
 </CH.Code>
