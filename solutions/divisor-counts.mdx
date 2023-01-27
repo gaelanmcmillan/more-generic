@@ -1,0 +1,54 @@
+---
+title: 'Divisor Counts'
+url: 'https://open.kattis.com/problems/divisorcounts'
+author: 'Kattis'
+tags: ['Prime Sieve', 'Math', 'Brute Force'] 
+languages: ['C++', 'Python3']
+difficulty: hard
+date: '2023-01-27'
+---
+Pretty straight-forward problem. I struggled to allocate the memory at first (embarrassing), only to be reminded that I need to either globally allocate my non-const array or tag it with `static`. Silly mistakes.
+The solution is basically the Sieve of Eratosthenes except instead of a tagging numbers as composisite you increment a count of their divisors.
+<CH.Code>
+
+```cpp divisor_counts.cpp
+#include <array>
+#include <cmath>
+#include <iostream>
+
+constexpr int kMaxSize = 3000001;
+
+int main() {
+  int n;
+  std::cin >> n;
+  std::ios_base::sync_with_stdio(false);
+  std::cin.tie(NULL);
+  static std::array<int, kMaxSize> divcount {};
+  std::fill(divcount.begin()+2, divcount.end(), 2);
+  std::cout << 1 << '\n';
+  for (int i = 2; i <= n; ++i) {
+    for (int j = 2; j <= n; ++j) {
+        if (i*j > n) break;
+        divcount[i*j]++;
+    }
+    std::cout << divcount[i] << '\n';
+  }
+
+  return 0;
+}
+```
+
+
+```py divisor_counts.py
+n = int(input())
+divs = [2 for _ in range(3000001)]
+divs[1] = 1
+for i in range(2,n):
+    for j in range(2,n):
+        if i*j>n: break
+        divs[i*j] += 1
+
+print ('\n'.join(map(str,divs[1:n+1])))
+```
+
+</CH.Code>
