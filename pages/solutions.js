@@ -8,7 +8,6 @@ import {
   useTagList,
   TagListView,
   firstHasAllOfSecond,
-  s,
 } from "../components/TagBubble";
 
 const SolutionsPage = ({ posts }) => {
@@ -23,10 +22,7 @@ const SolutionsPage = ({ posts }) => {
             textAlign: "center",
           }}
         >
-          <i>
-            The posts below are just code at the moment. Editorials are a work
-            in progress!
-          </i>
+          <i>Click on tags to filter solutions by category or language.</i>
         </div>
         <TagListView
           tagList={tagList}
@@ -56,6 +52,16 @@ const SolutionsPage = ({ posts }) => {
               difficulty={sol.frontmatter.difficulty}
             />
           ))}
+        <div style={{ marginBottom: "1rem", textAlign: "center" }}>
+          <p>If you found a solution helpful, consider leaving a star!</p>
+          <iframe
+            src="https://ghbtns.com/github-btn.html?user=gaelanmcmillan&repo=more-generic&type=star&count=true&size=large"
+            frameborder="0"
+            width="120"
+            height="30"
+            title="GitHub"
+          ></iframe>
+        </div>
       </BowlingAlley>
     </AnimationLayout>
   );

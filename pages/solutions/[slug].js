@@ -22,8 +22,20 @@ const SolutionPage = ({
   return (
     <AnimationLayout>
       <BowlingAlley lg={10} md={10} sm={12} xs={12}>
-        <h1><a href={url}>{title} ⧉</a></h1>
+        <h1>
+          <a href={url}>{title} ⧉</a>
+        </h1>
         <MDXRemote {...source} components={{ CH, ToolTip, MaskedImage }} />
+        <div style={{ marginBottom: "1rem", textAlign: "center" }}>
+          <p>If you found this solution helpful, consider leaving a star!</p>
+          <iframe
+            src="https://ghbtns.com/github-btn.html?user=gaelanmcmillan&repo=more-generic&type=star&count=true&size=large"
+            frameborder="0"
+            width="120"
+            height="30"
+            title="GitHub"
+          ></iframe>
+        </div>
       </BowlingAlley>
     </AnimationLayout>
   );
@@ -56,11 +68,14 @@ export async function getStaticProps({ params: { slug } }) {
   let source = await serialize(content, {
     mdxOptions: {
       remarkPlugins: [
-        [remarkCodeHike, { 
-          autoImport: false, 
-          theme,
-          lineNumbers: true,
-         }],
+        [
+          remarkCodeHike,
+          {
+            autoImport: false,
+            theme,
+            lineNumbers: true,
+          },
+        ],
         remarkMath,
       ],
       rehypePlugins: [rehypeKatex],
