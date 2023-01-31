@@ -14,6 +14,27 @@ import path from "path";
 import matter from "gray-matter";
 import { AnimationLayout } from "../../components/Transition";
 
+const InlineImage = ({ src, alt, maxWidth }) => {
+  return (
+    <div style={{ width: "100%", display: "flex" }}>
+      <img
+        src={src}
+        alt={alt}
+        width="100%"
+        style={{
+          marginLeft: "auto",
+          marginRight: "auto",
+          marginTop: "1rem",
+          marginBottom: "1rem",
+          maxWidth: maxWidth === undefined ? "inherit" : maxWidth,
+          borderRadius: "1rem",
+          border: "3px solid #586e75",
+        }}
+      />
+    </div>
+  );
+};
+
 const SolutionPage = ({
   slug,
   frontmatter: { title, url, author, tags, languages, date },
@@ -25,7 +46,10 @@ const SolutionPage = ({
         <h1>
           <a href={url}>{title} ⧉</a>
         </h1>
-        <MDXRemote {...source} components={{ CH, ToolTip, MaskedImage }} />
+        <MDXRemote
+          {...source}
+          components={{ CH, ToolTip, MaskedImage, InlineImage }}
+        />
         <div style={{ marginBottom: "1rem", textAlign: "center" }}>
           <p>If you found this solution helpful, consider leaving a star!</p>
           <iframe

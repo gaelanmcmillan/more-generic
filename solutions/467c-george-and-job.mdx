@@ -20,7 +20,7 @@ is either ...
 
 In the picture below, the green blob is the segment at `start`, the blue blob is the segment at `start + 1`, and the yellow squiggle represents
 the bounds of the subproblem when we choose the green blob and recursively solve from `start + m`, `remaining - 1`.
-<img src="/images/solutions/GeorgeAndJob.jpeg" alt="An illustration of the bullet points above" width="500px" />
+<InlineImage src="/images/solutions/GeorgeAndJob.jpeg" alt="An illustration of the bullet points above" maxWidth="800px" />
 
 Considering these two options for each `start` and `remaining` constitutes a recursive strategy for solving the problem. The dynamic programming step is to simply
 cache the optimal sum for each `start` and `remaining` in the problem's state-space. 

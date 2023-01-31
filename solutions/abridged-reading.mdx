@@ -13,7 +13,7 @@ The problem describes a graph of dependencies between chapters in a book. Each c
 
 The main concept behind solving this problem is the *lowest common ancestor* (LCA). The lowest common ancestor of two nodes is the first "lowest" node in the tree that appears in both nodes' paths. Being as we don't need to reread a shared prerequisite between two chapters, if we count the root-to-node cost of two leaves, we can subtract the root-to-node cost of their LCA. 
 
-<img src="/images/solutions/AbridgedReading.jpeg" alt="An illustration of how our paths can be calculated" width="100%" />
+<InlineImage src="/images/solutions/AbridgedReading.jpeg" alt="An illustration of our solution for the first test case on Kattis" maxWidth="800px" />
 
 With this in mind, the solution can be laid out in a few steps:
 1. Connect the graph, taking note of nodes with no prerequisite (roots) and nodes with no successors (leaves).
