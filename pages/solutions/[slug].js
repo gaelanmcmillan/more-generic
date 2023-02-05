@@ -42,7 +42,7 @@ const SolutionPage = ({
 }) => {
   return (
     <AnimationLayout>
-      <BowlingAlley lg={10} md={10} sm={12} xs={12}>
+      <BowlingAlley lg={6} md={8} sm={12} xs={12}>
         <h1>
           <a href={url}>{title} ⧉</a>
         </h1>

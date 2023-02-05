@@ -1,0 +1,140 @@
+---
+title: "Sheba's Amoebas"
+url: 'https://open.kattis.com/problems/amoebas'
+author: 'Kattis'
+tags: ['Flood Fill', 'DFS', 'Brute Force'] 
+languages: ['C++', 'Python3']
+difficulty: easy
+date: '2023-02-04'
+---
+The description states that no two amoebas will overlap. It also states that a black pixel will always have two of its eight neighbours as black pixels.
+Using this information, we can count the amoebas by "tracing" their outlines using a variation on the [Flood fill](https://en.wikipedia.org/wiki/Flood_fill) algorithm,
+which amounts to a depth-first or breadth-first search with extra steps.
+
+We iterate over each pixel in the input, calling our flood fill on any black pixel that hasn't been searched from. Each amoeba will require one flood fill, so we just count
+our calls to the algorithm and print the amount.
+
+The C++ shows a recursive flood fill. The Python shows an iterative flood fill.
+<CH.Code>
+
+```cpp amoebas.cpp
+#include <iostream>
+#include <string>
+#include <vector>
+#include <functional>
+
+using namespace std;
+
+int main() {
+    int m,n;
+    cin >> m >> n;
+    vector<string> grid (m);
+    for (auto& row : grid) cin >> row;
+    vector<vector<bool>> seen(m, vector<bool>(n, false));
+    
+    vector<pair<int,int>> dirs;
+
+    for (int dr : {-1,0,1})
+        for (int dc : {-1,0,1})
+            if (dr || dc) dirs.emplace_back(dr,dc);
+    
+    auto in_bounds = [&](int r, int c) {
+        return (r >= 0 && r < m && c >= 0 && c < n);  
+    };
+    
+    int count = 0;
+    
+    function<int(int,int)> flood_fill = [&] (int r, int c) {
+        for (auto [dr, dc] : dirs) {
+            int nr = r+dr, nc = c+dc;
+            if (!in_bounds(nr,nc)) continue;
+            if (grid[nr][nc] != '#') continue;
+            if (!seen[nr][nc]) {
+                seen[nr][nc] = true;
+                flood_fill(nr,nc);  
+            }
+        }    
+        return 1;
+    };
+
+    for (int r = 0; r < m; ++r) {
+        for (int c = 0; c < n; ++c) {
+            if (grid[r][c] != '#')
+                continue;
+
+            if (!seen[r][c]) {
+                seen[r][c] = true;
+                count += flood_fill(r,c);
+            }
+        }
+    }
+    
+    cout << count << '\n';
+}
+```
+
+
+```py amoebas.py
+m, n = map(int,input().split())
+grid = [input() for _ in range(m)]
+seen = [[False for _ in range(n)] for _ in range(m)]
+dirs = [(dr,dc) for dr in [-1,0,1] for dc in [-1,0,1] if dr or dc]
+in_bounds = lambda r,c: 0<=r<m and 0<=c<n
+
+def flood_fill(sr,sc):
+    stack = []
+    stack.append((sr, sc))
+    while stack:
+        r,c = stack.pop()
+        seen[r][c] = True
+        for dr, dc in dirs:
+            nr, nc = r+dr, c+dc
+            if not in_bounds(nr,nc) or grid[nr][nc]=='.' or seen[nr][nc]:
+                continue
+
+            stack.append((nr, nc))
+                
+amoebas = 0
+
+for r in range(m):
+    for c in range(n):
+        if seen[r][c] or grid[r][c] == '.':
+            continue
+        flood_fill(r,c)
+        amoebas += 1
+        
+print(amoebas)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###
+```
+
+</CH.Code>

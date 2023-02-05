@@ -1,0 +1,139 @@
+---
+title: 'A Question of Ingestion'
+url: 'https://open.kattis.com/problems/ingestion'
+author: 'Kattis'
+tags: ['Dynamic Programming', 'Knapsack Problem', 'Optimization', 'Math'] 
+languages: ['C++', 'Python3']
+difficulty: hard
+date: '2023-02-04'
+---
+*Once I get LateX working on these pages, I'll make this write-up better!*
+This is an optimization problem which can be efficiently solved using dynamic programming (DP).
+
+Given an `n`-course meal, with each couse providing some number of calories, we are tasked
+with optimizing the total number of calories consumed (our "score") by making a series of decisions whether
+to eat a course or skip it. Whether we ate or skipped a course affects the amount we can eat during the next course.
+At each course, we effectively have three options.
+1. Eat this course, adding however many calories we can eat to our score and reducing our future hunger by one third.
+2. Skip this course, replenishing our hunger to what it was the previous round.
+3. Skip two courses, fully replenishing our hunger.
+
+The key observation that enables a DP strategy is this:
+
+
+With `n` be the number of courses in the meal,<br/>
+`x` be the maximum number of consecutive courses you can eat before your hunger becomes 0,<br/>
+`course_value[c]` be the calorie content of course `c`,<br/>
+and `hunger(m)` be the total number of calories we can eat after `m` consecutive meals.
+For `c` in `[1, n]` and `k` in `[1, x]`, the optimal "score" is given by the following recurrence:
+```py
+score(n, x) = 0
+score(c, k) = max(score(c+1, k+1) + course_value[c], # eat course `c`
+                  score(c+1, k-1), # skip course `c`
+                  score(c+2, 0)) # skip both course `c` and course `c+1`
+```
+
+Once you have an expression of your optimal strategy as a recurrence,
+the step that makes it a DP solution is to *memoize* previously computed states of said recurrence.
+
+The state space of our solution is two dimensional, with the extents being `n`, the number of courses, and `x` the maximum number of consecutive courses we can eat before having no appetite. This means we need to allocate an `n`*`x` matrix in which to memoize the states of our recurrence.
+
+Finally, we have a choice as to whether we want to implement our recurrence iteratively or recursively.
+The C++ code below shows the recursive implementation while the Python shows the iterative implementation.
+
+In the C++ solution, I expressed the recurrence in terms of the current course and the *current hunger*;
+in the Python, I expressed the recurrence more like the explanation above, in terms of the current course and *current consecutive meals eaten*.
+They are equivalent, and to store the *current hunger* in the `dp` matrix, I mapped each unique hunger to an index in `[0, x]`
+<CH.Code>
+
+```cpp ingestion.cpp
+#include <iostream>
+#include <vector>
+#include <functional>
+#include <unordered_map>
+
+using ll = long long;
+
+// dp[c][k] = the highest total calories we can consume with a capacity
+ll dp[101][101];
+
+int main () {
+    ll n, m;
+    std::cin>>n>>m;
+    std::vector<ll> courses(n);
+    for (auto& c : courses)
+        std::cin >> c;
+
+    std::unordered_map<ll, ll> cap_idx;
+
+    for (ll amt=m, ate=0; amt > 0; ++ate, amt=2*amt/3)
+        cap_idx[amt]=ate;
+
+    for (int r = 0; r < cap_idx.size(); ++r)
+        for (int c = 0; c < n; ++c)
+            dp[r][c] = -1;
+
+    std::function<ll(ll, ll, int)> select = [&](ll cap, ll prev_cap, int course) {
+        if (cap==0 || course >= n) return 0LL;
+        ll& best_option = dp[cap_idx[cap]][course];
+        if (best_option != -1) return best_option;
+        ll skip1 = select(prev_cap, cap, course+1);
+        ll skip2 = select(m, cap, course+2);
+        ll take  = std::min(courses[course], cap) + select(2*cap/3, cap, course+1);
+        best_option = std::max({skip1, skip2, take});
+        return best_option;
+    };
+
+    ll ans = select(m, m, 0);
+
+    std::cout << ans << '\n';
+    return 0;
+}
+```
+
+
+```py ingestion.py
+dp = [[-1 for i in range(101)] for j in range(101)]
+
+# n,     m
+courses, max_hunger = map(int, input().split())
+cals_per_course = list(map(int, input().split()))
+
+max_consecutive_courses = 0
+h = max_hunger
+while (h > 0):
+    h = h*2//3
+    max_consecutive_courses += 1
+
+# how much can we eat after `k` consecutive courses?
+def hunger(k):
+    appetite = max_hunger
+    for i in range(k):
+        appetite = 2*appetite//3
+    return appetite
+
+# while `score` is recursive, recursion depth will never exceed 1 due to our call order
+def score(course, consecutive_courses):
+    if (course >= courses or k >= max_consecutive_courses):
+        return 0
+    if (dp[course][consecutive_courses] != -1):
+        return dp[course][k]
+    return score(c+1, m+1, depth+1) + min(hunger(consecutive_courses), cals_per_course[course])
+
+for c in range(courses-1, -1, -1):
+    for k in range(max_consecutive_courses-1, -1, -1):
+        take  = score(course=c,   consecutive_courses=m)
+        skip1 = score(course=c+1, consecutive_courses=max(0,m-1))
+        skip2 = score(course=c+2, consecutive_courses=0)
+        dp[c][m] = max(take, skip1, skip2)
+
+print(dp[0][0])
+
+
+
+
+
+###
+```
+
+</CH.Code>

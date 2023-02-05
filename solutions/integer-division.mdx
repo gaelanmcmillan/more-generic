@@ -1,0 +1,47 @@
+---
+title: 'Integer Division'
+url: 'https://open.kattis.com/problems/integerdivision'
+author: 'Kattis'
+tags: ['Math', 'Brute Force', 'Data Structure', 'Hash Table'] 
+languages: ['C++', 'Python3']
+difficulty: medium 
+date: '2023-02-04'
+---
+If we find some number `x` is equal to others we've seen when divided by `d`, our new number will create a pair with each of the previous numerators that map to `x`/`d`. Therefore, we simply add the previous count and continue.
+Keep a map of `numerator : quotient` pairs for constant access to previous divisions.
+<CH.Code>
+
+```cpp integer.cpp
+#include <iostream>
+#include <unordered_map>
+
+using ll = long long;
+using namespace std;
+
+int main () {
+    int n;
+    ll d;
+    cin >> n >> d;
+    unordered_map<ll,ll> v;
+    ll total = 0;
+    for (int i = 0; i < n; ++i) {
+        ll x; cin >> x;
+        total += v[x/d]++;
+    }
+    cout << total << '\n';
+}
+```
+
+
+```py integer.py
+from collections import defaultdict
+n,d = map(int, input().split())
+groups = defaultdict(int)
+total = 0
+for x in map(int, input().split()):
+    total += groups[x//d]
+    groups[x//d] += 1
+print(total)
+```
+
+</CH.Code>

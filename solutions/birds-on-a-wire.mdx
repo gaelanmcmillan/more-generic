@@ -1,0 +1,89 @@
+---
+title: 'Birds on a Wire'
+url: 'https://open.kattis.com/problems/birds'
+author: 'Kattis'
+tags: ['Greedy', 'Math'] 
+languages: ['C++', 'Python3']
+difficulty: medium
+date: '2023-02-04'
+---
+The problem input provides us the length of the wire, the minimum distance between two birds, and the positions of each bird so far.
+All we need to do to maximize the number of additional birds on the wire is to greedily place a new bird wherever it can fit, i.e. the minimum distance from the previous bird.
+Although we don't need to place one bird at a time--since the minimum distance is constant, the number of birds we can fit on an empty section of the wire that spans `[start,end]` is `(end-start)/minimum distance + 1`.
+The tricky part is determining the start and end of each section. Once that is done, simply cram as many birds onto the wire as possible and report the total.
+<CH.Code>
+
+```cpp birds.cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+using ll = long long;
+
+// birds can't sit any closer to the poles than this
+const ll offset = 6;
+
+int main () {
+    ll n, l, d;
+    cin >> l >> d >> n;
+    vector<ll> birds (n);
+    for (auto& b : birds) cin >> b;
+    sort(birds.begin(), birds.end());
+
+    if (n == 0) {
+        cout << (l - 2*offset) / d + 1 << '\n';
+        return;
+    }
+
+    int totalBirds = 0;
+    for (int i = 0; i <= n; i++) {
+        ll start = i == 0 ? offset : birds[i - 1] + d;
+        ll end   = i == n ? l - offset : birds[i] - d;
+        if (start <= ) {
+            totalBirds += (end - start) / d + 1;
+        }
+    }
+    cout << totalBirds << '\n';
+    return 0;
+}
+```
+
+
+```py birds.py
+l,d,n = map(int, input().split())
+birds = [int(input()) for _ in range(n)]
+birds.sort()
+offset = 6
+
+def fill_interval(start, end, gap):
+    return (end - start) // gap + 1 if start <= end else 0
+
+if n == 0:
+    print(fill_interval(0, l - 2*offset, d))
+else:
+    total = 0
+    for i in range(n+1):
+        start = offset if i==0 else birds[i-1] + d
+        end = l - offset if i==n else birds[i] - d
+        total += fill_interval(start, end, d)
+        
+    print(total)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###
+```
+
+</CH.Code>
