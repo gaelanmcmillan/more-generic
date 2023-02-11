@@ -1,0 +1,53 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+  int longestPath(vector<int> &parent, string s) {
+    const int n = parent.size();
+
+    vector<int> childOf(n, -1), siblingOf(n, -1), lengthFrom(n, -1);
+
+    // keep a flat, singly linked connection through the graph
+    for (int i = 1; i < n; ++i) {
+      if (s[i] != s[parent[i]]) {
+        siblingOf[i] = childOf[parent[i]];
+        childOf[parent[i]] = i;
+      }
+    }
+
+    int longest = 0;
+
+    const function<int(int)> traverse = [&](int node) {
+      // if the best length from this node is known, return it immediately
+      if (lengthFrom[node] != -1)
+        return lengthFrom[node];
+
+      // we either treat this node as the root and take the two best of its
+      // branches, or pass the best branch from this node up to its parent
+      int rank_1 = 0, rank_2 = 0;
+
+      for (int child = childOf[node]; child != -1; child = siblingOf[child]) {
+        int val = traverse(child);
+
+        if (val > rank_1) {
+          rank_2 = rank_1;
+          rank_1 = val;
+        } else if (val > rank_2) {
+          rank_2 = val;
+        }
+      }
+
+      longest = max(longest, 1 + rank_1 + rank_2);
+      lengthFrom[node] = rank_1 + 1;
+      return lengthFrom[node];
+    };
+
+    for (int i = 0; i < n; ++i)
+      traverse(i);
+
+    return longest;
+  }
+};

@@ -68,7 +68,7 @@ const SolutionPage = ({
 export default SolutionPage;
 
 export async function getStaticPaths() {
-  let files = fs.readdirSync(path.join("solutions"));
+  let files = fs.readdirSync(path.join("static_media", "solutions"));
   let paths = files.map((filename) => ({
     params: {
       slug: filename.replace(".mdx", ""),
@@ -83,7 +83,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params: { slug } }) {
   let rawMarkdown = fs.readFileSync(
-    path.join("solutions", slug + ".mdx"),
+    path.join("static_media", "solutions", slug + ".mdx"),
     "utf-8"
   );
 

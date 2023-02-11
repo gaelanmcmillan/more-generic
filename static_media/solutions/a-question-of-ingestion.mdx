@@ -109,7 +109,7 @@ while (h > 0):
 # how much can we eat after `k` consecutive courses?
 def hunger(k):
     appetite = max_hunger
-    for i in range(k):
+    for _ in range(k):
         appetite = 2*appetite//3
     return appetite
 
@@ -119,14 +119,14 @@ def score(course, consecutive_courses):
         return 0
     if (dp[course][consecutive_courses] != -1):
         return dp[course][k]
-    return score(c+1, m+1, depth+1) + min(hunger(consecutive_courses), cals_per_course[course])
+    return score(c+1, max_hunger+1) + min(hunger(consecutive_courses), cals_per_course[course])
 
 for c in range(courses-1, -1, -1):
     for k in range(max_consecutive_courses-1, -1, -1):
-        take  = score(course=c,   consecutive_courses=m)
-        skip1 = score(course=c+1, consecutive_courses=max(0,m-1))
+        take  = score(course=c,   consecutive_courses=k)
+        skip1 = score(course=c+1, consecutive_courses=max(0,k-1))
         skip2 = score(course=c+2, consecutive_courses=0)
-        dp[c][m] = max(take, skip1, skip2)
+        dp[c][max_hunger] = max(take, skip1, skip2)
 
 print(dp[0][0])
 

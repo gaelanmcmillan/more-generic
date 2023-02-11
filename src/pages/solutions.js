@@ -70,13 +70,13 @@ const SolutionsPage = ({ posts }) => {
 export default SolutionsPage;
 
 export async function getStaticProps() {
-  const files = fs.readdirSync(path.join("solutions"));
+  const files = fs.readdirSync(path.join("static_media", "solutions"));
 
   const posts = files
     .map((filename) => {
       let slug = filename.replace(".mdx", "");
       let rawMarkdown = fs.readFileSync(
-        path.join("solutions", filename),
+        path.join("static_media", "solutions", filename),
         "utf-8"
       );
       let { data: frontmatter } = matter(rawMarkdown);

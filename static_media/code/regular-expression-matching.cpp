@@ -1,0 +1,61 @@
+#include <array>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+  struct state {
+    char c;
+    bool star;
+  };
+
+  template <class II>
+  auto pattern_as_states(II begin, II end, const string &p) {
+    for (int i = 0; i < p.size(); i++) {
+      if (next(begin) != end and p[i + 1] == '*') {
+        *begin++ = {p[i++], true};
+      } else {
+        *begin++ = {p[i], false};
+      }
+    }
+    return begin;
+  }
+
+  inline bool satisfies(char c, state s) { return (c == s.c or s.c == '.'); }
+
+  template <class SI, class II>
+  bool recursive_match(SI strBegin, SI strEnd, II begin, II end) {
+
+    if (strBegin == strEnd || begin == end) {
+      while (begin != end && begin->star)
+        begin++;
+      return (strBegin == strEnd && begin == end);
+    }
+
+    if (satisfies(*strBegin, *begin)) {
+      if (begin->star)
+        return recursive_match(strBegin, strEnd, begin + 1, end) ||
+               recursive_match(strBegin + 1, strEnd, begin, end) ||
+               recursive_match(strBegin + 1, strEnd, begin + 1, end);
+
+      else
+        return recursive_match(strBegin + 1, strEnd, begin + 1, end);
+    }
+
+    return begin->star and recursive_match(strBegin, strEnd, begin + 1, end);
+  }
+
+  array<state, 30> states{};
+
+  bool isMatch(const string s, const string p) {
+    int pLen = p.size();
+    auto ens = pattern_as_states(states.begin(), states.end(), p);
+
+    auto end = unique(states.begin(), ens, [](const state a, const state b) {
+      return a.c == b.c and a.star and b.star;
+    });
+
+    return recursive_match(s.begin(), s.end(), states.begin(), end);
+  }
+};

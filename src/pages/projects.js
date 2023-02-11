@@ -222,12 +222,15 @@ export default Projects;
 const dirName = "projects";
 
 export async function getStaticProps() {
-  const files = fs.readdirSync(path.join(dirName));
+  const files = fs.readdirSync(path.join("static_media", dirName));
 
   const projects = files
     .map((filename) => {
       let slug = filename.replace(".mdx", "");
-      let rawMarkdown = fs.readFileSync(path.join(dirName, filename), "utf-8");
+      let rawMarkdown = fs.readFileSync(
+        path.join("static_media", dirName, filename),
+        "utf-8"
+      );
       let { data: frontmatter } = matter(rawMarkdown);
       return {
         slug,
