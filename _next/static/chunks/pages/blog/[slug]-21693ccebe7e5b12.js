@@ -1,1 +1,0 @@
-(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[492],{6853:function(n,u,t){"use strict";t.r(u);var r=t(5893),c=function(){return(0,r.jsx)(r.Fragment,{})};u.default=c},9937:function(n,u,t){(window.__NEXT_P=window.__NEXT_P||[]).push(["/blog/[slug]",function(){return t(6853)}])}},function(n){n.O(0,[774,888,179],function(){return n(n.s=9937)}),_N_E=n.O()}]);
