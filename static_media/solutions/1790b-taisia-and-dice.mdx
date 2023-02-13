@@ -11,11 +11,13 @@ We're given the `n`, `s`, and `r`, where
 + `n` is a number of 6-sided dice
 + `s` is the sum of a roll of said dice
 + `r` is the sum of the remaining dice when one of the maximum-value dice is "stolen"
+<br />
 The task is to reconstruct a possible roll (a set of `n` dice) that fits the information above.
 The detail that the stolen die is also the max value that appears in the roll is key.
 We can recover the value of the stolen die by taking `s - r`. From this point, reconstructing a valid roll
 is just a matter of evenly spreading the remaining sum, `r`, across `n - 1` dice. Namely, set each remaining die to the *integer average* of the remaining sum.
 Then, assuming there is some leftover value to be added to the total due to integer truncation, spread this "surplus" evenly across the dice while making sure no individual value exceeds the stolen die's value.
+
 <CH.Code>
 
 ```cpp 
