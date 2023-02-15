@@ -1,4 +1,6 @@
 import BowlingAlley from "../components/BowlingAlley";
+import Head from "next/head";
+
 import styled from "styled-components";
 import Link from "next/link";
 import {
@@ -44,58 +46,64 @@ const socialsLinks = [
 
 export default function AboutPage() {
   return (
-    <AnimationLayout>
-      <BowlingAlley>
-        <div className={`${info_block}`}>
-          <div className={`${info_header}`}>
-            <h2>Thanks for stopping by!</h2>
+    <>
+      <Head>
+        <title>About | Gaelan M</title>
+      </Head>
+      <AnimationLayout>
+        <BowlingAlley>
+          <div className={`${info_block}`}>
+            <div className={`${info_header}`}>
+              <h2>Thanks for stopping by!</h2>
+            </div>
+            <ProfilePicture className="soft-radius soft-shadow">
+              <img src="/images/ProfilePicture.JPG" />
+            </ProfilePicture>
+            <p>
+              My name is Gaelan McMillan.
+              <br />
+              I am an avid programmer and professional musician based in
+              Toronto.
+              <br />I currently study Computer Science at Toronto Metropolitan
+              University.
+            </p>
+            <p>
+              I love exploring the many ways a problem can be solved, as well as
+              finding the common throughlines between different problems. I
+              created this site as a place to amalgamate my notes on specific
+              algorithms and share solutions to various coding challenges.
+            </p>
+            <p>
+              I don't purport to be an expert on the topics I write about,
+              especially programming! If you have any feedback on my writing,
+              please don't hesitate to contact me!
+            </p>
           </div>
-          <ProfilePicture className="soft-radius soft-shadow">
-            <img src="/images/ProfilePicture.JPG" />
-          </ProfilePicture>
-          <p>
-            My name is Gaelan McMillan.
-            <br />
-            I am an avid programmer and professional musician based in Toronto.
-            <br />I currently study Computer Science at Toronto Metropolitan
-            University.
-          </p>
-          <p>
-            I love exploring the many ways a problem can be solved, as well as
-            finding the common throughlines between different problems. I
-            created this site as a place to amalgamate my notes on specific
-            algorithms and share solutions to various coding challenges.
-          </p>
-          <p>
-            I don't purport to be an expert on the topics I write about,
-            especially programming! If you have any feedback on my writing,
-            please don't hesitate to contact me!
-          </p>
-        </div>
 
-        <div className={`${info_block} soft-shadow soft-radius-outer`}>
-          <div className={`${info_header}`}>
-            <h2>Let's connect!</h2>
-          </div>
+          <div className={`${info_block} soft-shadow soft-radius-outer`}>
+            <div className={`${info_header}`}>
+              <h2>Let's connect!</h2>
+            </div>
 
-          <div className={`${about_nav}`}>
-            {socialsLinks.map(({ href, title, external }, i) => {
-              return (
-                <Link href={href} key={i}>
-                  <div className="outgoing-link">
-                    <a>
-                      <h4>
-                        {title}
-                        {external ? " ⧉" : ""}
-                      </h4>
-                    </a>
-                  </div>
-                </Link>
-              );
-            })}
+            <div className={`${about_nav}`}>
+              {socialsLinks.map(({ href, title, external }, i) => {
+                return (
+                  <Link href={href} key={i}>
+                    <div className="outgoing-link">
+                      <a>
+                        <h4>
+                          {title}
+                          {external ? " ⧉" : ""}
+                        </h4>
+                      </a>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </BowlingAlley>
-    </AnimationLayout>
+        </BowlingAlley>
+      </AnimationLayout>
+    </>
   );
 }

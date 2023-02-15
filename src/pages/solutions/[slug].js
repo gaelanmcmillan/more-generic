@@ -6,6 +6,7 @@ import rehypeKatex from "rehype-katex";
 import { CH } from "@code-hike/mdx/components";
 import theme from "shiki/themes/solarized-dark.json";
 
+import Head from "next/head";
 import ToolTip from "../../components/ToolTip";
 import MaskedImage from "../../components/MaskedImage";
 import BowlingAlley from "../../components/BowlingAlley";
@@ -41,27 +42,32 @@ const SolutionPage = ({
   source,
 }) => {
   return (
-    <AnimationLayout>
-      <BowlingAlley lg={6} md={8} sm={12} xs={12}>
-        <h1>
-          <a href={url}>{title} ⧉</a>
-        </h1>
-        <MDXRemote
-          {...source}
-          components={{ CH, ToolTip, MaskedImage, InlineImage }}
-        />
-        <div style={{ marginBottom: "1rem", textAlign: "center" }}>
-          <p>If you found this solution helpful, consider leaving a star!</p>
-          <iframe
-            src="https://ghbtns.com/github-btn.html?user=gaelanmcmillan&repo=more-generic&type=star&count=true&size=large"
-            frameborder="0"
-            width="120"
-            height="30"
-            title="GitHub"
-          ></iframe>
-        </div>
-      </BowlingAlley>
-    </AnimationLayout>
+    <>
+      <Head>
+        <title>{title} | Gaelan M</title>
+      </Head>
+      <AnimationLayout>
+        <BowlingAlley lg={6} md={8} sm={12} xs={12}>
+          <h1>
+            <a href={url}>{title} ⧉</a>
+          </h1>
+          <MDXRemote
+            {...source}
+            components={{ CH, ToolTip, MaskedImage, InlineImage }}
+          />
+          <div style={{ marginBottom: "1rem", textAlign: "center" }}>
+            <p>If you found this solution helpful, consider leaving a star!</p>
+            <iframe
+              src="https://ghbtns.com/github-btn.html?user=gaelanmcmillan&repo=more-generic&type=star&count=true&size=large"
+              frameborder="0"
+              width="120"
+              height="30"
+              title="GitHub"
+            ></iframe>
+          </div>
+        </BowlingAlley>
+      </AnimationLayout>
+    </>
   );
 };
 

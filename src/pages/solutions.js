@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import Head from "next/head";
 import matter from "gray-matter";
 import SolutionsCard from "../components/SolutionCard";
 import BowlingAlley from "../components/BowlingAlley";
@@ -13,57 +14,62 @@ import {
 const SolutionsPage = ({ posts }) => {
   const [tagList, clearTagList, addTagToList, removeTagFromList] = useTagList();
   return (
-    <AnimationLayout>
-      <BowlingAlley>
-        <div
-          style={{
-            marginBottom: "1rem",
-            width: "100%",
-            textAlign: "center",
-          }}
-        >
-          <i>Click on tags to filter solutions by category or language.</i>
-        </div>
-        <TagListView
-          tagList={tagList}
-          clearListCallback={clearTagList}
-          removeTagCallback={removeTagFromList}
-        />
-        {posts
-          .filter(
-            (post) =>
-              tagList.length === 0 ||
-              firstHasAllOfSecond(
-                post.frontmatter.tags.concat(post.frontmatter.languages),
-                tagList
-              )
-          )
-          .map((sol, index) => (
-            <SolutionsCard
-              key={index}
-              slug={sol.slug}
-              title={sol.frontmatter.title}
-              tags={sol.frontmatter.tags}
-              url={sol.frontmatter.url}
-              languages={sol.frontmatter.languages}
-              date={sol.frontmatter.date}
-              author={sol.frontmatter.author}
-              addTagCallback={addTagToList}
-              difficulty={sol.frontmatter.difficulty}
-            />
-          ))}
-        <div style={{ marginBottom: "1rem", textAlign: "center" }}>
-          <p>If you found a solution helpful, consider leaving a star!</p>
-          <iframe
-            src="https://ghbtns.com/github-btn.html?user=gaelanmcmillan&repo=more-generic&type=star&count=true&size=large"
-            frameborder="0"
-            width="120"
-            height="30"
-            title="GitHub"
-          ></iframe>
-        </div>
-      </BowlingAlley>
-    </AnimationLayout>
+    <>
+      <Head>
+        <title>Solutions | Gaelan M</title>
+      </Head>
+      <AnimationLayout>
+        <BowlingAlley>
+          <div
+            style={{
+              marginBottom: "1rem",
+              width: "100%",
+              textAlign: "center",
+            }}
+          >
+            <i>Click on tags to filter solutions by category or language.</i>
+          </div>
+          <TagListView
+            tagList={tagList}
+            clearListCallback={clearTagList}
+            removeTagCallback={removeTagFromList}
+          />
+          {posts
+            .filter(
+              (post) =>
+                tagList.length === 0 ||
+                firstHasAllOfSecond(
+                  post.frontmatter.tags.concat(post.frontmatter.languages),
+                  tagList
+                )
+            )
+            .map((sol, index) => (
+              <SolutionsCard
+                key={index}
+                slug={sol.slug}
+                title={sol.frontmatter.title}
+                tags={sol.frontmatter.tags}
+                url={sol.frontmatter.url}
+                languages={sol.frontmatter.languages}
+                date={sol.frontmatter.date}
+                author={sol.frontmatter.author}
+                addTagCallback={addTagToList}
+                difficulty={sol.frontmatter.difficulty}
+              />
+            ))}
+          <div style={{ marginBottom: "1rem", textAlign: "center" }}>
+            <p>If you found a solution helpful, consider leaving a star!</p>
+            <iframe
+              src="https://ghbtns.com/github-btn.html?user=gaelanmcmillan&repo=more-generic&type=star&count=true&size=large"
+              frameborder="0"
+              width="120"
+              height="30"
+              title="GitHub"
+            ></iframe>
+          </div>
+        </BowlingAlley>
+      </AnimationLayout>
+    </>
   );
 };
 

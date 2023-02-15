@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import Head from "next/head";
 import BowlingAlley from "../components/BowlingAlley";
 import { AnimationLayout } from "../components/Transition";
 import { useState } from "react";
@@ -67,110 +68,119 @@ const ProjectCard = ({
     hooks.useWindowDimensions();
 
   return (
-    <hooks.DivWithOutsideClickCallback
-      callback={() => {
-        setIsOpen(false);
-      }}
-    >
-      <card.Wrapper
-        className="soft-shadow soft-radius"
-        onClick={() => {
-          setIsOpen(true);
-          setWindowDimensions(getWindowDimensions());
+    <>
+    <Head>
+        <title>Projects | Gaelan M</title>
+      </Head>
+      <hooks.DivWithOutsideClickCallback
+        callback={() => {
+          setIsOpen(false);
         }}
       >
-        <card.ThumbnailWrapper percentageOfWrapperWidth={"20"}>
-          <card.Thumbnail width="90%" height="90%">
-            <MaskedImage
-              width="100%"
-              height="100%"
-              src={thumbnail}
-              foreground="var(--colorbox-foreground)"
-              background="transparent"
-            >
-              <card.HoverThumbnail></card.HoverThumbnail>
-            </MaskedImage>
-          </card.Thumbnail>
-        </card.ThumbnailWrapper>
-        <card.InfoWrapper>
-          <card.InfoContent>
-            <h2>{title}</h2>
-            <div style={{ paddingBottom: "1rem" }}>{excerpt}</div>
-            <FlexCol style={{ marginTop: "auto" }}>
-              <div>
-                {tags.map((tag, i) => (
-                  <TagBubble key={i} tag={tag} onClick={addTagCallback(tag)} />
-                ))}
-                {languages.map((lang, i) => (
-                  <TagBubble
-                    key={i}
-                    tag={lang}
-                    onClick={addTagCallback(lang)}
-                  />
-                ))}
-              </div>
-              <div>
-                {author}
-                {" • "}
-                {date}
-              </div>
-            </FlexCol>
-          </card.InfoContent>
-        </card.InfoWrapper>
-      </card.Wrapper>
+        <card.Wrapper
+          className="soft-shadow soft-radius"
+          onClick={() => {
+            setIsOpen(true);
+            setWindowDimensions(getWindowDimensions());
+          }}
+        >
+          <card.ThumbnailWrapper percentageOfWrapperWidth={"20"}>
+            <card.Thumbnail width="90%" height="90%">
+              <MaskedImage
+                width="100%"
+                height="100%"
+                src={thumbnail}
+                foreground="var(--colorbox-foreground)"
+                background="transparent"
+              >
+                <card.HoverThumbnail></card.HoverThumbnail>
+              </MaskedImage>
+            </card.Thumbnail>
+          </card.ThumbnailWrapper>
+          <card.InfoWrapper>
+            <card.InfoContent>
+              <h2>{title}</h2>
+              <div style={{ paddingBottom: "1rem" }}>{excerpt}</div>
+              <FlexCol style={{ marginTop: "auto" }}>
+                <div>
+                  {tags.map((tag, i) => (
+                    <TagBubble
+                      key={i}
+                      tag={tag}
+                      onClick={addTagCallback(tag)}
+                    />
+                  ))}
+                  {languages.map((lang, i) => (
+                    <TagBubble
+                      key={i}
+                      tag={lang}
+                      onClick={addTagCallback(lang)}
+                    />
+                  ))}
+                </div>
+                <div>
+                  {author}
+                  {" • "}
+                  {date}
+                </div>
+              </FlexCol>
+            </card.InfoContent>
+          </card.InfoWrapper>
+        </card.Wrapper>
 
-      <ProjectPreviewPane
-        className="soft-radius soft-shadow tooltip-bg-color"
-        left={windowDimensions.width / 2}
-        top={windowDimensions.height / 2}
-        isVisible={isOpen}
-      >
-        {/* <div style={{display: "flex", textAlign: "center"}}> */}
-        <div style={{ textAlign: "center" }}>
-          <h1>{title}</h1>
-          <div style={{ marginBottom: "0.5rem" }}>
-            Topics:{" "}
-            {tags.map((tag, i) => (
-              <TagBubble key={i} tag={tag} />
-            ))}
+        <ProjectPreviewPane
+          className="soft-radius soft-shadow tooltip-bg-color"
+          left={windowDimensions.width / 2}
+          top={windowDimensions.height / 2}
+          isVisible={isOpen}
+        >
+          {/* <div style={{display: "flex", textAlign: "center"}}> */}
+          <div style={{ textAlign: "center" }}>
+            <h1>{title}</h1>
+            <div style={{ marginBottom: "0.5rem" }}>
+              Topics:{" "}
+              {tags.map((tag, i) => (
+                <TagBubble key={i} tag={tag} />
+              ))}
+            </div>
+            <div style={{ marginBottom: "0.5rem" }}>
+              Langauges:{" "}
+              {languages.map((lang, i) => (
+                <TagBubble key={i} tag={lang} onClick={undefined} />
+              ))}
+            </div>
+            {demolink !== undefined ? (
+              <a href={demolink}>
+                <h3>Demo ⧉</h3>
+              </a>
+            ) : (
+              <></>
+            )}
+            {demoimg !== undefined ? (
+              <img
+                src={demoimg}
+                style={{
+                  width: "80%",
+                  borderRadius: "1rem",
+                  marginBottom: "1rem",
+                }}
+                alt="A visual sample of the project."
+              ></img>
+            ) : (
+              <></>
+            )}
+            <p>{body}</p>
+            {gitlink !== undefined ? (
+              <a href={gitlink}>
+                <h3>GitHub ⧉</h3>
+              </a>
+            ) : (
+              <></>
+            )}
           </div>
-          <div style={{ marginBottom: "0.5rem" }}>
-            Langauges:{" "}
-            {languages.map((lang, i) => (
-              <TagBubble key={i} tag={lang} onClick={undefined} />
-            ))}
-          </div>
-          {demolink !== undefined ? (
-            <a href={demolink}>
-              <h3>Demo ⧉</h3>
-            </a>
-          ) : (
-            <></>
-          )}
-          {demoimg !== undefined ? (
-            <img
-              src={demoimg}
-              style={{
-                width: "80%",
-                borderRadius: "1rem",
-                marginBottom: "1rem",
-              }}
-              alt="A visual sample of the project."
-            ></img>
-          ) : (
-            <></>
-          )}
-          <p>{body}</p>
-          {gitlink !== undefined ? (
-            <a href={gitlink}>
-              <h3>GitHub ⧉</h3>
-            </a>
-          ) : (
-            <></>
-          )}
-        </div>
-      </ProjectPreviewPane>
-    </hooks.DivWithOutsideClickCallback>
+        </ProjectPreviewPane>
+      </hooks.DivWithOutsideClickCallback>
+    </>
   );
 };
 
