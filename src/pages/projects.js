@@ -48,28 +48,14 @@ const FlexCol = styled.div`
   // border: 1px solid red;
 `;
 
-const ProjectCard = ({
-  title,
-  author,
-  excerpt,
-  date,
-  demoimg,
-  demolink,
-  gitlink,
-  thumbnail,
-  tags,
-  languages,
-  body,
-  addTagCallback,
-  removeTagCallback,
-}) => {
+const ProjectCard = ({project, addTagCallback, removeTagCallback}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [windowDimensions, setWindowDimensions, getWindowDimensions] =
     hooks.useWindowDimensions();
 
   return (
     <>
-    <Head>
+      <Head>
         <title>Projects | Gaelan M</title>
       </Head>
       <hooks.DivWithOutsideClickCallback
@@ -89,7 +75,7 @@ const ProjectCard = ({
               <MaskedImage
                 width="100%"
                 height="100%"
-                src={thumbnail}
+                src={project.frontmatter.thumbnail}
                 foreground="var(--colorbox-foreground)"
                 background="transparent"
               >
@@ -99,18 +85,18 @@ const ProjectCard = ({
           </card.ThumbnailWrapper>
           <card.InfoWrapper>
             <card.InfoContent>
-              <h2>{title}</h2>
-              <div style={{ paddingBottom: "1rem" }}>{excerpt}</div>
+              <h2>{project.frontmatter.title}</h2>
+              <div style={{ paddingBottom: "1rem" }}>{project.frontmatter.excerpt}</div>
               <FlexCol style={{ marginTop: "auto" }}>
                 <div>
-                  {tags.map((tag, i) => (
+                  {project.frontmatter.tags.map((tag, i) => (
                     <TagBubble
                       key={i}
                       tag={tag}
                       onClick={addTagCallback(tag)}
                     />
                   ))}
-                  {languages.map((lang, i) => (
+                  {project.frontmatter.languages.map((lang, i) => (
                     <TagBubble
                       key={i}
                       tag={lang}
@@ -119,9 +105,9 @@ const ProjectCard = ({
                   ))}
                 </div>
                 <div>
-                  {author}
+                  {project.frontmatter.author}
                   {" • "}
-                  {date}
+                  {project.frontmatter.date}
                 </div>
               </FlexCol>
             </card.InfoContent>
@@ -134,31 +120,30 @@ const ProjectCard = ({
           top={windowDimensions.height / 2}
           isVisible={isOpen}
         >
-          {/* <div style={{display: "flex", textAlign: "center"}}> */}
           <div style={{ textAlign: "center" }}>
-            <h1>{title}</h1>
+            <h1>{project.frontmatter.title}</h1>
             <div style={{ marginBottom: "0.5rem" }}>
               Topics:{" "}
-              {tags.map((tag, i) => (
+              {project.frontmatter.tags.map((tag, i) => (
                 <TagBubble key={i} tag={tag} />
               ))}
             </div>
             <div style={{ marginBottom: "0.5rem" }}>
               Langauges:{" "}
-              {languages.map((lang, i) => (
+              {project.frontmatter.languages.map((lang, i) => (
                 <TagBubble key={i} tag={lang} onClick={undefined} />
               ))}
             </div>
-            {demolink !== undefined ? (
-              <a href={demolink}>
+            {project.frontmatter.demolink !== undefined ? (
+              <a href={project.frontmatter.demolink}>
                 <h3>Demo ⧉</h3>
               </a>
             ) : (
               <></>
             )}
-            {demoimg !== undefined ? (
+            {project.frontmatter.demoimg !== undefined ? (
               <img
-                src={demoimg}
+                src={project.frontmatter.demoimg}
                 style={{
                   width: "80%",
                   borderRadius: "1rem",
@@ -169,9 +154,9 @@ const ProjectCard = ({
             ) : (
               <></>
             )}
-            <p>{body}</p>
-            {gitlink !== undefined ? (
-              <a href={gitlink}>
+            <p>{project.frontmatter.body}</p>
+            {project.frontmatter.gitlink !== undefined ? (
+              <a href={project.frontmatter.gitlink}>
                 <h3>GitHub ⧉</h3>
               </a>
             ) : (
@@ -206,20 +191,8 @@ const Projects = ({ projects }) => {
           )
           .map((project, index) => (
             <ProjectCard
-              key={index}
-              title={project.frontmatter.title}
-              excerpt={project.frontmatter.excerpt}
-              date={project.frontmatter.date}
-              author={project.frontmatter.author}
-              thumbnail={project.frontmatter.thumbnail}
-              tags={project.frontmatter.tags}
-              languages={project.frontmatter.languages}
-              body={project.frontmatter.body}
-              demoimg={project.frontmatter.demoimg}
-              demolink={project.frontmatter.demolink}
-              gitlink={project.frontmatter.gitlink}
+              project={project}
               addTagCallback={addToTagList}
-              removeTagCallback={removeTagFromList}
             />
           ))}
       </BowlingAlley>
@@ -233,7 +206,7 @@ const dirName = "projects";
 
 export async function getStaticProps() {
   const files = fs.readdirSync(path.join("static_media", dirName));
-
+  let tagSet = new Set();
   const projects = files
     .map((filename) => {
       let slug = filename.replace(".mdx", "");
@@ -242,16 +215,22 @@ export async function getStaticProps() {
         "utf-8"
       );
       let { data: frontmatter } = matter(rawMarkdown);
+      for (let tag of frontmatter.tags) {
+        tagSet.add(tag);
+      }
+
       return {
         slug,
         frontmatter,
       };
     })
     .sort((a, b) => (a.frontmatter.date < b.frontmatter.date ? 1 : -1));
-
+  let allTags = [];
+  for (let tag of tagSet) allTags.push(tag);
   return {
     props: {
       projects,
+      allTags,
     },
   };
 }
