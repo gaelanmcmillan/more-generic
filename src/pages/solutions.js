@@ -14,7 +14,6 @@ import { AnimationLayout } from "../components/Transition";
 
 const SolutionsPage = ({ posts, allTags }) => {
   const [tagList, clearTagList, addTagToList, removeTagFromList] = useTagList();
-  console.log(allTags);
   return (
     <>
       <Head>
