@@ -5,14 +5,16 @@ import matter from "gray-matter";
 import SolutionsCard from "../components/SolutionCard";
 import BowlingAlley from "../components/BowlingAlley";
 import { AnimationLayout } from "../components/Transition";
-import {
+  
+  import TagBubble, {
   useTagList,
   TagListView,
   firstHasAllOfSecond,
 } from "../components/TagBubble";
 
-const SolutionsPage = ({ posts }) => {
+const SolutionsPage = ({ posts, allTags }) => {
   const [tagList, clearTagList, addTagToList, removeTagFromList] = useTagList();
+  console.log(allTags);
   return (
     <>
       <Head>
@@ -28,6 +30,13 @@ const SolutionsPage = ({ posts }) => {
             }}
           >
             <i>Click on tags to filter solutions by category or language.</i>
+          </div>
+          <div style={{ marginBottom: "1rem" }}>
+            {allTags.map((tag, i) => {
+              return (
+                <TagBubble key={i} tag={tag} onClick={addTagToList(tag)} />
+              );
+            })}
           </div>
           <TagListView
             tagList={tagList}
@@ -61,7 +70,6 @@ const SolutionsPage = ({ posts }) => {
             <p>If you found a solution helpful, consider leaving a star!</p>
             <iframe
               src="https://ghbtns.com/github-btn.html?user=gaelanmcmillan&repo=more-generic&type=star&count=true&size=large"
-              frameborder="0"
               width="120"
               height="30"
               title="GitHub"
@@ -93,9 +101,24 @@ export async function getStaticProps() {
     })
     .sort((a, b) => (a.frontmatter.date < b.frontmatter.date ? 1 : -1));
 
+  let allTags = (() => {
+    let tagSet = new Set();
+    let tags = posts.flatMap((post) => {
+      return post.frontmatter.tags.filter((tag) => {
+        if (!tagSet.has(tag)) {
+          tagSet.add(tag);
+          return true;
+        }
+        return false;
+      });
+    });
+    return tags.sort();
+  })();
+
   return {
     props: {
       posts,
+      allTags,
     },
   };
 }

@@ -48,7 +48,7 @@ const FlexCol = styled.div`
   // border: 1px solid red;
 `;
 
-const ProjectCard = ({project, addTagCallback, removeTagCallback}) => {
+const ProjectCard = ({ project, addTagCallback, removeTagCallback }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [windowDimensions, setWindowDimensions, getWindowDimensions] =
     hooks.useWindowDimensions();
@@ -86,7 +86,9 @@ const ProjectCard = ({project, addTagCallback, removeTagCallback}) => {
           <card.InfoWrapper>
             <card.InfoContent>
               <h2>{project.frontmatter.title}</h2>
-              <div style={{ paddingBottom: "1rem" }}>{project.frontmatter.excerpt}</div>
+              <div style={{ paddingBottom: "1rem" }}>
+                {project.frontmatter.excerpt}
+              </div>
               <FlexCol style={{ marginTop: "auto" }}>
                 <div>
                   {project.frontmatter.tags.map((tag, i) => (
@@ -169,12 +171,16 @@ const ProjectCard = ({project, addTagCallback, removeTagCallback}) => {
   );
 };
 
-const Projects = ({ projects }) => {
+const Projects = ({ projects, allTags }) => {
   const [tagList, clearTagList, addToTagList, removeTagFromList] = useTagList();
-
   return (
     <AnimationLayout>
       <BowlingAlley>
+        <div style={{ marginBottom: "1rem" }}>
+          {allTags.map((tag, i) => {
+            return <TagBubble key={i} tag={tag} onClick={addToTagList(tag)} />;
+          })}
+        </div>
         <TagListView
           tagList={tagList}
           clearListCallback={clearTagList}
@@ -190,10 +196,7 @@ const Projects = ({ projects }) => {
               )
           )
           .map((project, index) => (
-            <ProjectCard
-              project={project}
-              addTagCallback={addToTagList}
-            />
+            <ProjectCard project={project} addTagCallback={addToTagList} />
           ))}
       </BowlingAlley>
     </AnimationLayout>
@@ -206,7 +209,7 @@ const dirName = "projects";
 
 export async function getStaticProps() {
   const files = fs.readdirSync(path.join("static_media", dirName));
-  let tagSet = new Set();
+  // let tagSet = new Set();
   const projects = files
     .map((filename) => {
       let slug = filename.replace(".mdx", "");
@@ -215,9 +218,9 @@ export async function getStaticProps() {
         "utf-8"
       );
       let { data: frontmatter } = matter(rawMarkdown);
-      for (let tag of frontmatter.tags) {
-        tagSet.add(tag);
-      }
+      // for (let tag of frontmatter.tags) {
+      //   tagSet.add(tag);
+      // }
 
       return {
         slug,
@@ -225,8 +228,21 @@ export async function getStaticProps() {
       };
     })
     .sort((a, b) => (a.frontmatter.date < b.frontmatter.date ? 1 : -1));
-  let allTags = [];
-  for (let tag of tagSet) allTags.push(tag);
+
+  let allTags = (() => {
+    let tagSet = new Set();
+    let tags = projects.flatMap(project => {
+      return project.frontmatter.tags.filter((tag) => {
+        if (!tagSet.has(tag)) {
+          tagSet.add(tag);
+          return true;
+        }
+        return false;
+      });
+    });
+    return tags.sort();
+  })();
+
   return {
     props: {
       projects,
