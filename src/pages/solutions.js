@@ -103,13 +103,15 @@ export async function getStaticProps() {
   let allTags = (() => {
     let tagSet = new Set();
     let tags = posts.flatMap((post) => {
-      return post.frontmatter.tags.filter((tag) => {
-        if (!tagSet.has(tag)) {
-          tagSet.add(tag);
+      const addOnce = (str) => {
+        if (!tagSet.has(str)) {
+          tagSet.add(str);
           return true;
         }
         return false;
-      });
+      };
+
+      return post.frontmatter.tags.filter(tag => addOnce(tag)).concat(post.frontmatter.languages.filter(lang => addOnce(lang)));
     });
     return tags.sort();
   })();

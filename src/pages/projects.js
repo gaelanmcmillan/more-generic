@@ -176,6 +176,15 @@ const Projects = ({ projects, allTags }) => {
   return (
     <AnimationLayout>
       <BowlingAlley>
+        <div
+          style={{
+            marginBottom: "1rem",
+            width: "100%",
+            textAlign: "center",
+          }}
+        >
+          <i>Click on tags to filter projects by category or language.</i>
+        </div>
         <div style={{ marginBottom: "1rem" }}>
           {allTags.map((tag, i) => {
             return <TagBubble key={i} tag={tag} onClick={addToTagList(tag)} />;
@@ -231,14 +240,16 @@ export async function getStaticProps() {
 
   let allTags = (() => {
     let tagSet = new Set();
-    let tags = projects.flatMap(project => {
-      return project.frontmatter.tags.filter((tag) => {
-        if (!tagSet.has(tag)) {
-          tagSet.add(tag);
+    let tags = projects.flatMap((project) => {
+      const addOnce = (str) => {
+        if (!tagSet.has(str)) {
+          tagSet.add(str);
           return true;
         }
         return false;
-      });
+      };
+
+      return project.frontmatter.tags.filter(tag => addOnce(tag)).concat(project.frontmatter.languages.filter(lang => addOnce(lang)));
     });
     return tags.sort();
   })();
