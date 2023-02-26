@@ -114,14 +114,14 @@ int main () {
 
     std::vector<ll> values (n);
     std::transform(cards.begin(), cards.end(), values.begin(), 
-						[&](char card) { 
-								return face_value(encode(card)); 
-						});
+            [&] (char card) { 
+                return face_value(encode(card));
+            });
 
     ll to15 = count_sums_to_k(15, values);
 
     ll pairs = std::accumulate(counts.begin(), counts.end(), 0LL,
-            [](ll acc, const auto& p) {
+            [] (ll acc, const auto& p) {
                 return acc + n_choose_2(p.second);
             });
 
