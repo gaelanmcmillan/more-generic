@@ -5,8 +5,9 @@ import matter from "gray-matter";
 import SolutionsCard from "../components/SolutionCard";
 import BowlingAlley from "../components/BowlingAlley";
 import { AnimationLayout } from "../components/Transition";
-  
-  import TagBubble, {
+import { useState } from "react";
+
+import TagBubble, {
   useTagList,
   TagListView,
   firstHasAllOfSecond,
@@ -14,6 +15,7 @@ import { AnimationLayout } from "../components/Transition";
 
 const SolutionsPage = ({ posts, allTags }) => {
   const [tagList, clearTagList, addTagToList, removeTagFromList] = useTagList();
+  const [doShowTags, setDoShowTags] = useState(false);
   return (
     <>
       <Head>
@@ -26,11 +28,21 @@ const SolutionsPage = ({ posts, allTags }) => {
               marginBottom: "1rem",
               width: "100%",
               textAlign: "center",
+              userSelect: "none",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              setDoShowTags(!doShowTags);
             }}
           >
             <i>Click on tags to filter solutions by category or language.</i>
           </div>
-          <div style={{ marginBottom: "1rem" }}>
+          <div
+            style={{
+              marginBottom: "1rem",
+              display: `${doShowTags ? "block" : "none"}`,
+            }}
+          >
             {allTags.map((tag, i) => {
               return (
                 <TagBubble key={i} tag={tag} onClick={addTagToList(tag)} />
@@ -111,7 +123,9 @@ export async function getStaticProps() {
         return false;
       };
 
-      return post.frontmatter.tags.filter(tag => addOnce(tag)).concat(post.frontmatter.languages.filter(lang => addOnce(lang)));
+      return post.frontmatter.tags
+        .filter((tag) => addOnce(tag))
+        .concat(post.frontmatter.languages.filter((lang) => addOnce(lang)));
     });
     return tags.sort();
   })();

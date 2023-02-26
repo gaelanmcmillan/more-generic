@@ -173,6 +173,7 @@ const ProjectCard = ({ project, addTagCallback, removeTagCallback }) => {
 
 const Projects = ({ projects, allTags }) => {
   const [tagList, clearTagList, addToTagList, removeTagFromList] = useTagList();
+  const [doShowTags, setDoShowTags] = useState(false);
   return (
     <AnimationLayout>
       <BowlingAlley>
@@ -181,11 +182,14 @@ const Projects = ({ projects, allTags }) => {
             marginBottom: "1rem",
             width: "100%",
             textAlign: "center",
+            userSelect: "none",
+            cursor: "pointer",
           }}
+          onClick={()=>{setDoShowTags(!doShowTags)}}
         >
           <i>Click on tags to filter projects by category or language.</i>
         </div>
-        <div style={{ marginBottom: "1rem" }}>
+        <div style={{ marginBottom: "1rem", display: `${doShowTags ? 'block' : 'none'}` }}>
           {allTags.map((tag, i) => {
             return <TagBubble key={i} tag={tag} onClick={addToTagList(tag)} />;
           })}
