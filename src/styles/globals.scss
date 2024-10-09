@@ -45,6 +45,10 @@ body {
     font-family: "Inconsolata";
     font-weight: bold;
   }
+
+  h2 {
+    font-size: 1.5rem;
+  }
 }
 
 $unpressed-textshadow: $light-shadow-pale;
@@ -65,12 +69,6 @@ $pressed-textshadow: $light-shadow-rich;
       comma
     );
   }
-
-  // @if $illuminated {
-  //   $shadow-values: append($shadow-values,
-  //     0px 0px 20px $textshadow, comma
-  //   );
-  // }
 
   text-shadow: $shadow-values;
 }
@@ -177,28 +175,11 @@ $pressed-textshadow: $light-shadow-rich;
 }
 
 .outgoing-link {
-  user-select: none;
   white-space: pre;
   position: relative;
   width: fit-content;
   cursor: pointer;
-
-  &::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    transform: scaleX(1);
-    height: 0.5ch;
-    bottom: 0;
-    left: 0;
-    background-color: $light-fg;
-    transform-origin: bottom left;
-    transition: left 0.5s ease-out;
-  }
-
-  &:hover::after {
-    left: 1ch;
-  }
+  text-decoration: underline;
 }
 
 .selected-page {
@@ -224,10 +205,6 @@ $pressed-textshadow: $light-shadow-rich;
 
 .info-header {
   display: flex;
-  > * {
-    margin: auto;
-    margin-bottom: 1rem;
-  }
 }
 
 #about-nav {

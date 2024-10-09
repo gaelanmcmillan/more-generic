@@ -1,6 +1,6 @@
+import Link from "next/link";
 import styled from "styled-components";
 import TagBubble from "./TagBubble";
-import Link from "next/link";
 /**
  * _____________________________________
  * | Title             | <icon> [->]   |
@@ -68,7 +68,7 @@ const SolutionsCard = ({
 }) => {
   const siteName = extractSiteName(url);
   return (
-    <Wrapper className="soft-shadow" width={"100%"}>
+    <Wrapper className="soft-shadow" width={"100%"} style={{ borderRadius: "0.5rem" }}>
       <InfoWrapper
         width={"100%"}
         style={{

@@ -1,20 +1,18 @@
-import BowlingAlley from "../components/BowlingAlley";
 import Head from "next/head";
+import BowlingAlley from "../components/BowlingAlley";
 
 import styled from "styled-components";
-import Link from "next/link";
-import {
-  info_block,
-  info_header,
-  about_nav,
-} from "../styles/Index.module.scss";
 import { AnimationLayout } from "../components/Transition";
+import {
+  info_block
+} from "../styles/Index.module.scss";
+
 const ProfilePicture = styled.div`
-  float: left;
-  width: 33%;
-  max-width: 90vw;
+  max-width: 250px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 100%;
   overflow: hidden;
-  margin-right: 1rem;
   > img {
     width: 100%;
     size: 100%;
@@ -24,22 +22,22 @@ const ProfilePicture = styled.div`
 const socialsLinks = [
   {
     href: "/pdfs/resume.pdf",
-    title: "Resume",
+    title: "résumé",
     external: true,
   },
   {
     href: "https://www.linkedin.com/in/gaelan-mcmillan/",
-    title: "LinkedIn",
+    title: "linkedin",
     external: true,
   },
   {
     href: "https://github.com/gaelanmcmillan",
-    title: "GitHub",
+    title: "github",
     external: true,
   },
   {
     href: "https://codeforces.com/profile/gaelanmcm",
-    title: "Codeforces",
+    title: "codeforces",
     external: true,
   },
 ];
@@ -48,60 +46,37 @@ export default function AboutPage() {
   return (
     <>
       <Head>
-        <title>About | Gaelan M</title>
+        <title>Gaelan McMillan's Website</title>
       </Head>
       <AnimationLayout>
         <BowlingAlley>
-          <div className={`${info_block}`}>
-            <div className={`${info_header}`}>
-              <h2>Thanks for stopping by!</h2>
-            </div>
-            <ProfilePicture className="soft-radius soft-shadow">
-              <img src="/images/ProfilePicture.JPG" />
-            </ProfilePicture>
-            <p>
-              My name is Gaelan McMillan.
-              <br />
-              I am an avid programmer and professional musician based in
-              Toronto.
-              <br />I currently study Computer Science at Toronto Metropolitan
-              University.
+          <ProfilePicture>
+            <img src="/images/ProfilePicture.JPG" />
+          </ProfilePicture>
+          <div className={`${info_block}`} style={{ marginLeft: "auto", marginRight: "auto", textAlign: "center" }}>
+            <p >
+              <h2>hi, i'm gaelan</h2>
+              computer science student<br />
+              favourite software: vim, google maps, ableton live<br />
+              hobbies: running, <a className="outgoing-link" href={"/solves"}>programming puzzles</a><br />
+              music lover; <a className="outgoing-link" href={"/music"}>bassist for 10+ years</a><br />
             </p>
             <p>
-              I love exploring the many ways a problem can be solved, as well as
-              finding the common throughlines between different problems. I
-              created this site as a place to amalgamate my notes on specific
-              algorithms and share solutions to various coding challenges.
-            </p>
-            <p>
-              I don't purport to be an expert on the topics I write about,
-              especially programming! If you have any feedback on my writing,
-              please don't hesitate to contact me!
-            </p>
-          </div>
-
-          <div className={`${info_block} soft-shadow soft-radius-outer`}>
-            <div className={`${info_header}`}>
-              <h2>Let's connect!</h2>
-            </div>
-
-            <div className={`${about_nav}`}>
+              <h2>find me on the web</h2>
               {socialsLinks.map(({ href, title, external }, i) => {
                 return (
-                  <Link href={href} key={i}>
-                    <div className="outgoing-link">
-                      <a>
-                        <h4>
-                          {title}
-                          {external ? " ⧉" : ""}
-                        </h4>
-                      </a>
-                    </div>
-                  </Link>
+                  <div key={i}>
+                    <a className="outgoing-link" href={href} >
+                      {title}
+                      {external ? " ⧉" : ""}
+                    </a>
+                  </div>
                 );
               })}
-            </div>
+            </p>
           </div>
+
+
         </BowlingAlley>
       </AnimationLayout>
     </>

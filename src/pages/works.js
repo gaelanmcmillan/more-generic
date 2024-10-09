@@ -1,19 +1,19 @@
 import fs from "fs";
-import path from "path";
 import matter from "gray-matter";
 import Head from "next/head";
-import BowlingAlley from "../components/BowlingAlley";
-import { AnimationLayout } from "../components/Transition";
+import path from "path";
 import { useState } from "react";
-import * as hooks from "../components/hooks";
 import styled from "styled-components";
+import * as card from "../components/BlogPostCard";
+import BowlingAlley from "../components/BowlingAlley";
+import * as hooks from "../components/hooks";
+import MaskedImage from "../components/MaskedImage";
 import TagBubble, {
-  useTagList,
   TagListView,
   firstHasAllOfSecond,
+  useTagList,
 } from "../components/TagBubble";
-import * as card from "../components/BlogPostCard";
-import MaskedImage from "../components/MaskedImage";
+import { AnimationLayout } from "../components/Transition";
 
 const ProjectPreviewPane = styled.div`
   font-family: "Inconsolata";
@@ -185,7 +185,7 @@ const Projects = ({ projects, allTags }) => {
             userSelect: "none",
             cursor: "pointer",
           }}
-          onClick={()=>{setDoShowTags(!doShowTags)}}
+          onClick={() => { setDoShowTags(!doShowTags) }}
         >
           <i>Click on tags to filter projects by category or language.</i>
         </div>
@@ -208,8 +208,8 @@ const Projects = ({ projects, allTags }) => {
                 tagList
               )
           )
-          .map((project, index) => (
-            <ProjectCard project={project} addTagCallback={addToTagList} />
+          .map((project, i) => (
+            <ProjectCard key={i} project={project} addTagCallback={addToTagList} />
           ))}
       </BowlingAlley>
     </AnimationLayout>

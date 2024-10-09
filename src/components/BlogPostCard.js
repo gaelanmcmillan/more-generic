@@ -75,8 +75,6 @@ const ThumbnailWrapper = styled.div`
 `;
 
 const Thumbnail = styled.div`
-  border: 1px solid grey;
-
   border-radius: 0.5rem;
   border-width: 4px;
   border-style: solid;
@@ -86,8 +84,6 @@ const Thumbnail = styled.div`
 `;
 
 const InfoWrapper = styled.div`
-  // border: 1px solid magenta;
-
   position: relative;
 
   // Adding this two keep the content inside its parent...
@@ -167,13 +163,7 @@ const BlogPostCard = ({
 export default BlogPostCard;
 
 export {
-  hoverTime,
-  HoverThumbnail,
-  Wrapper,
-  Thumbnail,
-  ThumbnailWrapper,
-  InfoWrapper,
-  InfoContent,
-  Excerpt,
-  DateAndAuthor,
+  DateAndAuthor, Excerpt, HoverThumbnail, InfoContent, InfoWrapper, Thumbnail,
+  ThumbnailWrapper, Wrapper, hoverTime
 };
+

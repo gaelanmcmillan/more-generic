@@ -1,12 +1,12 @@
-import { useRouter } from "next/router";
 import Link from "next/link";
-import BowlingAlley from "./BowlingAlley";
+import { useRouter } from "next/router";
 import { navbar } from "../styles/Header.module.scss";
+import BowlingAlley from "./BowlingAlley";
 
 const pages = [
   // {href: "/blog", title: "Blog"},
-  { href: "/projects", title: "Projects" },
-  { href: "/solutions", title: "Solutions" },
+  { href: "/works", title: "works" },
+  { href: "/solves", title: "solves" },
 ];
 
 const NavButton = ({ title, route, asPath }) => {
@@ -28,24 +28,24 @@ const NavButton = ({ title, route, asPath }) => {
   );
 };
 
-const RouteDisplay = (props) => {
-  return <></>;
-};
-
 const Header = () => {
   const { asPath } = useRouter();
 
   return (
     <header>
-      <BowlingAlley className={`nav-row soft-shadow`}>
+      <BowlingAlley className={`nav-row soft-shadow`} >
+        <nav>
+        </nav>
         <nav className={navbar}>
           <div>
-            <NavButton title="More Generic" route="/" asPath={asPath} />
+            <NavButton title="gaelan mcmillan" route="/" asPath={asPath} />
           </div>
           <div>
             {pages.map(({ href, title }, i) => {
               return (
-                <NavButton key={i} title={title} route={href} asPath={asPath} />
+                <div key={i} style={{ marginLeft: `${i > 0 ? 8 : 0}ch` }}>
+                  <NavButton title={title} route={href} asPath={asPath} />
+                </div>
               );
             })}
           </div>

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import styled from "styled-components";
 const tagMap = new Map();
 
 const randomBetween = (low, high) => {
@@ -125,4 +124,5 @@ const TagBubble = ({ tag, onClick, registerColorCallback, getColor }) => {
 
 export default TagBubble;
 
-export { useTagList, TagListView, firstHasAllOfSecond };
+export { firstHasAllOfSecond, TagListView, useTagList };
+
