@@ -1,16 +1,16 @@
 import fs from "fs";
-import path from "path";
-import Head from "next/head";
 import matter from "gray-matter";
-import SolutionsCard from "../components/SolutionCard";
-import BowlingAlley from "../components/BowlingAlley";
-import { AnimationLayout } from "../components/Transition";
+import Head from "next/head";
+import path from "path";
 import { useState } from "react";
+import BowlingAlley from "../components/BowlingAlley";
+import SolutionsCard from "../components/SolutionCard";
+import { AnimationLayout } from "../components/Transition";
 
 import TagBubble, {
-  useTagList,
   TagListView,
   firstHasAllOfSecond,
+  useTagList,
 } from "../components/TagBubble";
 
 const SolutionsPage = ({ posts, allTags }) => {
@@ -19,7 +19,7 @@ const SolutionsPage = ({ posts, allTags }) => {
   return (
     <>
       <Head>
-        <title>Solutions | Gaelan M</title>
+        <title>Gaelan McMillan's Solves</title>
       </Head>
       <AnimationLayout>
         <BowlingAlley>
@@ -95,13 +95,13 @@ const SolutionsPage = ({ posts, allTags }) => {
 export default SolutionsPage;
 
 export async function getStaticProps() {
-  const files = fs.readdirSync(path.join("static_media", "solutions"));
+  const files = fs.readdirSync(path.join("static_media", "solves"));
 
   const posts = files
     .map((filename) => {
       let slug = filename.replace(".mdx", "");
       let rawMarkdown = fs.readFileSync(
-        path.join("static_media", "solutions", filename),
+        path.join("static_media", "solves", filename),
         "utf-8"
       );
       let { data: frontmatter } = matter(rawMarkdown);

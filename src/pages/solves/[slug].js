@@ -1,18 +1,18 @@
-import { serialize } from "next-mdx-remote/serialize";
-import { MDXRemote } from "next-mdx-remote";
 import { remarkCodeHike } from "@code-hike/mdx";
-import remarkMath from "remark-math";
-import rehypeKatex from "rehype-katex";
 import { CH } from "@code-hike/mdx/components";
+import { MDXRemote } from "next-mdx-remote";
+import { serialize } from "next-mdx-remote/serialize";
+import rehypeKatex from "rehype-katex";
+import remarkMath from "remark-math";
 import theme from "shiki/themes/solarized-dark.json";
 
-import Head from "next/head";
-import ToolTip from "../../components/ToolTip";
-import MaskedImage from "../../components/MaskedImage";
-import BowlingAlley from "../../components/BowlingAlley";
 import fs from "fs";
-import path from "path";
 import matter from "gray-matter";
+import Head from "next/head";
+import path from "path";
+import BowlingAlley from "../../components/BowlingAlley";
+import MaskedImage from "../../components/MaskedImage";
+import ToolTip from "../../components/ToolTip";
 import { AnimationLayout } from "../../components/Transition";
 
 const InlineImage = ({ src, alt, maxWidth }) => {
@@ -44,7 +44,7 @@ const SolutionPage = ({
   return (
     <>
       <Head>
-        <title>{title} | Gaelan M</title>
+        <title>GM solves "{title}"</title>
       </Head>
       <AnimationLayout>
         <BowlingAlley lg={6} md={8} sm={12} xs={12}>
@@ -74,7 +74,7 @@ const SolutionPage = ({
 export default SolutionPage;
 
 export async function getStaticPaths() {
-  let files = fs.readdirSync(path.join("static_media", "solutions"));
+  let files = fs.readdirSync(path.join("static_media", "solves"));
   let paths = files.map((filename) => ({
     params: {
       slug: filename.replace(".mdx", ""),
@@ -89,7 +89,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params: { slug } }) {
   let rawMarkdown = fs.readFileSync(
-    path.join("static_media", "solutions", slug + ".mdx"),
+    path.join("static_media", "solves", slug + ".mdx"),
     "utf-8"
   );
 

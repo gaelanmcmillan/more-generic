@@ -23,9 +23,9 @@ const ProjectPreviewPane = styled.div`
   top: ${(props) => `${props.top}px`};
   left: ${(props) => `${props.left}px`};
   transform: translate(-50%, -50%);
-  min-width: 95vw;
-  max-width: 100vw;
-  width: 40%;
+  // min-width: min(250px, 90vw);
+  max-width: min(95vw, 500px);
+  width: 90vw;
   max-height: 80%;
   overflow-y: scroll;
   &::-webkit-scrollbar {
@@ -106,9 +106,7 @@ const ProjectCard = ({ project, addTagCallback, removeTagCallback }) => {
                   ))}
                 </div>
                 <div>
-                  {project.frontmatter.author}
-                  {" • "}
-                  {project.frontmatter.date}
+                  {project.frontmatter.author !== 'Gaelan McMillan' ? project.frontmatter.author : ''}
                 </div>
               </FlexCol>
             </card.InfoContent>
@@ -217,7 +215,7 @@ const Projects = ({ projects, allTags }) => {
 
 export default Projects;
 
-const dirName = "projects";
+const dirName = "works";
 
 export async function getStaticProps() {
   const files = fs.readdirSync(path.join("static_media", dirName));

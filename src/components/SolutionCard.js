@@ -63,7 +63,7 @@ const SolutionsCard = ({
   languages,
   date,
   difficulty,
-  prefix = "/solutions/",
+  prefix = "/solves/",
   addTagCallback,
 }) => {
   const siteName = extractSiteName(url);
