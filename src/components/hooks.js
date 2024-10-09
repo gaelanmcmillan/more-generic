@@ -82,7 +82,6 @@ const useWindowDimensions = () => {
 };
 
 export {
-  useEffectOnClickOutsideRef,
-  DivWithOutsideClickCallback,
-  useWindowDimensions,
+  DivWithOutsideClickCallback, useEffectOnClickOutsideRef, useWindowDimensions
 };
+

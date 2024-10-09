@@ -23,7 +23,7 @@ const ProjectPreviewPane = styled.div`
   top: ${(props) => `${props.top}px`};
   left: ${(props) => `${props.left}px`};
   transform: translate(-50%, -50%);
-  min-width: 400px;
+  min-width: 95vw;
   max-width: 100vw;
   width: 40%;
   max-height: 80%;
@@ -32,7 +32,6 @@ const ProjectPreviewPane = styled.div`
     display: none;
   }
   z-index: 10;
-
   padding: 1rem;
 `;
 
@@ -56,7 +55,7 @@ const ProjectCard = ({ project, addTagCallback, removeTagCallback }) => {
   return (
     <>
       <Head>
-        <title>Projects | Gaelan M</title>
+        <title>Gaelan McMillan's Works</title>
       </Head>
       <hooks.DivWithOutsideClickCallback
         callback={() => {
@@ -66,7 +65,7 @@ const ProjectCard = ({ project, addTagCallback, removeTagCallback }) => {
         <card.Wrapper
           className="soft-shadow soft-radius"
           onClick={() => {
-            setIsOpen(true);
+            setIsOpen(!isOpen);
             setWindowDimensions(getWindowDimensions());
           }}
         >
