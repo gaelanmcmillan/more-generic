@@ -55,14 +55,14 @@ export default function AboutPage() {
           </ProfilePicture>
           <div className={`${info_block}`} style={{ marginLeft: "auto", marginRight: "auto", textAlign: "center" }}>
             <p >
-              <h2>hi, i'm gaelan</h2>
-              computer science student<br />
-              favourite software: vim, google maps, ableton live<br />
-              hobbies: running, <a className="outgoing-link" href={"/solves"}>programming puzzles</a><br />
-              music lover; <a className="outgoing-link" href={"/music"}>bassist for 10+ years</a><br />
+              <h2>Hi, I'm Gaelan</h2>
+              + computer science student<br />
+              + favourite software: <i>Vim</i>, <i>Google Maps</i>, <i>Ableton Live</i><br />
+              + hobbies: running; <a className="outgoing-link" href={"/solves"}>programming puzzles</a><br />
+              + music lover; <a className="outgoing-link" href={"/music"}>bassist for 10+ years</a><br />
             </p>
             <p>
-              <h2>find me on the web</h2>
+              <h2>Find me on the web</h2>
               {socialsLinks.map(({ href, title, external }, i) => {
                 return (
                   <div key={i}>

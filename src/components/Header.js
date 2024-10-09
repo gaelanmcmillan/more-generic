@@ -5,8 +5,8 @@ import BowlingAlley from "./BowlingAlley";
 
 const pages = [
   // {href: "/blog", title: "Blog"},
-  { href: "/works", title: "works" },
-  { href: "/solves", title: "solves" },
+  { href: "/works", title: "Works" },
+  { href: "/solves", title: "Solves" },
 ];
 
 const NavButton = ({ title, route, asPath }) => {
@@ -38,7 +38,7 @@ const Header = () => {
         </nav>
         <nav className={navbar}>
           <div>
-            <NavButton title="gaelan mcmillan" route="/" asPath={asPath} />
+            <NavButton title="Gaelan McMillan" route="/" asPath={asPath} />
           </div>
           <div>
             {pages.map(({ href, title }, i) => {
